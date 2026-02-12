@@ -9,11 +9,13 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="bg-indigo-600 text-white p-2 rounded-xl">
-                <Newspaper size={20} />
-              </div>
-              <span className="text-xl font-black text-white">
-                Kabar<span className="text-indigo-400">Kini</span>
+              <img
+              src="/cropped-logo_kodim1408makassar-removebg-preview-1.png"
+              alt="Logo Kodim"
+              className="w-[48px] h-[48px] object-contain"
+            />
+              <span className="text-xl font-black text-white tracking-tight">
+              Info<span className="text-[#35CE8D]">Kodim</span>
               </span>
             </div>
             <p className="text-sm leading-relaxed text-gray-400">

@@ -1,52 +1,17 @@
 {
   "news": [
     {
-      "title": "bla bal bla",
-      "summary": "ini pembaharuan",
-      "fullContent": "inizcxvccvbvbcvvbv",
-      "category": "Olahraga",
-      "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800",
-      "author": "bob",
-      "authorAvatar": "https://i.pravatar.cc/40?img=1",
-      "trending": true,
-      "id": 1770796433228,
-      "catColor": "bg-orange-100 text-orange-700",
-      "likes": 0,
-      "comments": 0,
-      "views": "0",
-      "time": "Baru saja"
-    },
-    {
-      "title": "Judul Berita",
-      "summary": "Y",
-      "fullContent": "Iyakah",
+      "title": "asdfg",
+      "summary": "gfdsa",
+      "fullContent": "zxcvbn",
       "category": "Teknologi",
       "image": "",
-      "author": "",
+      "author": "qwe",
       "authorAvatar": "",
-      "trending": false,
-      "id": 1770795943607,
+      "trending": true,
+      "id": 1770878862763,
       "catColor": "bg-blue-100 text-blue-700",
-      "likes": 0,
-      "comments": 0,
-      "views": "0",
-      "time": "Baru saja"
-    },
-    {
-      "title": "Test 1",
-      "summary": "Ini ringkasan",
-      "fullContent": "Ini Konten Lengkap",
-      "category": "Teknologi",
-      "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800",
-      "author": "Bob",
-      "authorAvatar": "https://i.pravatar.cc/40?img=1",
-      "trending": false,
-      "id": 1770795815389,
-      "catColor": "bg-blue-100 text-blue-700",
-      "likes": 0,
-      "comments": 0,
-      "views": "0",
-      "time": "Baru saja"
+      "createdAt": "2026-02-12T06:47:42.763Z"
     },
     {
       "id": 1,
@@ -58,11 +23,8 @@
       "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800",
       "author": "Dewi Kartika",
       "authorAvatar": "https://i.pravatar.cc/40?img=1",
-      "time": "2 jam lalu",
-      "likes": 1243,
-      "comments": 89,
-      "views": "15.2K",
-      "trending": true
+      "trending": true,
+      "createdAt": "2026-02-12T05:00:00.000Z"
     },
     {
       "id": 2,
@@ -74,11 +36,8 @@
       "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=800",
       "author": "Rizki Pratama",
       "authorAvatar": "https://i.pravatar.cc/40?img=3",
-      "time": "4 jam lalu",
-      "likes": 876,
-      "comments": 124,
-      "views": "22.1K",
-      "trending": true
+      "trending": true,
+      "createdAt": "2026-02-12T03:00:00.000Z"
     },
     {
       "id": 3,
@@ -90,11 +49,8 @@
       "image": "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&q=80&w=800",
       "author": "Ahmad Syaiful",
       "authorAvatar": "https://i.pravatar.cc/40?img=5",
-      "time": "6 jam lalu",
-      "likes": 5621,
-      "comments": 432,
-      "views": "89.3K",
-      "trending": false
+      "trending": false,
+      "createdAt": "2026-02-12T01:00:00.000Z"
     },
     {
       "id": 4,
@@ -106,11 +62,8 @@
       "image": "https://images.unsplash.com/photo-1579165466949-3180a3d056d5?auto=format&fit=crop&q=80&w=800",
       "author": "Dr. Maya Sari",
       "authorAvatar": "https://i.pravatar.cc/40?img=9",
-      "time": "8 jam lalu",
-      "likes": 2340,
-      "comments": 201,
-      "views": "34.7K",
-      "trending": true
+      "trending": true,
+      "createdAt": "2026-02-11T23:00:00.000Z"
     },
     {
       "id": 5,
@@ -122,11 +75,8 @@
       "image": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&q=80&w=800",
       "author": "Putri Anggraeni",
       "authorAvatar": "https://i.pravatar.cc/40?img=16",
-      "time": "10 jam lalu",
-      "likes": 3890,
-      "comments": 267,
-      "views": "56.8K",
-      "trending": false
+      "trending": false,
+      "createdAt": "2026-02-11T21:00:00.000Z"
     },
     {
       "id": 6,
@@ -138,11 +88,8 @@
       "image": "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&q=80&w=800",
       "author": "Fajar Nugroho",
       "authorAvatar": "https://i.pravatar.cc/40?img=12",
-      "time": "12 jam lalu",
-      "likes": 1567,
-      "comments": 345,
-      "views": "41.2K",
-      "trending": false
+      "trending": false,
+      "createdAt": "2026-02-11T19:00:00.000Z"
     }
   ],
   "trending": [
@@ -192,5 +139,5 @@
       "avatar": "https://i.pravatar.cc/40?img=22"
     }
   ],
-  "breakingText": "Timnas Indonesia resmi lolos ke Piala Dunia 2026 — Sejarah baru sepak bola tanah air!"
+  "breakingText": "Timnas Indonesia resmi lolos ke Piala Dunia 2026 — Walawe Sawite"
 }

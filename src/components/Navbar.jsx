@@ -14,11 +14,13 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2 no-underline">
-            <div className="bg-indigo-600 text-white p-2 rounded-xl">
-              <Newspaper size={22} />
-            </div>
+            <img
+              src="/cropped-logo_kodim1408makassar-removebg-preview-1.png"
+              alt="Logo Kodim"
+              className="w-[48px] h-[48px] object-contain"
+            />
             <span className="text-xl font-black text-gray-900 tracking-tight">
-              Kabar<span className="text-indigo-600">Kini</span>
+              Info<span className="text-[#35CE8D]">Kodim</span>
             </span>
           </a>
 
@@ -27,7 +29,7 @@ export default function Navbar() {
             {categories.map((cat) => (
               <button
                 key={cat}
-                className="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors"
+                className="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-[#306B34] hover:bg-[#306B34]/20 rounded-full transition-colors"
               >
                 {cat}
               </button>
@@ -39,7 +41,7 @@ export default function Navbar() {
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => setSearchOpen(!searchOpen)}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              className="p-2 hover:bg-[gray-100] rounded-full transition-colors"
             >
               <Search size={20} className="text-gray-600" />
             </motion.button>

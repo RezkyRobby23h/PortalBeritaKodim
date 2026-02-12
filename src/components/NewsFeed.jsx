@@ -1,25 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, MessageCircle, Share2, Bookmark, Clock, TrendingUp, X, Eye } from 'lucide-react';
+import { Clock, TrendingUp, X } from 'lucide-react';
 import { useCms } from '../store/cmsStore.jsx';
 
-function formatNumber(num) {
-  if (typeof num === 'string') return num;
-  if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-  return num;
+
+function timeAgo(dateString) {
+  if (!dateString) return 'Baru saja';
+  const now = new Date();
+  const created = new Date(dateString);
+  const diffMs = now - created;
+  const diffSeconds = Math.floor(diffMs / 1000);
+  const diffMinutes = Math.floor(diffSeconds / 60);
+  const diffHours = Math.floor(diffMinutes / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffSeconds < 60) return 'Baru saja';
+  if (diffMinutes < 60) return `${diffMinutes} menit lalu`;
+  if (diffHours < 24) return `${diffHours} jam lalu`;
+
+  // Lebih dari 24 jam, tampilkan tanggal
+  return created.toLocaleDateString('id-ID', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+function useTick() {
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => setTick((t) => t + 1), 30000);
+    return () => clearInterval(interval);
+  }, []);
 }
 
 function NewsCard({ news }) {
   const [expanded, setExpanded] = useState(false);
-  const [liked, setLiked] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [likeCount, setLikeCount] = useState(news.likes);
-
-  const toggleLike = () => {
-    setLiked(!liked);
-    setLikeCount(liked ? likeCount - 1 : likeCount + 1);
-  };
-
+  useTick();
   return (
     <>
       <motion.article
@@ -36,7 +55,7 @@ function NewsCard({ news }) {
             <p className="text-sm font-semibold text-gray-900 truncate">{news.author || 'Anonim'}</p>
             <div className="flex items-center gap-2 text-xs text-gray-500">
               <Clock size={12} />
-              <span>{news.time}</span>
+              <span>{timeAgo(news.createdAt)}</span>
               {news.trending && (
                 <span className="flex items-center gap-1 text-orange-500 font-medium">
                   <TrendingUp size={12} /> Trending
@@ -88,47 +107,7 @@ function NewsCard({ news }) {
           </button>
         </div>
 
-        {/* Stats bar */}
-        <div className="px-4 pt-2 flex items-center gap-4 text-xs text-gray-400">
-          <span className="flex items-center gap-1"><Eye size={13} /> {news.views} dilihat</span>
-          <span>{formatNumber(likeCount)} suka</span>
-          <span>{news.comments} komentar</span>
-        </div>
 
-        {/* Action buttons */}
-        <div className="flex items-center border-t border-gray-100 mt-3">
-          <motion.button
-            whileTap={{ scale: 0.85 }}
-            onClick={toggleLike}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${
-              liked ? 'text-rose-500' : 'text-gray-500 hover:text-rose-500'
-            }`}
-          >
-            <Heart size={18} fill={liked ? 'currentColor' : 'none'} /> Suka
-          </motion.button>
-          <motion.button
-            whileTap={{ scale: 0.85 }}
-            onClick={() => setExpanded(true)}
-            className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium text-gray-500 hover:text-indigo-500 transition-colors"
-          >
-            <MessageCircle size={18} /> Komentar
-          </motion.button>
-          <motion.button
-            whileTap={{ scale: 0.85 }}
-            className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium text-gray-500 hover:text-green-500 transition-colors"
-          >
-            <Share2 size={18} /> Bagikan
-          </motion.button>
-          <motion.button
-            whileTap={{ scale: 0.85 }}
-            onClick={() => setSaved(!saved)}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${
-              saved ? 'text-amber-500' : 'text-gray-500 hover:text-amber-500'
-            }`}
-          >
-            <Bookmark size={18} fill={saved ? 'currentColor' : 'none'} /> Simpan
-          </motion.button>
-        </div>
       </motion.article>
 
       {/* Expanded Overlay */}
@@ -177,7 +156,7 @@ function NewsCard({ news }) {
                   <img src={news.authorAvatar || 'https://i.pravatar.cc/40?img=0'} alt={news.author} className="w-8 h-8 rounded-full" />
                   <div>
                     <p className="text-sm font-medium text-gray-800">{news.author || 'Anonim'}</p>
-                    <p className="text-xs text-gray-400">{news.time}</p>
+                    <p className="text-xs text-gray-400">{timeAgo(news.createdAt)}</p>
                   </div>
                 </div>
 
@@ -185,11 +164,7 @@ function NewsCard({ news }) {
                   {news.fullContent || news.summary}
                 </div>
 
-                <div className="flex items-center gap-6 mt-6 pt-4 border-t border-gray-100 text-sm text-gray-500">
-                  <span className="flex items-center gap-1"><Eye size={16} /> {news.views}</span>
-                  <span className="flex items-center gap-1"><Heart size={16} /> {formatNumber(likeCount)}</span>
-                  <span className="flex items-center gap-1"><MessageCircle size={16} /> {news.comments}</span>
-                </div>
+
               </div>
             </motion.div>
           </motion.div>
@@ -200,7 +175,18 @@ function NewsCard({ news }) {
 }
 
 export default function NewsFeed() {
-  const { news, breakingText } = useCms();
+  const { news, breakingText, selectedCategory, setSelectedCategory } = useCms();
+  const [visibleCount, setVisibleCount] = useState(3);
+
+  const filteredNews = selectedCategory
+    ? news.filter((item) => item.category === selectedCategory)
+    : news;
+  const visibleNews = filteredNews.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredNews.length;
+
+  const showMore = () => {
+    setVisibleCount((prev) => prev + 3);
+  };
 
   return (
     <div className="space-y-5">
@@ -220,24 +206,38 @@ export default function NewsFeed() {
         </motion.div>
       )}
 
+      {/* Category Filter Info */}
+      {selectedCategory && (
+        <div className="bg-indigo-50 text-indigo-700 px-4 py-2.5 rounded-xl text-sm font-medium flex items-center justify-between">
+          <span>Menampilkan kategori: <strong>{selectedCategory}</strong> ({filteredNews.length} berita)</span>
+          <button
+            onClick={() => setSelectedCategory(null)}
+            className="text-indigo-500 hover:text-indigo-800 transition-colors"
+          >
+            <X size={16} />
+          </button>
+        </div>
+      )}
+
       {/* Feed */}
-      {news.length === 0 && (
+      {filteredNews.length === 0 && (
         <div className="bg-white rounded-2xl p-12 text-center text-gray-400">
-          <p className="text-lg font-medium">Belum ada berita.</p>
+          <p className="text-lg font-medium">{selectedCategory ? `Belum ada berita ${selectedCategory}.` : 'Belum ada berita.'}</p>
           <p className="text-sm mt-1">Tambahkan berita melalui Admin Panel.</p>
         </div>
       )}
-      {news.map((item) => (
+      {visibleNews.map((item) => (
         <NewsCard key={item.id} news={item} />
       ))}
 
-      {news.length > 0 && (
+      {hasMore && (
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
+          onClick={showMore}
           className="w-full py-4 bg-white rounded-2xl text-indigo-600 font-semibold hover:bg-indigo-50 transition-colors shadow-sm border border-gray-100"
         >
-          Muat Berita Lainnya
+          Tampilkan Berita Lainnya ({filteredNews.length - visibleCount} tersisa)
         </motion.button>
       )}
     </div>

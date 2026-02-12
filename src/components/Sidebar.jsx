@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, Hash, Flame, ArrowRight } from 'lucide-react';
+import { TrendingUp, Flame, ArrowRight } from 'lucide-react';
 import { useCms } from '../store/cmsStore.jsx';
 
 const categoryColors = {
@@ -16,7 +16,12 @@ const categoryColors = {
 };
 
 export default function Sidebar() {
-  const { trending, sources, news } = useCms();
+  const { sources, news, selectedCategory, setSelectedCategory } = useCms();
+
+  // Filter berita yang ditandai trending
+  const trendingNews = useMemo(() => {
+    return news.filter((item) => item.trending);
+  }, [news]);
 
   // Hitung jumlah berita per kategori dari data sebenarnya
   const categories = useMemo(() => {
@@ -50,21 +55,23 @@ export default function Sidebar() {
           <Flame size={20} className="text-orange-500" />
           <h3 className="font-bold text-gray-900">Sedang Trending</h3>
         </div>
-        {trending.length === 0 && (
-          <p className="text-sm text-gray-400 text-center py-3">Belum ada trending topic.</p>
+        {trendingNews.length === 0 && (
+          <p className="text-sm text-gray-400 text-center py-3">Belum ada berita trending.</p>
         )}
         <div className="space-y-3">
-          {trending.map((item, index) => (
+          {trendingNews.map((item, index) => (
             <div key={item.id} className="flex items-start gap-3 group cursor-pointer">
               <span className="text-lg font-black text-gray-300 w-6 text-right">{index + 1}</span>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1">
-                  <Hash size={14} className="text-indigo-400 shrink-0" />
-                  <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-indigo-600 transition-colors">
-                    {item.title}
-                  </p>
+                <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-indigo-600 transition-colors">
+                  {item.title}
+                </p>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${item.catColor}`}>
+                    {item.category}
+                  </span>
+                  <span className="text-xs text-gray-400">{item.time}</span>
                 </div>
-                <p className="text-xs text-gray-400 mt-0.5">{item.posts}</p>
               </div>
               <TrendingUp size={14} className="text-green-500 shrink-0 mt-1" />
             </div>
@@ -84,15 +91,30 @@ export default function Sidebar() {
         {categories.length === 0 && (
           <p className="text-sm text-gray-400 text-center py-3">Belum ada kategori.</p>
         )}
+        {selectedCategory && (
+          <button
+            onClick={() => setSelectedCategory(null)}
+            className="mb-3 text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+          >
+            ✕ Hapus filter
+          </button>
+        )}
         <div className="grid grid-cols-2 gap-2">
           {categories.map((cat) => (
             <button
               key={cat.name}
-              className="flex items-center gap-2 px-3 py-2.5 rounded-xl hover:bg-gray-50 transition-colors group text-left"
+              onClick={() => setSelectedCategory(selectedCategory === cat.name ? null : cat.name)}
+              className={`flex items-center gap-2 px-3 py-2.5 rounded-xl transition-colors group text-left ${
+                selectedCategory === cat.name
+                  ? 'bg-indigo-50 ring-2 ring-indigo-400'
+                  : 'hover:bg-gray-50'
+              }`}
             >
               <div className={`w-2.5 h-2.5 rounded-full ${cat.color}`} />
               <div className="min-w-0">
-                <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900 truncate">{cat.name}</p>
+                <p className={`text-sm font-medium truncate ${
+                  selectedCategory === cat.name ? 'text-indigo-700' : 'text-gray-700 group-hover:text-gray-900'
+                }`}>{cat.name}</p>
                 <p className="text-xs text-gray-400">{cat.count} berita</p>
               </div>
             </button>
@@ -100,38 +122,7 @@ export default function Sidebar() {
         </div>
       </motion.div>
 
-      {/* Suggested Follows */}
-      <motion.div
-        initial={{ opacity: 0, x: 30 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.2 }}
-        className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100"
-      >
-        <h3 className="font-bold text-gray-900 mb-4">Sumber Berita</h3>
-        {sources.length === 0 && (
-          <p className="text-sm text-gray-400 text-center py-3">Belum ada sumber berita.</p>
-        )}
-        <div className="space-y-3">
-          {sources.map((s) => (
-            <div key={s.id} className="flex items-center gap-3">
-              <img src={s.avatar || 'https://i.pravatar.cc/40?img=0'} alt={s.name} className="w-10 h-10 rounded-full" />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-800 truncate">{s.name}</p>
-                <p className="text-xs text-gray-400">{s.handle}</p>
-              </div>
-              <button className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-full hover:bg-indigo-100 transition-colors shrink-0">
-                Ikuti
-              </button>
-            </div>
-          ))}
-        </div>
-        {sources.length > 0 && (
-          <button className="flex items-center gap-1 text-sm text-indigo-600 font-medium mt-4 hover:text-indigo-800 transition-colors">
-            Lihat semua <ArrowRight size={14} />
-          </button>
-        )}
-      </motion.div>
+
 
       {/* Footer Mini */}
       <div className="text-xs text-gray-400 px-2 space-y-1">

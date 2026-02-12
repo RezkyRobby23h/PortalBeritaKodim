@@ -93,10 +93,7 @@ export function CmsProvider({ children }) {
       ...item,
       id: Date.now(),
       catColor: categoryColorMap[item.category] || 'bg-gray-100 text-gray-700',
-      likes: 0,
-      comments: 0,
-      views: '0',
-      time: 'Baru saja',
+      createdAt: new Date().toISOString(),
     };
     setNews((prev) => {
       const updated = [newItem, ...prev];
@@ -191,11 +188,15 @@ export function CmsProvider({ children }) {
     saveAll(defaultNewsData, defaultTrendingData, defaultSourcesData, defaultBreakingData);
   }, []);
 
+  // ======== CATEGORY FILTER ========
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
   const value = {
     news, addNews, updateNews, deleteNews,
     trending, addTrending, deleteTrending, updateTrending,
     sources, addSource, deleteSource, updateSource,
     breakingText, setBreaking,
+    selectedCategory, setSelectedCategory,
     resetAll, loaded,
   };
 
