@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Newspaper, Plus, Trash2, Edit3, Save, X, ArrowLeft,
   FileText, TrendingUp, Users, Megaphone, RotateCcw,
-  ChevronDown, ChevronUp, Eye, Image, AlertTriangle, Lock, LogOut, Upload
+  ChevronDown, ChevronUp, Image, AlertTriangle, Lock, LogOut, Upload,
+  Sun, Moon
 } from 'lucide-react';
 import { useCms, categoryColorMap } from '../store/cmsStore.jsx';
 
@@ -743,6 +744,18 @@ export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState('news');
   const [showReset, setShowReset] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    setDark(document.documentElement.classList.contains('dark'));
+  }, []);
+
+  const toggleTheme = () => {
+    const isDark = !dark;
+    setDark(isDark);
+    document.documentElement.classList.toggle('dark', isDark);
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  };
 
   const handleLogin = () => {
     setIsAuthenticated(true);
@@ -750,6 +763,7 @@ export default function AdminPanel() {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
+    window.location.href = '/';
   };
 
   // Show login form if not authenticated
@@ -777,10 +791,14 @@ export default function AdminPanel() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <a href="/" target="_blank"
-                className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-colors no-underline">
-                <Eye size={16} /> Lihat Situs
-              </a>
+              <button
+                onClick={toggleTheme}
+                className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded-lg transition-colors"
+                title={dark ? 'Light Mode' : 'Dark Mode'}
+              >
+                {dark ? <Sun size={16} className="text-yellow-400" /> : <Moon size={16} />}
+                {dark ? 'Light' : 'Dark'}
+              </button>
               <button onClick={() => setShowReset(true)}
                 className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">
                 <RotateCcw size={16} /> Reset
