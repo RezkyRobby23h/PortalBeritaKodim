@@ -55,8 +55,8 @@ function NewsManager() {
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      setUploadError('Ukuran file terlalu besar. Maksimal 5MB.');
+    if (file.size > 10 * 1024 * 1024) {
+      setUploadError('Ukuran file terlalu besar. Maksimal 10MB.');
       return;
     }
 
@@ -257,7 +257,7 @@ function NewsManager() {
                 </div>
                 
                 <p className="text-xs text-gray-400 mt-1.5">
-                  Upload dari komputer (max 5MB, JPG/PNG/GIF/WebP) atau masukkan URL gambar
+                  Upload dari komputer (max 10MB, JPG/PNG/GIF/WebP) atau masukkan URL gambar
                 </p>
               </div>
 

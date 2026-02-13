@@ -38,6 +38,8 @@ function useTick() {
 
 function NewsCard({ news }) {
   const [expanded, setExpanded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [expandedImageLoaded, setExpandedImageLoaded] = useState(false);
   useTick();
   
   return (
@@ -69,15 +71,25 @@ function NewsCard({ news }) {
           </span>
         </div>
 
-        {/* Image - DIPERBAIKI: Mengikuti rasio aspek asli */}
+        {/* Image - DIPERBAIKI: Progressive loading dengan blur effect */}
         {news.image && (
           <div className="relative cursor-pointer group bg-gray-50 dark:bg-gray-900" onClick={() => setExpanded(true)}>
             <img
               src={news.image}
               alt={news.title}
-              className="w-full object-contain max-h-[600px]"
-              loading="lazy"
+              className={`w-full object-contain max-h-[600px] transition-all duration-500 ${
+                imageLoaded ? 'blur-0 scale-100' : 'blur-lg scale-105'
+              }`}
+              loading="eager"
+              fetchpriority="high"
+              onLoad={() => setImageLoaded(true)}
             />
+            {/* Loading indicator */}
+            {!imageLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-8 h-8 border-3 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
               <h2 className="text-white font-bold text-lg sm:text-xl leading-tight drop-shadow-lg">
@@ -145,14 +157,25 @@ function NewsCard({ news }) {
                 </button>
               </div>
 
-              {/* Full Image - DIPERBAIKI: Mengikuti rasio aspek asli */}
+              {/* Full Image - DIPERBAIKI: Progressive loading dengan blur effect */}
               {news.image && (
-                <div className="bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+                <div className="bg-gray-50 dark:bg-gray-900 flex items-center justify-center relative">
                   <img 
                     src={news.image} 
                     alt={news.title} 
-                    className="w-full max-h-[60vh] object-contain" 
+                    className={`w-full max-h-[60vh] object-contain transition-all duration-500 ${
+                      expandedImageLoaded ? 'blur-0 scale-100' : 'blur-lg scale-105'
+                    }`}
+                    loading="eager"
+                    fetchpriority="high"
+                    onLoad={() => setExpandedImageLoaded(true)}
                   />
+                  {/* Loading indicator */}
+                  {!expandedImageLoaded && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                  )}
                 </div>
               )}
 

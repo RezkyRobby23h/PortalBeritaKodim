@@ -1,32 +1,6 @@
 {
   "news": [
     {
-      "title": "test yus",
-      "summary": "test yus",
-      "fullContent": "test yus1",
-      "category": "Politik",
-      "image": "/uploads/1770946593591-IMG-20250909-WA0295-copy-844x5.jpg",
-      "author": "bob",
-      "authorAvatar": "",
-      "trending": false,
-      "id": 1770946605934,
-      "catColor": "bg-red-100 text-red-700",
-      "createdAt": "2026-02-13T01:36:45.934Z"
-    },
-    {
-      "title": "roby ikut magang!",
-      "summary": "Yaudah",
-      "fullContent": "udaaah!",
-      "category": "Pendidikan",
-      "image": "/uploads/1770898918923-Rezky-Robbyyanto-Akbari---H071.jpeg",
-      "author": "bob",
-      "authorAvatar": "",
-      "trending": true,
-      "id": 1770898953724,
-      "catColor": "bg-cyan-100 text-cyan-700",
-      "createdAt": "2026-02-12T12:22:33.724Z"
-    },
-    {
       "title": "asdfg",
       "summary": "gfdsa",
       "fullContent": "zxcvbn",
