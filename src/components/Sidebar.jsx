@@ -63,7 +63,7 @@ export default function Sidebar() {
             <div key={item.id} className="flex items-start gap-3 group cursor-pointer">
               <span className="text-lg font-black text-gray-300 dark:text-gray-600 w-6 text-right">{index + 1}</span>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                   {item.title}
                 </p>
                 <div className="flex items-center gap-2 mt-0.5">
@@ -94,7 +94,7 @@ export default function Sidebar() {
         {selectedCategory && (
           <button
             onClick={() => setSelectedCategory(null)}
-            className="mb-3 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors"
+            className="mb-3 text-xs font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors"
           >
             ✕ Hapus filter
           </button>
@@ -106,14 +106,14 @@ export default function Sidebar() {
               onClick={() => setSelectedCategory(selectedCategory === cat.name ? null : cat.name)}
               className={`flex items-center gap-2 px-3 py-2.5 rounded-xl transition-colors group text-left ${
                 selectedCategory === cat.name
-                  ? 'bg-indigo-50 dark:bg-indigo-900/30 ring-2 ring-indigo-400'
+                  ? 'bg-emerald-50 dark:bg-emerald-900/30 ring-2 ring-emerald-400'
                   : 'hover:bg-gray-50 dark:hover:bg-gray-700'
               }`}
             >
               <div className={`w-2.5 h-2.5 rounded-full ${cat.color}`} />
               <div className="min-w-0">
                 <p className={`text-sm font-medium truncate ${
-                  selectedCategory === cat.name ? 'text-indigo-700 dark:text-indigo-300' : 'text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white'
+                  selectedCategory === cat.name ? 'text-emerald-700 dark:text-emerald-300' : 'text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white'
                 }`}>{cat.name}</p>
                 <p className="text-xs text-gray-400">{cat.count} berita</p>
               </div>

@@ -29,7 +29,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               {['Beranda', 'Politik', 'Ekonomi', 'Teknologi', 'Olahraga', 'Hiburan'].map((item) => (
                 <li key={item}>
-                  <a href="#" className="hover:text-indigo-400 transition-colors">{item}</a>
+                  <a href="#" className="hover:text-emerald-400 transition-colors">{item}</a>
                 </li>
               ))}
             </ul>
@@ -41,7 +41,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               {['Tentang Kami', 'Redaksi', 'Karir', 'Pedoman Media', 'Iklan', 'Hubungi Kami'].map((item) => (
                 <li key={item}>
-                  <a href="#" className="hover:text-indigo-400 transition-colors">{item}</a>
+                  <a href="#" className="hover:text-emerald-400 transition-colors">{item}</a>
                 </li>
               ))}
             </ul>
@@ -51,18 +51,18 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4">Kontak</h4>
             <div className="space-y-3 text-sm">
-              <p className="flex items-center gap-2"><Mail size={16} className="text-indigo-400" /> info@kodim1408makassar.id</p>
-              <p className="flex items-center gap-2"><Phone size={16} className="text-indigo-400" /> (021) 1234-5678</p>
-              <p className="flex items-start gap-2"><MapPin size={16} className="text-indigo-400 mt-0.5" /> Jakarta Selatan, Indonesia</p>
+              <p className="flex items-center gap-2"><Mail size={16} className="text-emerald-400" /> info@kodim1408makassar.id</p>
+              <p className="flex items-center gap-2"><Phone size={16} className="text-emerald-400" /> (021) 1234-5678</p>
+              <p className="flex items-start gap-2"><MapPin size={16} className="text-emerald-400 mt-0.5" /> Jakarta Selatan, Indonesia</p>
             </div>
             <div className="flex gap-3 mt-5">
-              <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-indigo-600 transition-colors">
+              <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-emerald-600 transition-colors">
                 <Instagram size={18} />
               </a>
-              <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-indigo-600 transition-colors">
+              <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-emerald-600 transition-colors">
                 <Twitter size={18} />
               </a>
-              <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-indigo-600 transition-colors">
+              <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-emerald-600 transition-colors">
                 <Youtube size={18} />
               </a>
             </div>

@@ -4,6 +4,7 @@ import { Search, Menu, X, Newspaper, Settings, Moon, Sun } from 'lucide-react';
 import { useCms } from '../store/cmsStore.jsx';
 
 const menuItems = [
+  { name: 'Beranda', path: '/' },
   { name: 'Program Pembinaan', path: '/program-pembinaan' },
   { name: 'Bhakti TNI', path: '/bhakti-tni' },
   { name: 'Kontak', path: '/kontak' }
@@ -74,7 +75,7 @@ export default function Navbar() {
             </motion.button>
             <a
               href="/admin"
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400"
               title="Admin Panel"
             >
               <Settings size={20} />
@@ -104,7 +105,7 @@ export default function Navbar() {
                 placeholder="Cari berita..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2.5 bg-gray-100 dark:bg-gray-800 rounded-xl border-none outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                className="w-full px-4 py-2.5 bg-gray-100 dark:bg-gray-800 rounded-xl border-none outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
               />
             </motion.div>
           )}
@@ -133,7 +134,7 @@ export default function Navbar() {
               ))}
               <a
                 href="/admin"
-                className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors no-underline"
+                className="px-4 py-2 text-sm font-medium text-white bg-[#35CE8D] hover:bg-[#306B34] rounded-lg transition-colors no-underline"
               >
                 Admin Panel
               </a>

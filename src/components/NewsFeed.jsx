@@ -53,7 +53,7 @@ function NewsCard({ news }) {
       >
         {/* Author Header */}
         <div className="flex items-center gap-3 p-4 pb-2">
-          <img src={news.authorAvatar || 'https://i.pravatar.cc/40?img=0'} alt={news.author} className="w-10 h-10 rounded-full object-cover ring-2 ring-indigo-100 dark:ring-indigo-900" />
+          <img src={news.authorAvatar || 'https://i.pravatar.cc/40?img=0'} alt={news.author} className="w-10 h-10 rounded-full object-cover ring-2 ring-emerald-100 dark:ring-emerald-900" />
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{news.author || 'Anonim'}</p>
             <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
@@ -87,7 +87,7 @@ function NewsCard({ news }) {
             {/* Loading indicator */}
             {!imageLoaded && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-8 h-8 border-3 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-8 h-8 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
               </div>
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -108,7 +108,7 @@ function NewsCard({ news }) {
           )}
           
           {!news.image && (
-            <h2 className="font-bold text-lg sm:text-xl text-gray-900 dark:text-white leading-tight cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors mb-2" onClick={() => setExpanded(true)}>
+            <h2 className="font-bold text-lg sm:text-xl text-gray-900 dark:text-white leading-tight cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors mb-2" onClick={() => setExpanded(true)}>
               {news.title}
             </h2>
           )}
@@ -119,7 +119,7 @@ function NewsCard({ news }) {
           </p>
           <button
             onClick={() => setExpanded(true)}
-            className="text-indigo-600 dark:text-indigo-400 text-sm font-semibold hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors"
+            className="text-emerald-600 dark:text-emerald-400 text-sm font-semibold hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors"
           >
             Baca selengkapnya...
           </button>
@@ -173,7 +173,7 @@ function NewsCard({ news }) {
                   {/* Loading indicator */}
                   {!expandedImageLoaded && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                      <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
                     </div>
                   )}
                 </div>
@@ -241,11 +241,11 @@ export default function NewsFeed() {
 
       {/* Search Filter Info */}
       {searchQuery && (
-        <div className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2.5 rounded-xl text-sm font-medium flex items-center justify-between">
+        <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-4 py-2.5 rounded-xl text-sm font-medium flex items-center justify-between">
           <span>Hasil pencarian: <strong>"{searchQuery}"</strong> ({filteredNews.length} berita)</span>
           <button
             onClick={() => setSearchQuery('')}
-            className="text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 transition-colors"
+            className="text-emerald-500 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-200 transition-colors"
           >
             <X size={16} />
           </button>
@@ -254,11 +254,11 @@ export default function NewsFeed() {
 
       {/* Category Filter Info */}
       {selectedCategory && (
-        <div className="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 px-4 py-2.5 rounded-xl text-sm font-medium flex items-center justify-between">
+        <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-4 py-2.5 rounded-xl text-sm font-medium flex items-center justify-between">
           <span>Menampilkan kategori: <strong>{selectedCategory}</strong> ({filteredNews.length} berita)</span>
           <button
             onClick={() => setSelectedCategory(null)}
-            className="text-indigo-500 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors"
+            className="text-emerald-500 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors"
           >
             <X size={16} />
           </button>
@@ -281,7 +281,7 @@ export default function NewsFeed() {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={showMore}
-          className="w-full py-4 bg-white dark:bg-gray-800 rounded-2xl text-indigo-600 dark:text-indigo-400 font-semibold hover:bg-indigo-50 dark:hover:bg-gray-700 transition-colors shadow-sm border border-gray-100 dark:border-gray-700"
+          className="w-full py-4 bg-white dark:bg-gray-800 rounded-2xl text-emerald-600 dark:text-emerald-400 font-semibold hover:bg-emerald-50 dark:hover:bg-gray-700 transition-colors shadow-sm border border-gray-100 dark:border-gray-700"
         >
           Tampilkan Berita Lainnya ({filteredNews.length - visibleCount} tersisa)
         </motion.button>
