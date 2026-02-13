@@ -1,0 +1,126 @@
+---
+import PageLayout from '../components/PageLayout.jsx';
+---
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Program Pembinaan - Kodim 1408 Makassar</title>
+  <link rel="stylesheet" href="/src/styles/global.css">
+  <script is:inline>
+    if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors">
+  <PageLayout client:only="react">
+  
+  <main class="pt-20 pb-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Hero Image -->
+      <div class="mb-8 rounded-2xl overflow-hidden shadow-2xl">
+        <img 
+          src="/IMG-20250909-WA0295_copy_844x562_1.jpg" 
+          alt="Program Pembinaan Kodim 1408 Makassar"
+          class="w-full h-auto object-cover"
+        />
+      </div>
+
+      <!-- Content -->
+      <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 md:p-12">
+        
+        <!-- Title -->
+        <h1 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-6 leading-tight">
+          Program Pembinaan Kodim 1408 Makassar
+        </h1>
+
+        <!-- Intro Paragraphs -->
+        <div class="prose prose-lg dark:prose-invert max-w-none mb-8">
+          <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            Kodim 1408 Makassar merupakan bagian dari jajaran Korem 141/Toddopuli di bawah Kodam XIV/Hasanuddin yang berperan strategis di wilayah perkotaan terbesar di timur Indonesia. Sebagai garda terdepan TNI AD di Kota Metropolitan Timur, Kodim 1408 tidak hanya menjaga stabilitas keamanan, tetapi juga menginisiasi berbagai program pembinaan yang menyentuh langsung kehidupan masyarakat.
+          </p>
+          
+          <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-10">
+            Program pembinaan yang dijalankan Kodim 1408 Makassar berorientasi pada kemanunggalan TNI dan rakyat. Melalui kegiatan sosial, kemanusiaan, serta pembangunan masyarakat, Kodim berupaya memperkuat ketahanan wilayah dan menumbuhkan kesadaran bela negara di tengah masyarakat perkotaan yang dinamis.
+          </p>
+        </div>
+
+        <!-- Program Items -->
+        <div class="space-y-8">
+          
+          <!-- Program 1 -->
+          <div class="border-l-4 border-[#306B34] dark:border-[#35CE8D] pl-6 py-2">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+              1. Pembinaan Teritorial
+            </h2>
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+              Sebagai bagian dari tugas pokok TNI AD, pembinaan teritorial menjadi fokus utama. Kodim 1408 Makassar melaksanakan kegiatan Binter melalui komunikasi sosial, karya bakti, serta program ketahanan wilayah. Melalui pendekatan humanis, para prajurit menjalin kedekatan dengan warga, memperkuat nilai gotong royong, serta mengajak masyarakat berperan aktif dalam menjaga keamanan dan ketertiban lingkungan.
+            </p>
+          </div>
+
+          <!-- Program 2 -->
+          <div class="border-l-4 border-[#306B34] dark:border-[#35CE8D] pl-6 py-2">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+              2. Pembinaan Ketahanan Wilayah
+            </h2>
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+              Di tengah tantangan urbanisasi dan modernisasi, Kodim 1408 Makassar terus memperkuat ketahanan wilayah melalui kolaborasi dengan pemerintah kota dan instansi lainnya. Program ketahanan pangan, penghijauan kota, serta edukasi mitigasi bencana menjadi bagian dari pembinaan berkelanjutan demi menciptakan lingkungan yang aman dan tangguh terhadap perubahan zaman.
+            </p>
+          </div>
+
+          <!-- Program 3 -->
+          <div class="border-l-4 border-[#306B34] dark:border-[#35CE8D] pl-6 py-2">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+              3. Pembinaan Sumber Daya Manusia
+            </h2>
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+              Kodim juga mengembangkan pembinaan SDM melalui pelatihan bela negara, pendidikan karakter kebangsaan, dan kegiatan kepemudaan. Melalui sinergi dengan lembaga pendidikan dan komunitas lokal, Kodim 1408 menanamkan semangat cinta tanah air di kalangan generasi muda sebagai benteng moral bangsa.
+            </p>
+          </div>
+
+          <!-- Program 4 -->
+          <div class="border-l-4 border-[#306B34] dark:border-[#35CE8D] pl-6 py-2">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+              4. Pembinaan Wilayah Sosial dan Ekonomi
+            </h2>
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+              Program ini mencakup pemberdayaan ekonomi masyarakat melalui kegiatan wirausaha produktif, UMKM binaan, serta program ketahanan pangan rumah tangga. Kodim juga aktif mendukung kegiatan sosial seperti donor darah, renovasi rumah tidak layak huni, dan bantuan bencana alam, sebagai bentuk nyata pengabdian kepada rakyat.
+            </p>
+          </div>
+
+          <!-- Program 5 -->
+          <div class="border-l-4 border-[#306B34] dark:border-[#35CE8D] pl-6 py-2">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+              5. Pembinaan Lingkungan dan Kebersihan Kota
+            </h2>
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+              Sebagai bagian dari komitmen TNI AD yang profesional, Kodim 1408 Makassar juga berperan aktif dalam menjaga kebersihan dan kelestarian lingkungan perkotaan. Melalui kegiatan kerja bakti, penanaman pohon, dan edukasi lingkungan, Kodim berupaya mewujudkan Makassar yang bersih, hijau, dan sehat.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Closing Statement -->
+        <div class="mt-10 pt-8 border-t border-gray-200 dark:border-gray-700">
+          <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            Setiap program pembinaan dilaksanakan dengan prinsip partisipatif — melibatkan masyarakat sebagai mitra sejajar. Dengan demikian, kehadiran Kodim 1408 Makassar bukan hanya sebagai kekuatan militer, tetapi juga sebagai penggerak pembangunan sosial yang berkelanjutan.
+          </p>
+          
+          <blockquote class="border-l-4 border-[#306B34] dark:border-[#35CE8D] pl-6 py-2 bg-[#306B34]/5 dark:bg-[#35CE8D]/10 rounded-r-lg">
+            <p class="text-lg font-semibold text-[#306B34] dark:text-[#35CE8D] italic">
+              "TNI AD Profesional di Kota Metropolitan Timur – Mengabdi dengan Hati, Bersama Membangun Negeri."
+            </p>
+          </blockquote>
+        </div>
+
+      </article>
+
+    </div>
+  </main>
+  </PageLayout>
+</body>
+</html>

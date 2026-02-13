@@ -1,0 +1,140 @@
+---
+import PageLayout from '../components/PageLayout.jsx';
+---
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kegiatan Kodim 1410 Bantaeng - Komando Distrik Militer Wilayah Selatan Sulsel</title>
+  <link rel="stylesheet" href="/src/styles/global.css">
+  <script is:inline>
+    if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors">
+  <PageLayout client:only="react">
+  
+  <main class="pt-20 pb-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Header Section -->
+      <div class="mb-8">
+        <h1 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-4 leading-tight">
+          Kegiatan Kodim 1410 Bantaeng | Komando Distrik Militer Wilayah Selatan Sulsel
+        </h1>
+        <p class="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
+          Beragam kegiatan sosial, kemanusiaan, dan kebangsaan yang dijalankan Kodim 1410 Bantaeng dalam mendukung pembangunan masyarakat di wilayah selatan Sulawesi Selatan.
+        </p>
+      </div>
+
+      <!-- Hero Image with Caption -->
+      <div class="mb-12 rounded-2xl overflow-hidden shadow-2xl">
+        <img 
+          src="/IMG-20240428-WA0026.jpg" 
+          alt="Kegiatan Kodim 1410 Bantaeng"
+          class="w-full h-auto object-cover"
+        />
+        <div class="bg-white dark:bg-gray-800 px-6 py-4">
+          <p class="text-sm text-gray-600 dark:text-gray-400 italic text-center">
+            Dokumentasi kegiatan sosial Kodim 1410 Bantaeng di wilayah selatan Sulawesi Selatan.
+          </p>
+        </div>
+      </div>
+
+      <!-- Content Section -->
+      <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 md:p-12 mb-8">
+        
+        <!-- Intro Paragraph -->
+        <div class="prose prose-lg dark:prose-invert max-w-none mb-12">
+          <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+            Kodim 1410 Bantaeng secara konsisten melaksanakan berbagai kegiatan yang bertujuan mempererat hubungan antara prajurit TNI AD dan masyarakat. 
+            Kegiatan ini mencakup sektor sosial, lingkungan, pendidikan, dan kebencanaan yang disesuaikan dengan kebutuhan masyarakat di wilayah selatan Sulawesi Selatan. 
+            Melalui sinergi dengan pemerintah daerah, instansi pendidikan, dan organisasi masyarakat, Kodim berupaya mendorong semangat gotong royong, 
+            solidaritas sosial, serta meningkatkan kepedulian warga terhadap ketahanan nasional. Setiap kegiatan juga dirancang agar memberikan manfaat langsung bagi masyarakat.
+          </p>
+        </div>
+
+        <!-- Program Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          
+          <!-- Card 1 -->
+          <div class="bg-gradient-to-br from-[#306B34]/10 to-[#35CE8D]/10 dark:from-[#306B34]/20 dark:to-[#35CE8D]/20 rounded-xl p-6 border-2 border-[#306B34]/30 dark:border-[#35CE8D]/30 hover:border-[#306B34] dark:hover:border-[#35CE8D] transition-all hover:shadow-lg">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+              Karya Bakti & Gotong Royong
+            </h3>
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+              Prajurit Kodim bersama masyarakat melaksanakan kerja bakti membersihkan lingkungan, memperbaiki fasilitas umum, 
+              serta menanam pohon di area pemukiman dan sekolah demi menjaga kelestarian lingkungan.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bg-gradient-to-br from-[#306B34]/10 to-[#35CE8D]/10 dark:from-[#306B34]/20 dark:to-[#35CE8D]/20 rounded-xl p-6 border-2 border-[#306B34]/30 dark:border-[#35CE8D]/30 hover:border-[#306B34] dark:hover:border-[#35CE8D] transition-all hover:shadow-lg">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+              Pembinaan Teritorial
+            </h3>
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+              Melalui pembinaan kewilayahan, Babinsa aktif membangun komunikasi dengan masyarakat, 
+              memberikan penyuluhan tentang bela negara, dan meningkatkan kesadaran kebangsaan.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bg-gradient-to-br from-[#306B34]/10 to-[#35CE8D]/10 dark:from-[#306B34]/20 dark:to-[#35CE8D]/20 rounded-xl p-6 border-2 border-[#306B34]/30 dark:border-[#35CE8D]/30 hover:border-[#306B34] dark:hover:border-[#35CE8D] transition-all hover:shadow-lg">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+              Bakti Sosial & Kemanusiaan
+            </h3>
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+              Kegiatan sosial seperti donor darah, bantuan bencana alam, dan distribusi sembako rutin dilakukan sebagai bentuk 
+              kepedulian TNI AD terhadap masyarakat yang membutuhkan.
+            </p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="bg-gradient-to-br from-[#306B34]/10 to-[#35CE8D]/10 dark:from-[#306B34]/20 dark:to-[#35CE8D]/20 rounded-xl p-6 border-2 border-[#306B34]/30 dark:border-[#35CE8D]/30 hover:border-[#306B34] dark:hover:border-[#35CE8D] transition-all hover:shadow-lg">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+              Kegiatan Edukasi & Bela Negara
+            </h3>
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+              Kodim 1410 turut serta memberikan penyuluhan wawasan kebangsaan di sekolah dan perguruan tinggi, 
+              untuk menanamkan semangat nasionalisme di kalangan generasi muda.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Closing Paragraph -->
+        <div class="prose prose-lg dark:prose-invert max-w-none mb-8">
+          <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+            Selain kegiatan utama tersebut, Kodim juga aktif dalam berbagai event lokal seperti HUT RI, HUT TNI, dan upacara adat daerah. 
+            Dalam setiap momentum, prajurit TNI AD menunjukkan komitmen untuk hadir di tengah rakyat serta mendukung ketahanan wilayah.
+          </p>
+          
+          <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+            Melalui berbagai kegiatan berkelanjutan, Kodim 1410 Bantaeng bertekad menjaga hubungan harmonis dengan masyarakat, 
+            menjadi motor penggerak semangat persatuan, dan memperkuat peran TNI dalam pembangunan bangsa.
+          </p>
+        </div>
+
+      </article>
+
+      <!-- Call to Action Card -->
+      <div class="bg-gradient-to-r from-[#306B34] to-[#35CE8D] rounded-2xl shadow-2xl p-8 md:p-12 text-white text-center transform hover:scale-105 transition-transform duration-300">
+        <h2 class="text-3xl md:text-4xl font-black mb-4">
+          Mari Berpartisipasi
+        </h2>
+        <p class="text-lg md:text-xl leading-relaxed opacity-95">
+          Kodim 1410 Bantaeng mengajak seluruh masyarakat, pelajar, dan komunitas lokal untuk berkolaborasi 
+          dalam kegiatan sosial dan pembangunan daerah demi kemajuan bersama.
+        </p>
+      </div>
+
+    </div>
+  </main>
+  </PageLayout>
+</body>
+</html>

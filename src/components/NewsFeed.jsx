@@ -39,6 +39,7 @@ function useTick() {
 function NewsCard({ news }) {
   const [expanded, setExpanded] = useState(false);
   useTick();
+  
   return (
     <>
       <motion.article
@@ -68,17 +69,17 @@ function NewsCard({ news }) {
           </span>
         </div>
 
-        {/* Image */}
+        {/* Image - DIPERBAIKI: Mengikuti rasio aspek asli */}
         {news.image && (
-          <div className="relative cursor-pointer group" onClick={() => setExpanded(true)}>
+          <div className="relative cursor-pointer group bg-gray-50 dark:bg-gray-900" onClick={() => setExpanded(true)}>
             <img
               src={news.image}
               alt={news.title}
-              className="w-full h-52 sm:h-64 object-cover"
+              className="w-full object-contain max-h-[600px]"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-4">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
               <h2 className="text-white font-bold text-lg sm:text-xl leading-tight drop-shadow-lg">
                 {news.title}
               </h2>
@@ -86,28 +87,31 @@ function NewsCard({ news }) {
           </div>
         )}
 
-        {!news.image && (
-          <div className="px-4 pt-2">
-            <h2 className="font-bold text-lg sm:text-xl text-gray-900 dark:text-white leading-tight cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onClick={() => setExpanded(true)}>
+        {/* Title & Description */}
+        <div className="px-4 pt-3 pb-4">
+          {news.image && (
+            <h2 className="font-bold text-lg sm:text-xl text-gray-900 dark:text-white leading-tight mb-2">
               {news.title}
             </h2>
-          </div>
-        )}
+          )}
+          
+          {!news.image && (
+            <h2 className="font-bold text-lg sm:text-xl text-gray-900 dark:text-white leading-tight cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors mb-2" onClick={() => setExpanded(true)}>
+              {news.title}
+            </h2>
+          )}
 
-        {/* Description - Truncated */}
-        <div className="px-4 pt-3">
-          <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-2">
+          {/* Description - Truncated */}
+          <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-2 mb-2">
             {news.summary}
           </p>
           <button
             onClick={() => setExpanded(true)}
-            className="text-indigo-600 dark:text-indigo-400 text-sm font-semibold mt-1 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors"
+            className="text-indigo-600 dark:text-indigo-400 text-sm font-semibold hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors"
           >
             Baca selengkapnya...
           </button>
         </div>
-
-
       </motion.article>
 
       {/* Expanded Overlay */}
@@ -141,9 +145,15 @@ function NewsCard({ news }) {
                 </button>
               </div>
 
-              {/* Full Image */}
+              {/* Full Image - DIPERBAIKI: Mengikuti rasio aspek asli */}
               {news.image && (
-                <img src={news.image} alt={news.title} className="w-full h-56 sm:h-72 object-cover" />
+                <div className="bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+                  <img 
+                    src={news.image} 
+                    alt={news.title} 
+                    className="w-full max-h-[60vh] object-contain" 
+                  />
+                </div>
               )}
 
               {/* Full Content */}
@@ -163,8 +173,6 @@ function NewsCard({ news }) {
                 <div className="text-gray-700 dark:text-gray-300 text-[15px] leading-relaxed whitespace-pre-line">
                   {news.fullContent || news.summary}
                 </div>
-
-
               </div>
             </motion.div>
           </motion.div>
@@ -210,11 +218,11 @@ export default function NewsFeed() {
 
       {/* Search Filter Info */}
       {searchQuery && (
-        <div className="bg-blue-50 text-blue-700 px-4 py-2.5 rounded-xl text-sm font-medium flex items-center justify-between">
+        <div className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2.5 rounded-xl text-sm font-medium flex items-center justify-between">
           <span>Hasil pencarian: <strong>"{searchQuery}"</strong> ({filteredNews.length} berita)</span>
           <button
             onClick={() => setSearchQuery('')}
-            className="text-blue-500 hover:text-blue-800 transition-colors"
+            className="text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 transition-colors"
           >
             <X size={16} />
           </button>
