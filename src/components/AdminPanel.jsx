@@ -107,7 +107,7 @@ function NewsManager() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-            <FileText size={22} className="text-indigo-600" /> Kelola Berita
+            <FileText size={22} className="text-[#35CE8D]" /> Kelola Berita
           </h2>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{news.length} berita terpublikasi</p>
         </div>
@@ -202,14 +202,14 @@ function NewsManager() {
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={uploading}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 rounded-xl text-sm font-medium hover:bg-indigo-200 dark:hover:bg-indigo-900/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-xl text-sm font-medium hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {uploading ? (
                       <>
                         <motion.div
                           animate={{ rotate: 360 }}
                           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                          className="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full"
+                          className="w-4 h-4 border-2 border-emerald-600 border-t-transparent rounded-full"
                         />
                         Mengupload...
                       </>
@@ -308,7 +308,7 @@ function NewsManager() {
                 Batal
               </button>
               <button type="submit"
-                className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700 transition-colors shadow-sm">
+                className="flex items-center gap-2 px-5 py-2.5 bg-[#35CE8D] text-white text-sm font-medium rounded-xl hover:bg-[#306B34] transition-colors shadow-sm">
                 <Save size={16} /> {editId ? 'Simpan Perubahan' : 'Publikasi Berita'}
               </button>
             </div>
@@ -348,7 +348,7 @@ function NewsManager() {
             </div>
             <div className="flex items-center gap-1.5 shrink-0">
               <button onClick={() => handleEdit(item)}
-                className="p-2 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400 transition-colors" title="Edit">
+                className="p-2 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400 transition-colors" title="Edit">
                 <Edit3 size={16} />
               </button>
               {confirmDelete === item.id ? (
@@ -442,7 +442,7 @@ function TrendingManager() {
               <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">{item.title}</p>
               <p className="text-xs text-gray-400">{item.posts}</p>
             </div>
-            <button onClick={() => handleEdit(item)} className="p-1.5 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400">
+            <button onClick={() => handleEdit(item)} className="p-1.5 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400">
               <Edit3 size={15} />
             </button>
             <button onClick={() => deleteTrending(item.id)} className="p-1.5 hover:bg-red-50 rounded-lg text-red-500">
@@ -524,7 +524,7 @@ function SourcesManager() {
               <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">{item.name}</p>
               <p className="text-xs text-gray-400">{item.handle}</p>
             </div>
-            <button onClick={() => handleEdit(item)} className="p-1.5 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400">
+            <button onClick={() => handleEdit(item)} className="p-1.5 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400">
               <Edit3 size={15} />
             </button>
             <button onClick={() => deleteSource(item.id)} className="p-1.5 hover:bg-red-50 rounded-lg text-red-500">
@@ -675,7 +675,7 @@ function LoginForm({ onLogin }) {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-[#306B34] focus:border-[#306B34] outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all"
                 placeholder="Masukkan username"
                 disabled={isLoading}
               />
@@ -690,7 +690,7 @@ function LoginForm({ onLogin }) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-[#306B34] focus:border-[#306B34] outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all"
                 placeholder="Masukkan password"
                 disabled={isLoading}
               />
@@ -732,7 +732,7 @@ function LoginForm({ onLogin }) {
 
 // ============ MAIN ADMIN PANEL ============
 const tabs = [
-  { key: 'news', label: 'Berita', icon: FileText, color: 'text-indigo-600' },
+  { key: 'news', label: 'Berita', icon: FileText, color: 'text-emerald-600' },
   { key: 'trending', label: 'Trending', icon: TrendingUp, color: 'text-orange-500' },
   { key: 'sources', label: 'Sumber', icon: Users, color: 'text-blue-600' },
   { key: 'breaking', label: 'Breaking', icon: Megaphone, color: 'text-red-500' },
