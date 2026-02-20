@@ -18,6 +18,7 @@ datasource db {
 model User {
   id            String   @id
   name          String
+  slug          String   @unique
   email         String   @unique
   emailVerified Boolean  @default(false)
   image         String?
