@@ -13,19 +13,29 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
+// --- AUTHENTICATION (BETTER AUTH) ---
 
-  @@unique([email])
+model User {
+  id            String   @id
+  name          String
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  image         String?
+  role          Role     @default(USER)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sessions Session[]
+  accounts Account[]
+  posts    Post[]    @relation("PostAuthors")
+
   @@map("user")
+}
+
+enum Role {
+  USER
+  ADMIN
+  EDITOR
 }
 
 model Session {
@@ -74,4 +84,73 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+// --- CONTENT MANAGEMENT (PORTAL BERITA) ---
+
+model Category {
+  id    String  @id @default(cuid())
+  name  String  @unique
+  slug  String  @unique
+  color String? @default("bg-blue-100 text-blue-700")
+  posts Post[]
+
+  @@map("category")
+}
+
+model Post {
+  id          String  @id @default(cuid())
+  title       String
+  slug        String  @unique
+  summary     String  @db.Text
+  fullContent String  @db.Text
+  image       String? // Cloudinary URL
+  views       Int     @default(0)
+
+  // Flags untuk Dashboard & Homepage
+  trending    Boolean @default(false)
+  isHighlight Boolean @default(false)
+  published   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  breakingNews BreakingNews[]
+  authors      User[]         @relation("PostAuthors")
+  categoryId   String
+  category     Category       @relation(fields: [categoryId], references: [id])
+
+  @@index([categoryId])
+  @@map("post")
+}
+
+model BreakingNews {
+  id   String @id @default(cuid())
+  text String // Teks yang akan muncul di marquee
+
+  // Link manual jika tidak terhubung ke Post (misal link eksternal)
+  labelLink String?
+
+  // Relasi ke Post
+  postId String?
+  post   Post?   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  isActive  Boolean  @default(true) // Untuk mematikan marquee tanpa menghapus data
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("breaking_news")
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  fullName    String
+  email       String
+  phoneNumber String?
+  content     String   @db.Text
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@map("message")
 }
