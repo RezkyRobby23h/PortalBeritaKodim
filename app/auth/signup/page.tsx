@@ -1,0 +1,176 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { FcGoogle } from "react-icons/fc";
+import { authClient } from "@/lib/auth-client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+
+export default function SignUpPage() {
+  const router = useRouter();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+
+    if (password !== confirm) {
+      setError("Kata sandi tidak cocok.");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Kata sandi minimal 8 karakter.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await authClient.signUp.email({
+        name,
+        email,
+        password,
+      });
+      if (error) {
+        setError(error.message ?? "Pendaftaran gagal. Silakan coba lagi.");
+      } else {
+        router.push("/dashboard");
+      }
+    } catch {
+      setError("Terjadi kesalahan. Silakan coba lagi.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleGoogleSignUp() {
+    setGoogleLoading(true);
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/dashboard",
+    });
+    setGoogleLoading(false);
+  }
+
+  return (
+    <div className="flex min-h-svh w-full items-center justify-center bg-muted/40 p-6 md:p-10">
+      <div className="w-full max-w-sm">
+        <Card className="px-6">
+          <CardHeader className="px-0">
+            <CardTitle className="text-2xl">Daftar</CardTitle>
+            <CardDescription>
+              Buat akun baru untuk mulai menggunakan portal berita.
+            </CardDescription>
+          </CardHeader>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 pb-2">
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="name">Nama Lengkap</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Nama Anda"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                autoComplete="name"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="nama@contoh.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoComplete="email"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="password">Kata Sandi</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Minimal 8 karakter"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoComplete="new-password"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="confirm">Konfirmasi Kata Sandi</Label>
+              <Input
+                id="confirm"
+                type="password"
+                placeholder="Ulangi kata sandi"
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+                required
+                autoComplete="new-password"
+              />
+            </div>
+
+            {error && <p className="text-sm text-destructive">{error}</p>}
+
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Memproses..." : "Daftar"}
+            </Button>
+          </form>
+
+          <div className="relative py-2">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">atau</span>
+            </div>
+          </div>
+
+          <div className="pb-6">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={handleGoogleSignUp}
+              disabled={googleLoading}
+            >
+              <FcGoogle className="size-5" />
+              {googleLoading ? "Mengarahkan..." : "Daftar dengan Google"}
+            </Button>
+          </div>
+        </Card>
+
+        <p className="mt-4 text-center text-sm text-muted-foreground">
+          Sudah punya akun?{" "}
+          <Link
+            href="/auth/signin"
+            className="font-medium text-primary hover:underline"
+          >
+            Masuk sekarang
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+}
