@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { z } from "zod";
-import { ArrowLeft, ImageOff, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import Navbar from "@/components/custom/navbar";
+import { ImageUpload } from "@/components/custom/image-upload";
 import {
   UserMultiSelect,
   SelectableUser,
@@ -92,6 +93,7 @@ export default function EditPostPage() {
   const [authorIds, setAuthorIds] = useState<string[]>([]);
   const [fullContent, setFullContent] = useState("");
   const [summary, setSummary] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
   const [errors, setErrors] = useState<UpdatePostFormErrors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -114,12 +116,20 @@ export default function EditPostPage() {
         }
 
         if (postRes.ok) {
-          const post = await postRes.json();
+          const post = (await postRes.json()) as {
+            title: string;
+            categoryId: string;
+            fullContent: string;
+            summary: string;
+            image: string | null;
+            authors: Array<{ id: string }>;
+          };
           setTitle(post.title);
           setCategoryId(post.categoryId);
           setFullContent(post.fullContent);
           setSummary(post.summary);
-          setAuthorIds(post.authors.map((a: { id: string }) => a.id));
+          setImageUrl(post.image ?? "");
+          setAuthorIds(post.authors.map((a) => a.id));
         }
 
         if (catRes.ok) {
@@ -150,6 +160,7 @@ export default function EditPostPage() {
       fullContent,
       summary,
       published: publishIntent.current,
+      imageUrl: imageUrl || undefined,
     });
 
     if (!parsed.success) {
@@ -302,19 +313,16 @@ export default function EditPostPage() {
                 />
               </FormSection>
 
-              {/* ── Image (placeholder) ── */}
-              <div className="flex flex-col gap-1.5">
-                <Label className="text-sm font-semibold">Gambar Utama</Label>
-                <div className="flex h-44 w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-zinc-300 bg-zinc-100 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800/50">
-                  <ImageOff className="size-8 opacity-50" />
-                  <p className="text-sm font-medium">
-                    Upload gambar tersedia segera
-                  </p>
-                  <p className="text-xs opacity-70">
-                    Fitur ini akan ditambahkan berikutnya
-                  </p>
-                </div>
-              </div>
+              {/* ── Image ── */}
+              <FormSection label="Gambar Utama" error={errors.imageUrl}>
+                <ImageUpload
+                  value={imageUrl}
+                  onChange={setImageUrl}
+                  folder="portal-berita/posts"
+                  aspectRatio="video"
+                  disabled={submitting}
+                />
+              </FormSection>
 
               {/* ── Category ── */}
               <FormSection

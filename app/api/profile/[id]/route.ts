@@ -87,19 +87,32 @@ export async function PATCH(
       );
     }
 
-    const body = await req.json();
-    const name = (body.name as string | undefined)?.trim();
+    const body = (await req.json()) as { name?: string; image?: string };
 
-    if (!name || name.length < 2) {
+    const name = body.name?.trim();
+    const image = body.image;
+
+    if (name === undefined && image === undefined) {
+      return NextResponse.json(
+        { error: "Tidak ada perubahan yang diminta" },
+        { status: 400 },
+      );
+    }
+
+    if (name !== undefined && name.length < 2) {
       return NextResponse.json(
         { error: "Nama minimal 2 karakter" },
         { status: 400 },
       );
     }
 
+    const updateData: { name?: string; image?: string | null } = {};
+    if (name !== undefined) updateData.name = name;
+    if (image !== undefined) updateData.image = image || null;
+
     const updated = await prisma.user.update({
       where: { id },
-      data: { name },
+      data: updateData,
       select: { id: true, name: true, image: true, role: true, email: true },
     });
 

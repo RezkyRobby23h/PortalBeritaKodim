@@ -5,11 +5,12 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import {
   CalendarDays,
+  Camera,
   CheckCircle2,
   Clock,
   Edit2,
   FileText,
-  Lock,
+  Loader2,
   Mail,
   Save,
   Shield,
@@ -102,6 +103,11 @@ export default function ProfilPage() {
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+
+  // Avatar upload state
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const [avatarError, setAvatarError] = useState<string | null>(null);
 
   const isOwner = !sessionLoading && session?.user?.id === id;
 
@@ -133,6 +139,61 @@ export default function ProfilPage() {
   }, [editing]);
 
   // ── Handlers ─────────────────────────────────────────────────────────────
+
+  async function handleAvatarFileChange(
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) {
+    if (!profile) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setAvatarError(null);
+    setAvatarUploading(true);
+
+    try {
+      const body = new FormData();
+      body.append("file", file);
+      body.append("folder", "portal-berita/avatars");
+
+      const uploadRes = await fetch("/api/upload", { method: "POST", body });
+      const uploadJson = (await uploadRes.json()) as {
+        url?: string;
+        error?: string;
+      };
+
+      if (!uploadRes.ok) {
+        setAvatarError(uploadJson.error ?? "Gagal mengunggah gambar.");
+        return;
+      }
+
+      const newImageUrl = uploadJson.url ?? "";
+
+      // Persist to database
+      const patchRes = await fetch(`/api/profile/${profile.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: newImageUrl }),
+      });
+
+      if (!patchRes.ok) {
+        const err = (await patchRes.json()) as { error?: string };
+        setAvatarError(err.error ?? "Gagal menyimpan gambar.");
+        return;
+      }
+
+      // Keep better-auth session image in sync
+      await authClient.updateUser({ image: newImageUrl });
+
+      setProfile((prev) => (prev ? { ...prev, image: newImageUrl } : prev));
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 4000);
+    } catch {
+      setAvatarError("Tidak dapat menghubungi server.");
+    } finally {
+      setAvatarUploading(false);
+      if (avatarInputRef.current) avatarInputRef.current.value = "";
+    }
+  }
 
   function handleCancelEdit() {
     setEditing(false);
@@ -236,15 +297,22 @@ export default function ProfilPage() {
             </Avatar>
 
             {isOwner && (
-              <div
-                title="Ganti foto profil — segera hadir"
-                className="absolute inset-0 flex cursor-not-allowed flex-col items-center justify-center rounded-full bg-black/50 opacity-0 transition-opacity group-hover:opacity-100"
+              <button
+                type="button"
+                title="Ganti foto profil"
+                onClick={() => avatarInputRef.current?.click()}
+                disabled={avatarUploading}
+                className="absolute inset-0 flex flex-col items-center justify-center rounded-full bg-black/50 opacity-0 transition-opacity group-hover:opacity-100 disabled:cursor-not-allowed"
               >
-                <Lock className="size-5 text-white" />
+                {avatarUploading ? (
+                  <Loader2 className="size-5 animate-spin text-white" />
+                ) : (
+                  <Camera className="size-5 text-white" />
+                )}
                 <span className="mt-1 text-[10px] font-semibold text-white/90">
-                  Segera Hadir
+                  {avatarUploading ? "Mengunggah…" : "Ubah Foto"}
                 </span>
-              </div>
+              </button>
             )}
           </div>
 
@@ -406,6 +474,16 @@ export default function ProfilPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col items-start gap-4 pt-4 sm:flex-row sm:items-center">
+                {/* Hidden file input shared across triggers */}
+                <input
+                  ref={avatarInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/gif,image/webp"
+                  className="hidden"
+                  onChange={handleAvatarFileChange}
+                  disabled={avatarUploading}
+                />
+
                 <Avatar className="size-16 ring-2 ring-zinc-200 dark:ring-zinc-700">
                   <AvatarImage
                     src={profile.image ?? undefined}
@@ -415,24 +493,35 @@ export default function ProfilPage() {
                     {getInitials(profile.name)}
                   </AvatarFallback>
                 </Avatar>
+
                 <div className="flex-1">
                   <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                    Format yang didukung: JPG, PNG, GIF (maks 2 MB).
+                    Format yang didukung: JPG, PNG, GIF, WebP (maks 2 MB).
                   </p>
                   <p className="mt-1 text-xs text-zinc-400">
-                    Foto profil saat ini menggunakan gambar dari akun yang
-                    terhubung (jika ada), atau inisial nama Anda.
+                    Foto akan disimpan ke Cloudinary dan langsung diperbarui di
+                    semua halaman.
                   </p>
+                  {avatarError && (
+                    <p className="mt-1 text-xs text-destructive">
+                      {avatarError}
+                    </p>
+                  )}
                 </div>
-                <div className="relative">
-                  <Button disabled className="gap-1.5 cursor-not-allowed">
-                    <Lock className="size-3.5" />
-                    Unggah Foto
-                  </Button>
-                  <span className="absolute -top-2 -right-2 rounded-full bg-amber-400 px-1.5 py-0.5 text-[9px] font-bold text-white shadow">
-                    Segera
-                  </span>
-                </div>
+
+                <Button
+                  type="button"
+                  onClick={() => avatarInputRef.current?.click()}
+                  disabled={avatarUploading}
+                  className="gap-1.5 shrink-0"
+                >
+                  {avatarUploading ? (
+                    <Loader2 className="size-3.5 animate-spin" />
+                  ) : (
+                    <Camera className="size-3.5" />
+                  )}
+                  {avatarUploading ? "Mengunggah…" : "Ganti Foto"}
+                </Button>
               </CardContent>
             </Card>
           )}

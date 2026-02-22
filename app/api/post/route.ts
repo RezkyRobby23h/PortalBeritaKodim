@@ -29,6 +29,7 @@ export async function GET(req: NextRequest) {
         slug: true,
         summary: true,
         fullContent: true,
+        image: true,
         published: true,
         categoryId: true,
         category: { select: { id: true, name: true, color: true } },
@@ -89,8 +90,15 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    const { title, categoryId, authorIds, fullContent, summary, published } =
-      parsed.data;
+    const {
+      title,
+      categoryId,
+      authorIds,
+      fullContent,
+      summary,
+      published,
+      imageUrl,
+    } = parsed.data;
 
     // Regenerate slug only if title changed
     const existing = await prisma.post.findUnique({
@@ -130,6 +138,7 @@ export async function PUT(req: NextRequest) {
         slug,
         summary,
         fullContent,
+        image: imageUrl !== undefined ? imageUrl || null : undefined,
         categoryId,
         published,
         authors: {
@@ -185,6 +194,7 @@ export async function POST(req: NextRequest) {
       fullContent,
       summary,
       published,
+      imageUrl,
     } = parsed.data;
 
     // Generate a unique slug
@@ -211,6 +221,7 @@ export async function POST(req: NextRequest) {
         slug,
         summary,
         fullContent,
+        image: imageUrl || null,
         categoryId,
         published,
         authors: {
