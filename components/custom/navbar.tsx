@@ -16,6 +16,7 @@ import {
   MessageSquare,
   Menu,
   X,
+  LayoutDashboard,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
@@ -73,7 +74,15 @@ export default function Navbar({ variant = "public" }: NavbarProps) {
   const { data: session } = authClient.useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const links = variant === "dashboard" ? dashboardLinks : publicLinks;
+  const userRole = session?.user?.role as string | undefined;
+  const isPrivileged = userRole === "EDITOR" || userRole === "ADMIN";
+  const isAdmin = userRole === "ADMIN";
+
+  const visibleDashboardLinks = isAdmin
+    ? dashboardLinks
+    : dashboardLinks.filter((l) => l.href !== "/dashboard/users");
+
+  const links = variant === "dashboard" ? visibleDashboardLinks : publicLinks;
 
   async function handleSignOut() {
     await authClient.signOut();
@@ -85,10 +94,7 @@ export default function Navbar({ variant = "public" }: NavbarProps) {
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-white/70 backdrop-blur-md dark:border-white/5 dark:bg-zinc-900/70">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:px-8">
         {/* ── Logo & Title ── */}
-        <Link
-          href={variant === "dashboard" ? "/dashboard" : "/"}
-          className="flex shrink-0 items-center gap-3"
-        >
+        <Link href="/" className="flex shrink-0 items-center gap-3">
           <Image
             src="/logo.png"
             alt="Logo Kodim"
@@ -170,6 +176,14 @@ export default function Navbar({ variant = "public" }: NavbarProps) {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
+                    {isPrivileged && (
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard">
+                          <LayoutDashboard />
+                          Dashboard
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem asChild>
                       <Link href={`/profil/${session.user.id}`}>
                         <User />

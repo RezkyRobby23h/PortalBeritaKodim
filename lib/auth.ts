@@ -26,4 +26,14 @@ export const auth = betterAuth({
           },
         }
       : {},
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: false,
+        defaultValue: "USER",
+        input: false, // not settable by the user directly
+      },
+    },
+  },
 });
