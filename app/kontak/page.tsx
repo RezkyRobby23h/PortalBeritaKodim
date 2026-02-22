@@ -1,9 +1,59 @@
+"use client";
+
+import { useState } from "react";
 import Navbar from "@/components/custom/navbar";
 import Footer from "@/components/custom/footer";
 import Image from "next/image";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Loader2 } from "lucide-react";
+
+interface FormState {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  content: string;
+}
 
 export default function KontakPage() {
+  const [form, setForm] = useState<FormState>({
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    content: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSubmitting(true);
+    setError(null);
+    setSuccess(false);
+    try {
+      const res = await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: form.fullName.trim(),
+          email: form.email.trim(),
+          phoneNumber: form.phoneNumber.trim() || null,
+          content: form.content.trim(),
+        }),
+      });
+      if (res.ok) {
+        setSuccess(true);
+        setForm({ fullName: "", email: "", phoneNumber: "", content: "" });
+      } else {
+        const json = await res.json();
+        setError((json.error as string) ?? "Gagal mengirim pesan.");
+      }
+    } catch {
+      setError("Terjadi kesalahan. Silakan coba lagi.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-white">
       <Navbar variant="public" />
@@ -104,7 +154,7 @@ export default function KontakPage() {
             {/* Contact Form */}
             <div className="rounded-2xl bg-white dark:bg-zinc-800 p-8 shadow-xl">
               <h2 className="mb-6 text-2xl font-bold">Formulir Pesan</h2>
-              <form className="space-y-5">
+              <form className="space-y-5" onSubmit={handleSubmit}>
                 <div>
                   <label
                     htmlFor="name"
@@ -117,6 +167,11 @@ export default function KontakPage() {
                     id="name"
                     name="name"
                     placeholder="Masukkan nama lengkap Anda"
+                    required
+                    value={form.fullName}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, fullName: e.target.value }))
+                    }
                     className="w-full rounded-lg border border-zinc-300 bg-zinc-50 px-4 py-3 text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:border-transparent focus:ring-2 focus:ring-emerald-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:ring-emerald-400"
                   />
                 </div>
@@ -132,6 +187,11 @@ export default function KontakPage() {
                     id="email"
                     name="email"
                     placeholder="contoh@email.com"
+                    required
+                    value={form.email}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, email: e.target.value }))
+                    }
                     className="w-full rounded-lg border border-zinc-300 bg-zinc-50 px-4 py-3 text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:border-transparent focus:ring-2 focus:ring-emerald-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:ring-emerald-400"
                   />
                 </div>
@@ -147,6 +207,10 @@ export default function KontakPage() {
                     id="phone"
                     name="phone"
                     placeholder="08xx xxxx xxxx"
+                    value={form.phoneNumber}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, phoneNumber: e.target.value }))
+                    }
                     className="w-full rounded-lg border border-zinc-300 bg-zinc-50 px-4 py-3 text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:border-transparent focus:ring-2 focus:ring-emerald-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:ring-emerald-400"
                   />
                 </div>
@@ -162,14 +226,31 @@ export default function KontakPage() {
                     name="message"
                     rows={5}
                     placeholder="Tulis pesan Anda di sini..."
+                    required
+                    value={form.content}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, content: e.target.value }))
+                    }
                     className="w-full resize-none rounded-lg border border-zinc-300 bg-zinc-50 px-4 py-3 text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:border-transparent focus:ring-2 focus:ring-emerald-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:ring-emerald-400"
                   />
                 </div>
+                {error && (
+                  <p className="rounded-lg bg-red-50 px-4 py-3 text-sm font-medium text-red-700 dark:bg-red-900/20 dark:text-red-400">
+                    {error}
+                  </p>
+                )}
+                {success && (
+                  <p className="rounded-lg bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400">
+                    Pesan berhasil dikirim! Kami akan segera menghubungi Anda.
+                  </p>
+                )}
                 <button
                   type="submit"
-                  className="w-full rounded-lg bg-linear-to-r from-emerald-700 to-emerald-400 px-6 py-4 font-bold text-white transition-all duration-300 hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-4 focus:ring-emerald-700/50 dark:focus:ring-emerald-400/50"
+                  disabled={submitting}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-linear-to-r from-emerald-700 to-emerald-400 px-6 py-4 font-bold text-white transition-all duration-300 hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-4 focus:ring-emerald-700/50 disabled:cursor-not-allowed disabled:opacity-70 dark:focus:ring-emerald-400/50"
                 >
-                  Kirim Pesan
+                  {submitting && <Loader2 className="size-4 animate-spin" />}
+                  {submitting ? "Mengirim..." : "Kirim Pesan"}
                 </button>
               </form>
             </div>
