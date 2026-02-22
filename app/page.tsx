@@ -5,9 +5,10 @@ import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { NewsCard, type NewsCardPost } from "@/components/custom/news-card";
+import { type NewsCardPost } from "@/components/custom/news-card";
 import { CategoryBadge } from "@/components/custom/category-badge";
 import { BreakingNews } from "@/components/custom/breaking-news";
+import { PostsGrid } from "@/components/custom/posts-grid";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
@@ -107,7 +108,9 @@ export default async function BerandaPage() {
     fetch(`${BASE_URL}/api/categories?limit=100`, { cache: "no-store" }),
   ]);
 
-  const postsJson = postsRes.ok ? await postsRes.json() : { data: [] };
+  const postsJson = postsRes.ok
+    ? await postsRes.json()
+    : { data: [], totalPages: 1 };
   const kategorisJson = kategorisRes.ok
     ? await kategorisRes.json()
     : { data: [] };
@@ -130,6 +133,7 @@ export default async function BerandaPage() {
   );
 
   const dbKategori = kategorisJson.data as ApiCategory[];
+  const totalPages: number = postsJson.totalPages ?? 1;
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
@@ -143,9 +147,11 @@ export default async function BerandaPage() {
           <div className="flex min-w-0 flex-1 flex-col gap-6">
             <div className="grid gap-5">
               <BreakingNews text="Website sudah hampir jadi!" />
-              {allPosts.map((post, i) => (
-                <NewsCard key={post.id} post={post} priority={i === 0} />
-              ))}
+              <PostsGrid
+                initialPosts={allPosts}
+                initialPage={1}
+                totalPages={totalPages}
+              />
             </div>
           </div>
 

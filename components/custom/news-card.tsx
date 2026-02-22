@@ -53,13 +53,15 @@ export function NewsCard({ post, priority = false }: NewsCardProps) {
         </div>
 
         {/* Cover image */}
-        <div className="relative h-52 w-full overflow-hidden sm:h-60">
+        <div className="overflow-hidden">
           <Image
             src={post.image}
             alt={post.title}
-            fill
+            width={0}
+            height={0}
+            sizes="100vw"
             priority={priority}
-            className="object-cover transition duration-300 group-hover:scale-105"
+            className="h-auto w-full object-cover transition duration-300 group-hover:scale-105"
           />
         </div>
 
