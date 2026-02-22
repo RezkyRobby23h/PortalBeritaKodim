@@ -89,10 +89,13 @@ export default function CreatePostPage() {
     async function load() {
       try {
         const [catRes, userRes] = await Promise.all([
-          fetch("/api/categories"),
+          fetch("/api/categories?limit=10"),
           fetch("/api/users"),
         ]);
-        if (catRes.ok) setCategories(await catRes.json());
+        if (catRes.ok) {
+          const json = await catRes.json();
+          setCategories(json.data ?? json);
+        }
         if (userRes.ok) setUsers(await userRes.json());
       } finally {
         setLoadingData(false);

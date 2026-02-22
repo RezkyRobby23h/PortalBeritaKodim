@@ -29,7 +29,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { name, color } = parsed.data;
+    const { color } = parsed.data;
+    const name = parsed.data.name.toLowerCase();
     const slug = slugify(name, { lower: true, strict: true });
 
     const existing = await prisma.category.findFirst({ where: { slug } });
@@ -51,6 +52,37 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json(
       { error: "Gagal membuat kategori" },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const session = await auth.api.getSession({ headers: await headers() });
+    if (!session) {
+      return NextResponse.json(
+        { error: "Tidak terautentikasi" },
+        { status: 401 },
+      );
+    }
+
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Parameter id diperlukan" },
+        { status: 400 },
+      );
+    }
+
+    await prisma.category.delete({ where: { id } });
+
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json(
+      { error: "Gagal menghapus kategori" },
       { status: 500 },
     );
   }
