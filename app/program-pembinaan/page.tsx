@@ -45,7 +45,7 @@ export default function ProgramPembinaanPage() {
           {/* Hero Image */}
           <div className="mb-8 overflow-hidden rounded-2xl shadow-2xl">
             <Image
-              src="/IMG-20250909-WA0295_copy_844x562_1.jpg"
+              src="/program-pembinaan.jpg"
               alt="Program Pembinaan Kodim 1408 Makassar"
               width={1200}
               height={600}

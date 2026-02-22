@@ -47,7 +47,7 @@ export default function BhaktiTniPage() {
           {/* Hero Image */}
           <div className="mb-12 overflow-hidden rounded-2xl shadow-2xl">
             <Image
-              src="/IMG-20240428-WA0026.jpg"
+              src="/bhakti-tni.jpg"
               alt="Kegiatan Bhakti TNI Kodim 1408 Makassar"
               width={1200}
               height={600}

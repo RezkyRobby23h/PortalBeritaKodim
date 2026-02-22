@@ -63,7 +63,7 @@ export default function KontakPage() {
           {/* Hero Image */}
           <div className="mb-12 overflow-hidden rounded-2xl shadow-2xl">
             <Image
-              src="/IMG-20240928-WA0087-scaled.jpg"
+              src="/kontak.jpg"
               alt="Kodim 1408 Makassar"
               width={1200}
               height={500}
