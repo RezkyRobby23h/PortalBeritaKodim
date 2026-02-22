@@ -107,7 +107,7 @@ export default function BerandaPage() {
           {/* Left — Posts */}
           <div className="flex min-w-0 flex-1 flex-col gap-6">
             <div className="grid gap-5">
-              <BreakingNews text="Website sudah hampir jadi!" />
+              <BreakingNews />
               {isLoading ? (
                 <div className="flex flex-col gap-5">
                   {Array.from({ length: 5 }).map((_, i) => (

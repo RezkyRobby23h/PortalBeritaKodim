@@ -25,10 +25,18 @@ export async function GET(req: NextRequest) {
       Math.max(1, parseInt(searchParams.get("limit") ?? "10", 10)),
     );
     const search = searchParams.get("q")?.trim() ?? "";
+    const active = searchParams.get("active");
 
-    const where = search
-      ? { text: { contains: search, mode: "insensitive" as const } }
-      : {};
+    const where = {
+      ...(search
+        ? { text: { contains: search, mode: "insensitive" as const } }
+        : {}),
+      ...(active === "true"
+        ? { isActive: true }
+        : active === "false"
+          ? { isActive: false }
+          : {}),
+    };
 
     const [items, total] = await Promise.all([
       prisma.breakingNews.findMany({
