@@ -26,6 +26,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toPascalCase } from "@/utils/string";
+import { CategoryBadge } from "@/components/custom/category-badge";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface Category {
@@ -47,29 +48,6 @@ interface PaginatedResponse {
 const LIMIT = 10;
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
-
-// ── Color badge ───────────────────────────────────────────────────────────────
-function CategoryBadge({
-  name,
-  color,
-}: {
-  name: string;
-  color: string | null;
-}) {
-  const c = color ?? "#6b7280";
-  return (
-    <span
-      className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
-      style={{
-        backgroundColor: `${c}22`,
-        color: c,
-        border: `1px solid ${c}44`,
-      }}
-    >
-      {toPascalCase(name)}
-    </span>
-  );
-}
 
 // ── Row skeleton ──────────────────────────────────────────────────────────────
 function RowSkeleton() {
