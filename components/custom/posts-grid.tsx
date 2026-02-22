@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect, useRef } from "react";
 import { NewsCard, type NewsCardPost } from "@/components/custom/news-card";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface PostsGridProps {
   initialPosts: NewsCardPost[];
   initialPage: number;
   totalPages: number;
+  categoryId?: string | null;
 }
 
 type ApiPost = {
@@ -33,20 +35,25 @@ export function PostsGrid({
   initialPosts,
   initialPage,
   totalPages,
+  categoryId = null,
 }: PostsGridProps) {
   const [posts, setPosts] = useState<NewsCardPost[]>(initialPosts);
   const [page, setPage] = useState(initialPage);
+  const [currentTotalPages, setCurrentTotalPages] = useState(totalPages);
   const [isPending, startTransition] = useTransition();
+  const isFirstRender = useRef(true);
 
-  const hasMore = page < totalPages;
+  const hasMore = page < currentTotalPages;
 
-  function loadMore() {
+  function fetchPosts(catId: string | null, pageNum: number, append: boolean) {
     startTransition(async () => {
-      const nextPage = page + 1;
-      const res = await fetch(
-        `/api/posts?status=published&limit=5&page=${nextPage}`,
-        { cache: "no-store" },
-      );
+      const params = new URLSearchParams({
+        status: "published",
+        limit: "5",
+        page: String(pageNum),
+      });
+      if (catId) params.set("categoryId", catId);
+      const res = await fetch(`/api/posts?${params}`, { cache: "no-store" });
       if (!res.ok) return;
       const json = await res.json();
       const newPosts: NewsCardPost[] = (json.data as ApiPost[]).map((post) => ({
@@ -63,16 +70,56 @@ export function PostsGrid({
         date: formatDate(post.createdAt),
         image: post.image ?? `https://picsum.photos/seed/${post.slug}/800/500`,
       }));
-      setPosts((prev) => [...prev, ...newPosts]);
-      setPage(nextPage);
+      if (append) {
+        setPosts((prev) => [...prev, ...newPosts]);
+      } else {
+        setPosts(newPosts);
+      }
+      setPage(pageNum);
+      setCurrentTotalPages(json.totalPages ?? 1);
     });
+  }
+
+  // Re-fetch from page 1 whenever the external categoryId changes.
+  // Skip the very first render — we already have initialPosts from SSR.
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    fetchPosts(categoryId ?? null, 1, false);
+  }, [categoryId]);
+
+  function loadMore() {
+    fetchPosts(categoryId ?? null, page + 1, true);
   }
 
   return (
     <>
-      {posts.map((post, i) => (
-        <NewsCard key={post.id} post={post} priority={i === 0} />
-      ))}
+      {/* Posts */}
+      {isPending ? (
+        <div className="flex flex-col gap-5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="flex gap-4 rounded-xl bg-zinc-900 p-4">
+              <Skeleton className="h-28 w-40 shrink-0 rounded-lg bg-zinc-800" />
+              <div className="flex flex-1 flex-col gap-3 py-1">
+                <Skeleton className="h-3 w-20 rounded bg-zinc-800" />
+                <Skeleton className="h-4 w-full rounded bg-zinc-800" />
+                <Skeleton className="h-4 w-3/4 rounded bg-zinc-800" />
+                <Skeleton className="mt-auto h-3 w-24 rounded bg-zinc-800" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : posts.length === 0 ? (
+        <p className="py-8 text-center text-sm text-zinc-500">
+          Tidak ada berita ditemukan.
+        </p>
+      ) : (
+        posts.map((post, i) => (
+          <NewsCard key={post.id} post={post} priority={i === 0} />
+        ))
+      )}
 
       {hasMore && (
         <div className="flex justify-center pt-2">
@@ -80,7 +127,7 @@ export function PostsGrid({
             onClick={loadMore}
             disabled={isPending}
             variant="outline"
-            className="w-full py-6 border-zinc-700 bg-zinc-900 text-zinc-200 hover:bg-zinc-800 hover:text-white"
+            className="w-full border-zinc-700 bg-zinc-900 py-6 text-zinc-200 hover:bg-zinc-800 hover:text-white"
           >
             {isPending ? "Memuat..." : "Tampilkan Berita Lainnya"}
           </Button>
