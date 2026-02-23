@@ -87,7 +87,7 @@ export function UserMultiSelect({
                   "flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium",
                   locked
                     ? "border-primary/30 bg-primary/10 text-primary"
-                    : "border-zinc-200 bg-zinc-100 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
+                    : "border-foreground/20 bg-foreground/10 text-foreground/70",
                 )}
               >
                 <Avatar className="size-4">
@@ -127,14 +127,14 @@ export function UserMultiSelect({
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute z-50 mt-1 w-full rounded-md border border-zinc-200 bg-white shadow-lg dark:border-zinc-700 dark:bg-zinc-900">
+        <div className="absolute z-50 mt-1 w-full rounded-md border border-foreground/10 bg-card shadow-lg">
           <div className="p-2">
             <input
               autoFocus
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Cari pengguna..."
-              className="w-full rounded-sm border border-zinc-200 bg-transparent px-2 py-1.5 text-sm outline-none dark:border-zinc-700"
+              className="w-full rounded-sm border border-foreground/20 bg-transparent px-2 py-1.5 text-sm outline-none"
             />
           </div>
           <ul className="max-h-56 overflow-y-auto pb-1">
@@ -156,7 +156,7 @@ export function UserMultiSelect({
                       "flex w-full items-center gap-3 px-3 py-2 text-left text-sm transition-colors",
                       locked
                         ? "cursor-default opacity-60"
-                        : "hover:bg-zinc-100 dark:hover:bg-zinc-800",
+                        : "hover:bg-foreground/10",
                     )}
                   >
                     <Avatar className="size-6 shrink-0">

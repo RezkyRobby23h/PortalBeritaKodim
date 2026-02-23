@@ -90,8 +90,8 @@ function StatusBadge({ published }: { published: boolean }) {
       className={cn(
         "inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-xs font-semibold",
         published
-          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
-          : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400",
+          ? "bg-primary/10 text-primary"
+          : "bg-foreground/10 text-foreground/50",
       )}
     >
       {published ? "Terbit" : "Draft"}
@@ -228,7 +228,7 @@ export default function PostsPage() {
   const totalPages = data?.totalPages ?? 1;
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+    <div className="min-h-screen bg-background">
       {/* ── Delete confirmation dialog ── */}
       <Dialog
         open={confirmPost !== null}
@@ -272,10 +272,10 @@ export default function PostsPage() {
       <Navbar variant="dashboard" />
 
       {/* Sticky top bar */}
-      <div className="fixed left-0 right-0 top-16 z-40 border-b border-zinc-200 bg-white/80 px-4 py-3 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/80">
+      <div className="fixed left-0 right-0 top-16 z-40 border-b border-foreground/10 bg-card/80 px-4 py-3 backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
           <div>
-            <h1 className="text-sm font-bold text-zinc-900 dark:text-white">
+            <h1 className="text-sm font-bold text-foreground">
               Manajemen Postingan
             </h1>
           </div>
@@ -343,7 +343,7 @@ export default function PostsPage() {
         {/* Table card */}
         <Card className="overflow-hidden gap-0 py-0">
           {/* Header */}
-          <div className="grid grid-cols-[1fr_auto_auto_auto_auto_auto_auto] items-center gap-3 bg-zinc-100 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground dark:bg-zinc-800/60">
+          <div className="grid grid-cols-[1fr_auto_auto_auto_auto_auto_auto] items-center gap-3 bg-foreground/5 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             <span>Judul</span>
             <span className="w-24">Kategori</span>
             <span className="w-16 text-center">Status</span>
@@ -392,7 +392,7 @@ export default function PostsPage() {
                 <div className="grid grid-cols-[1fr_auto_auto_auto_auto_auto_auto] items-center gap-3 px-4 py-3">
                   {/* Title + authors */}
                   <div className="flex min-w-0 flex-col gap-0.5">
-                    <span className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                    <span className="truncate text-sm font-medium text-foreground">
                       {post.title}
                     </span>
                     <span className="truncate text-xs text-muted-foreground">

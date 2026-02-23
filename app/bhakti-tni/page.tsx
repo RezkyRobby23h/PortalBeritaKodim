@@ -27,7 +27,7 @@ const programCards = [
 
 export default function BhaktiTniPage() {
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar variant="public" />
 
       <main className="pt-20 pb-16">
@@ -37,7 +37,7 @@ export default function BhaktiTniPage() {
             <h1 className="mb-4 text-4xl font-black leading-tight md:text-5xl">
               Kegiatan Bhakti TNI — Kodim 1408 Makassar
             </h1>
-            <p className="text-xl leading-relaxed text-zinc-600 dark:text-zinc-400">
+            <p className="text-xl leading-relaxed text-foreground/60">
               Beragam kegiatan sosial, kemanusiaan, dan kebangsaan yang
               dijalankan Kodim 1408 Makassar dalam mendukung pembangunan
               masyarakat dan memperkuat kemanunggalan TNI dengan rakyat.
@@ -54,8 +54,8 @@ export default function BhaktiTniPage() {
               className="w-full h-auto object-cover"
               priority
             />
-            <div className="bg-white dark:bg-zinc-800 px-6 py-4">
-              <p className="text-center text-sm italic text-zinc-600 dark:text-zinc-400">
+            <div className="bg-card px-6 py-4">
+              <p className="text-center text-sm italic text-foreground/60">
                 Dokumentasi kegiatan sosial dan Bhakti TNI Kodim 1408 Makassar
                 di wilayah Sulawesi Selatan.
               </p>
@@ -63,9 +63,9 @@ export default function BhaktiTniPage() {
           </div>
 
           {/* Article */}
-          <article className="mb-8 rounded-2xl bg-white dark:bg-zinc-800 p-8 shadow-xl md:p-12">
+          <article className="mb-8 rounded-2xl bg-card p-8 shadow-xl md:p-12">
             {/* Intro */}
-            <p className="mb-12 text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
+            <p className="mb-12 text-lg leading-relaxed text-foreground/70">
               Kodim 1408 Makassar secara konsisten melaksanakan berbagai
               kegiatan Bhakti TNI yang bertujuan mempererat hubungan antara
               prajurit TNI AD dan masyarakat. Kegiatan ini mencakup sektor
@@ -82,10 +82,10 @@ export default function BhaktiTniPage() {
               {programCards.map((card) => (
                 <div
                   key={card.judul}
-                  className="rounded-xl border-2 border-emerald-700/30 bg-linear-to-br from-emerald-700/10 to-emerald-400/10 p-6 transition-all hover:border-emerald-700 hover:shadow-lg dark:border-emerald-400/30 dark:from-emerald-700/20 dark:to-emerald-400/20 dark:hover:border-emerald-400"
+                  className="rounded-xl border-2 border-primary/30 bg-primary/5 p-6 transition-all hover:border-primary hover:shadow-lg"
                 >
                   <h3 className="mb-3 text-xl font-bold">{card.judul}</h3>
-                  <p className="leading-relaxed text-zinc-700 dark:text-zinc-300">
+                  <p className="leading-relaxed text-foreground/70">
                     {card.deskripsi}
                   </p>
                 </div>
@@ -93,7 +93,7 @@ export default function BhaktiTniPage() {
             </div>
 
             {/* Closing */}
-            <div className="space-y-6 text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
+            <div className="space-y-6 text-lg leading-relaxed text-foreground/70">
               <p>
                 Selain kegiatan utama tersebut, Kodim juga aktif dalam berbagai
                 event lokal seperti HUT RI, HUT TNI, dan upacara adat daerah.
@@ -110,7 +110,7 @@ export default function BhaktiTniPage() {
           </article>
 
           {/* CTA */}
-          <div className="rounded-2xl bg-linear-to-r from-emerald-700 to-emerald-400 p-8 text-center text-white shadow-2xl transition-transform duration-300 hover:scale-105 md:p-12">
+          <div className="rounded-2xl bg-primary p-8 text-center text-primary-foreground shadow-2xl transition-transform duration-300 hover:scale-105 md:p-12">
             <h2 className="mb-4 text-3xl font-black md:text-4xl">
               Mari Berpartisipasi
             </h2>

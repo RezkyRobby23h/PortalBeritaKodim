@@ -155,7 +155,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
   const primaryAuthor = post.authors[0];
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar variant="public" />
 
       <main className="pb-16 pt-20">
@@ -163,13 +163,13 @@ export default async function NewsDetailPage({ params }: PageProps) {
           {/* Breadcrumb */}
           <nav
             aria-label="Breadcrumb"
-            className="mb-6 flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400"
+            className="mb-6 flex items-center gap-1.5 text-sm text-foreground/50"
           >
-            <Link href="/" className="transition-colors hover:text-emerald-500">
+            <Link href="/" className="transition-colors hover:text-primary">
               Beranda
             </Link>
             <ChevronRight className="size-4 shrink-0" />
-            <span className="line-clamp-1 text-zinc-700 dark:text-zinc-300">
+            <span className="line-clamp-1 text-foreground/70">
               {post.title}
             </span>
           </nav>
@@ -209,7 +209,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
                     src={primaryAuthor?.image ?? ""}
                     alt={primaryAuthor?.name ?? "Redaksi"}
                   />
-                  <AvatarFallback className="bg-emerald-700 text-xs text-white">
+                  <AvatarFallback className="bg-primary text-xs text-primary-foreground">
                     {(primaryAuthor?.name ?? "R")[0]}
                   </AvatarFallback>
                 </Avatar>
@@ -217,9 +217,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
                   <p className="text-sm font-semibold">
                     {primaryAuthor?.name ?? "Redaksi"}
                   </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    Penulis
-                  </p>
+                  <p className="text-xs text-foreground/50">Penulis</p>
                 </div>
               </div>
 
@@ -228,7 +226,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
                 className="hidden h-8 sm:block"
               />
 
-              <div className="flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400">
+              <div className="flex items-center gap-1.5 text-sm text-foreground/50">
                 <CalendarDays className="size-4 shrink-0" />
                 <span>{formatDate(post.createdAt)}</span>
               </div>
@@ -237,14 +235,14 @@ export default async function NewsDetailPage({ params }: PageProps) {
 
           {/* Full Content */}
           <article
-            className="prose prose-zinc mb-12 max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-emerald-600 prose-img:rounded-xl dark:prose-a:text-emerald-400"
+            className="prose prose-neutral mb-12 max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-primary prose-img:rounded-xl"
             dangerouslySetInnerHTML={{ __html: post.fullContent }}
           />
 
           {/* Multiple Authors */}
           {post.authors.length > 1 && (
             <div className="mb-12">
-              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-foreground/50">
                 Ditulis oleh
               </p>
               <div className="flex flex-wrap gap-4">
@@ -252,7 +250,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
                   <div key={author.id} className="flex items-center gap-2">
                     <Avatar className="size-8">
                       <AvatarImage src={author.image ?? ""} alt={author.name} />
-                      <AvatarFallback className="bg-zinc-700 text-xs text-white">
+                      <AvatarFallback className="bg-foreground/20 text-xs text-foreground">
                         {author.name[0]}
                       </AvatarFallback>
                     </Avatar>
@@ -270,7 +268,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
                 <h2 className="text-2xl font-black">Berita Terkait</h2>
                 <Link
                   href="/"
-                  className="text-sm font-semibold text-emerald-600 transition-colors hover:text-emerald-500 dark:text-emerald-400 dark:hover:text-emerald-300"
+                  className="text-sm font-semibold text-primary transition-colors hover:text-primary/80"
                 >
                   Lihat semua
                 </Link>

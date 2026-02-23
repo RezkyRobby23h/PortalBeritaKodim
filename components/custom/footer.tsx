@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Phone, MapPin, Instagram, Youtube, Clock } from "lucide-react";
+import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { SiInstagram, SiYoutube } from "react-icons/si";
 import { Separator } from "@/components/ui/separator";
 
 const navLinks = [
@@ -12,7 +13,7 @@ const navLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-zinc-900 text-zinc-300 pt-16 pb-8">
+    <footer className="bg-foreground/10 dark:bg-card text-foreground pt-16 pb-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 mb-12">
           {/* Brand */}
@@ -26,15 +27,17 @@ export default function Footer() {
                 className="object-contain"
               />
               <div>
-                <span className="text-xl font-black text-white tracking-tight block">
-                  Info<span className="text-emerald-400">Kodim</span>
-                </span>
-                <span className="text-xs text-zinc-400 font-medium">
-                  Kodim 1408 Makassar
-                </span>
+                <div className="flex flex-col leading-tight">
+                  <span className="text-[15px] font-extrabold tracking-tight">
+                    KODIM 1408/MKS
+                  </span>
+                  <span className="text-[10px] font-bold tracking-wide text-foreground/70">
+                    MAEIKI A&apos;BULO SIBATANG
+                  </span>
+                </div>
               </div>
             </div>
-            <p className="text-sm leading-relaxed text-zinc-400">
+            <p className="text-sm leading-relaxed text-foreground/60">
               Website resmi portal berita dan informasi Kodim 1408 Makassar.
               Menyajikan berita terkini seputar kegiatan, program pembinaan
               teritorial, serta Bhakti TNI di wilayah Kota Makassar dan
@@ -44,13 +47,13 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Navigasi</h4>
+            <h4 className="text-foreground font-semibold mb-4">Navigasi</h4>
             <ul className="space-y-2 text-sm">
               {navLinks.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-zinc-400 hover:text-emerald-400 transition-colors"
+                    className="text-foreground/60 hover:text-primary transition-colors"
                   >
                     {item.label}
                   </Link>
@@ -61,20 +64,22 @@ export default function Footer() {
 
           {/* Jam Operasional */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Jam Operasional</h4>
+            <h4 className="text-foreground font-semibold mb-4">
+              Jam Operasional
+            </h4>
             <div className="space-y-3 text-sm">
               <div className="flex items-start gap-2">
-                <Clock size={16} className="text-emerald-400 mt-0.5 shrink-0" />
+                <Clock size={16} className="text-primary mt-0.5 shrink-0" />
                 <div>
-                  <p className="text-zinc-300">Senin – Jumat</p>
-                  <p className="text-zinc-400">08.00 – 16.00 WITA</p>
+                  <p className="text-foreground/80">Senin - Jumat</p>
+                  <p className="text-foreground/60">08.00 - 16.00 WITA</p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
-                <Clock size={16} className="text-emerald-400 mt-0.5 shrink-0" />
+                <Clock size={16} className="text-primary mt-0.5 shrink-0" />
                 <div>
-                  <p className="text-zinc-300">Sabtu</p>
-                  <p className="text-zinc-400">08.00 – 12.00 WITA</p>
+                  <p className="text-foreground/80">Sabtu</p>
+                  <p className="text-foreground/60">08.00 - 12.00 WITA</p>
                 </div>
               </div>
             </div>
@@ -82,78 +87,81 @@ export default function Footer() {
 
           {/* Kontak */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Kontak</h4>
+            <h4 className="text-foreground font-semibold mb-4">Kontak</h4>
             <div className="space-y-3 text-sm">
               <p className="flex items-center gap-2">
-                <Mail size={16} className="text-emerald-400 shrink-0" />
+                <Mail size={16} className="text-primary shrink-0" />
                 <a
                   href="mailto:humas@kodim1408mks.mil.id"
-                  className="text-zinc-400 hover:text-emerald-400 transition-colors"
+                  className="text-foreground/60 hover:text-primary transition-colors"
                 >
                   humas@kodim1408mks.mil.id
                 </a>
               </p>
               <p className="flex items-center gap-2">
-                <Phone size={16} className="text-emerald-400 shrink-0" />
+                <Phone size={16} className="text-primary shrink-0" />
                 <a
                   href="tel:+624111234567"
-                  className="text-zinc-400 hover:text-emerald-400 transition-colors"
+                  className="text-foreground/60 hover:text-primary transition-colors"
                 >
                   (0411) 123-4567
                 </a>
               </p>
+              <p className="flex items-center gap-2">
+                <SiInstagram size={16} className="text-primary shrink-0" />
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground/60 hover:text-primary transition-colors"
+                >
+                  @kodim1408mks
+                </a>
+              </p>
+              <p className="flex items-center gap-2">
+                <SiYoutube size={16} className="text-primary shrink-0" />
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground/60 hover:text-primary transition-colors"
+                >
+                  Kodim 1408 Makassar
+                </a>
+              </p>
               <p className="flex items-start gap-2">
-                <MapPin
-                  size={16}
-                  className="text-emerald-400 mt-0.5 shrink-0"
-                />
-                <span className="text-zinc-400">
+                <MapPin size={16} className="text-primary mt-0.5 shrink-0" />
+                <span className="text-foreground/60">
                   Jl. Tentara Pelajar No.1, Makassar, Sulawesi Selatan 90111
                 </span>
               </p>
             </div>
-            <div className="flex gap-3 mt-5">
-              <a
-                href="#"
-                aria-label="Instagram"
-                className="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-emerald-700 hover:text-white transition-colors"
-              >
-                <Instagram size={18} />
-              </a>
-              <a
-                href="#"
-                aria-label="YouTube"
-                className="p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-emerald-700 hover:text-white transition-colors"
-              >
-                <Youtube size={18} />
-              </a>
-            </div>
           </div>
         </div>
 
-        <Separator className="bg-zinc-800" />
+        <Separator />
 
-        <div className="pt-6 flex flex-col items-center gap-3 text-sm text-zinc-500 sm:flex-row sm:justify-between">
+        <div className="pt-6 flex flex-col items-center gap-3 text-sm text-foreground/60 sm:flex-row sm:justify-between">
           <p>
-            &copy; {new Date().getFullYear()} InfoKodim — Kodim 1408 Makassar.
-            Hak cipta dilindungi.
+            &copy; {new Date().getFullYear()} Portal Berita — Kodim 1408
+            Makassar. Hak cipta dilindungi.
           </p>
           <div className="flex gap-4">
             <Link
               href="/kontak"
-              className="hover:text-emerald-400 transition-colors"
+              className="hover:text-primary transition-colors"
             >
               Kontak
             </Link>
             <Link
               href="/program-pembinaan"
-              className="hover:text-emerald-400 transition-colors"
+              className="hover:text-primary transition-colors"
             >
               Program
             </Link>
             <Link
               href="/bhakti-tni"
-              className="hover:text-emerald-400 transition-colors"
+              className="hover:text-primary transition-colors"
             >
               Bhakti TNI
             </Link>

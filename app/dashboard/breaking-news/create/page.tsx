@@ -296,11 +296,11 @@ export default function CreateBreakingNewsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+    <div className="min-h-screen bg-background">
       <Navbar variant="dashboard" />
 
       {/* Sticky top bar */}
-      <div className="fixed left-0 right-0 top-16 z-40 border-b border-zinc-200 bg-white/80 px-4 py-3 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/80">
+      <div className="fixed left-0 right-0 top-16 z-40 border-b border-foreground/10 bg-card/80 px-4 py-3 backdrop-blur-md">
         <div className="mx-auto flex max-w-xl items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Button asChild variant="ghost" size="icon" className="shrink-0">
@@ -309,7 +309,7 @@ export default function CreateBreakingNewsPage() {
               </Link>
             </Button>
             <div>
-              <h1 className="text-sm font-bold text-zinc-900 dark:text-white">
+              <h1 className="text-sm font-bold text-foreground">
                 Tambah Breaking News
               </h1>
               <p className="text-xs text-muted-foreground">
@@ -439,7 +439,7 @@ export default function CreateBreakingNewsPage() {
           )}
 
           {/* ── Status ── */}
-          <div className="flex items-center justify-between rounded-lg border bg-white px-4 py-3 dark:bg-zinc-900">
+          <div className="flex items-center justify-between rounded-lg border bg-card px-4 py-3">
             <div>
               <p className="text-sm font-semibold">Status</p>
               <p className="text-xs text-muted-foreground">

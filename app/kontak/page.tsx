@@ -55,7 +55,7 @@ export default function KontakPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar variant="public" />
 
       <main className="pt-20 pb-16">
@@ -77,7 +77,7 @@ export default function KontakPage() {
             <h1 className="mb-3 text-4xl font-black leading-tight md:text-5xl">
               Kontak Kodim 1408 Makassar
             </h1>
-            <p className="text-xl font-semibold text-emerald-700 dark:text-emerald-400">
+            <p className="text-xl font-semibold text-primary">
               TNI AD Profesional di Kota Metropolitan Timur
             </p>
           </div>
@@ -85,17 +85,17 @@ export default function KontakPage() {
           {/* Two-column grid */}
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
             {/* Contact Info */}
-            <div className="rounded-2xl bg-white dark:bg-zinc-800 p-8 shadow-xl">
+            <div className="rounded-2xl bg-card p-8 shadow-xl">
               <h2 className="mb-6 text-2xl font-bold">Informasi Kontak</h2>
               <div className="space-y-6">
                 {/* Address */}
                 <div className="flex gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-emerald-700/10 dark:bg-emerald-400/10">
-                    <MapPin className="h-6 w-6 text-emerald-700 dark:text-emerald-400" />
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                    <MapPin className="h-6 w-6 text-primary" />
                   </div>
                   <div>
                     <h3 className="mb-1 font-bold">Alamat Markas</h3>
-                    <p className="leading-relaxed text-zinc-600 dark:text-zinc-400">
+                    <p className="leading-relaxed text-foreground/60">
                       Jl. Perintis Kemerdekaan No.45, Kota Makassar, Sulawesi
                       Selatan, Indonesia
                     </p>
@@ -104,14 +104,14 @@ export default function KontakPage() {
 
                 {/* Phone */}
                 <div className="flex gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-emerald-700/10 dark:bg-emerald-400/10">
-                    <Phone className="h-6 w-6 text-emerald-700 dark:text-emerald-400" />
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                    <Phone className="h-6 w-6 text-primary" />
                   </div>
                   <div>
                     <h3 className="mb-1 font-bold">Nomor Telepon</h3>
                     <a
                       href="tel:+62411123456"
-                      className="text-zinc-600 transition-colors hover:text-emerald-700 dark:text-zinc-400 dark:hover:text-emerald-400"
+                      className="text-foreground/60 transition-colors hover:text-primary"
                     >
                       (0411) 123-4567
                     </a>
@@ -120,14 +120,14 @@ export default function KontakPage() {
 
                 {/* Email */}
                 <div className="flex gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-emerald-700/10 dark:bg-emerald-400/10">
-                    <Mail className="h-6 w-6 text-emerald-700 dark:text-emerald-400" />
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                    <Mail className="h-6 w-6 text-primary" />
                   </div>
                   <div>
                     <h3 className="mb-1 font-bold">Email Resmi</h3>
                     <a
                       href="mailto:humas@kodim1408mks.mil.id"
-                      className="text-zinc-600 transition-colors hover:text-emerald-700 dark:text-zinc-400 dark:hover:text-emerald-400"
+                      className="text-foreground/60 transition-colors hover:text-primary"
                     >
                       humas@kodim1408mks.mil.id
                     </a>
@@ -136,12 +136,12 @@ export default function KontakPage() {
 
                 {/* Hours */}
                 <div className="flex gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-emerald-700/10 dark:bg-emerald-400/10">
-                    <Clock className="h-6 w-6 text-emerald-700 dark:text-emerald-400" />
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                    <Clock className="h-6 w-6 text-primary" />
                   </div>
                   <div>
                     <h3 className="mb-1 font-bold">Jam Operasional</h3>
-                    <p className="leading-relaxed text-zinc-600 dark:text-zinc-400">
+                    <p className="leading-relaxed text-foreground/60">
                       Senin – Jumat: 08.00 – 16.00 WITA
                       <br />
                       Sabtu: 08.00 – 12.00 WITA
@@ -152,13 +152,13 @@ export default function KontakPage() {
             </div>
 
             {/* Contact Form */}
-            <div className="rounded-2xl bg-white dark:bg-zinc-800 p-8 shadow-xl">
+            <div className="rounded-2xl bg-card p-8 shadow-xl">
               <h2 className="mb-6 text-2xl font-bold">Formulir Pesan</h2>
               <form className="space-y-5" onSubmit={handleSubmit}>
                 <div>
                   <label
                     htmlFor="name"
-                    className="mb-2 block text-sm font-semibold text-zinc-700 dark:text-zinc-300"
+                    className="mb-2 block text-sm font-semibold text-foreground/70"
                   >
                     Nama Lengkap
                   </label>
@@ -172,13 +172,13 @@ export default function KontakPage() {
                     onChange={(e) =>
                       setForm((f) => ({ ...f, fullName: e.target.value }))
                     }
-                    className="w-full rounded-lg border border-zinc-300 bg-zinc-50 px-4 py-3 text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:border-transparent focus:ring-2 focus:ring-emerald-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:ring-emerald-400"
+                    className="w-full rounded-lg border border-foreground/20 bg-background px-4 py-3 text-foreground outline-none transition-all placeholder:text-foreground/40 focus:border-transparent focus:ring-2 focus:ring-primary"
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="email"
-                    className="mb-2 block text-sm font-semibold text-zinc-700 dark:text-zinc-300"
+                    className="mb-2 block text-sm font-semibold text-foreground/70"
                   >
                     Alamat Email
                   </label>
@@ -192,13 +192,13 @@ export default function KontakPage() {
                     onChange={(e) =>
                       setForm((f) => ({ ...f, email: e.target.value }))
                     }
-                    className="w-full rounded-lg border border-zinc-300 bg-zinc-50 px-4 py-3 text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:border-transparent focus:ring-2 focus:ring-emerald-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:ring-emerald-400"
+                    className="w-full rounded-lg border border-foreground/20 bg-background px-4 py-3 text-foreground outline-none transition-all placeholder:text-foreground/40 focus:border-transparent focus:ring-2 focus:ring-primary"
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="phone"
-                    className="mb-2 block text-sm font-semibold text-zinc-700 dark:text-zinc-300"
+                    className="mb-2 block text-sm font-semibold text-foreground/70"
                   >
                     Nomor Telepon
                   </label>
@@ -211,13 +211,13 @@ export default function KontakPage() {
                     onChange={(e) =>
                       setForm((f) => ({ ...f, phoneNumber: e.target.value }))
                     }
-                    className="w-full rounded-lg border border-zinc-300 bg-zinc-50 px-4 py-3 text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:border-transparent focus:ring-2 focus:ring-emerald-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:ring-emerald-400"
+                    className="w-full rounded-lg border border-foreground/20 bg-background px-4 py-3 text-foreground outline-none transition-all placeholder:text-foreground/40 focus:border-transparent focus:ring-2 focus:ring-primary"
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="message"
-                    className="mb-2 block text-sm font-semibold text-zinc-700 dark:text-zinc-300"
+                    className="mb-2 block text-sm font-semibold text-foreground/70"
                   >
                     Pesan Anda
                   </label>
@@ -231,7 +231,7 @@ export default function KontakPage() {
                     onChange={(e) =>
                       setForm((f) => ({ ...f, content: e.target.value }))
                     }
-                    className="w-full resize-none rounded-lg border border-zinc-300 bg-zinc-50 px-4 py-3 text-zinc-900 outline-none transition-all placeholder:text-zinc-400 focus:border-transparent focus:ring-2 focus:ring-emerald-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:ring-emerald-400"
+                    className="w-full resize-none rounded-lg border border-foreground/20 bg-background px-4 py-3 text-foreground outline-none transition-all placeholder:text-foreground/40 focus:border-transparent focus:ring-2 focus:ring-primary"
                   />
                 </div>
                 {error && (
@@ -240,14 +240,14 @@ export default function KontakPage() {
                   </p>
                 )}
                 {success && (
-                  <p className="rounded-lg bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400">
+                  <p className="rounded-lg bg-primary/10 px-4 py-3 text-sm font-medium text-primary">
                     Pesan berhasil dikirim! Kami akan segera menghubungi Anda.
                   </p>
                 )}
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-linear-to-r from-emerald-700 to-emerald-400 px-6 py-4 font-bold text-white transition-all duration-300 hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-4 focus:ring-emerald-700/50 disabled:cursor-not-allowed disabled:opacity-70 dark:focus:ring-emerald-400/50"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-4 font-bold text-primary-foreground transition-all duration-300 hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary/50 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   {submitting && <Loader2 className="size-4 animate-spin" />}
                   {submitting ? "Mengirim..." : "Kirim Pesan"}

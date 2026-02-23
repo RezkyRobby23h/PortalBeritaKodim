@@ -100,19 +100,19 @@ export function PostsGrid({
       {isPending ? (
         <div className="flex flex-col gap-5">
           {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="flex gap-4 rounded-xl bg-zinc-900 p-4">
-              <Skeleton className="h-28 w-40 shrink-0 rounded-lg bg-zinc-800" />
+            <div key={i} className="flex gap-4 rounded-xl bg-card p-4">
+              <Skeleton className="h-28 w-40 shrink-0 rounded-lg bg-foreground/50" />
               <div className="flex flex-1 flex-col gap-3 py-1">
-                <Skeleton className="h-3 w-20 rounded bg-zinc-800" />
-                <Skeleton className="h-4 w-full rounded bg-zinc-800" />
-                <Skeleton className="h-4 w-3/4 rounded bg-zinc-800" />
-                <Skeleton className="mt-auto h-3 w-24 rounded bg-zinc-800" />
+                <Skeleton className="h-3 w-20 rounded bg-foreground/50" />
+                <Skeleton className="h-4 w-full rounded bg-foreground/50" />
+                <Skeleton className="h-4 w-3/4 rounded bg-foreground/50" />
+                <Skeleton className="mt-auto h-3 w-24 rounded bg-foreground/50" />
               </div>
             </div>
           ))}
         </div>
       ) : posts.length === 0 ? (
-        <p className="py-8 text-center text-sm text-zinc-500">
+        <p className="py-8 text-center text-sm text-foreground">
           Tidak ada berita ditemukan.
         </p>
       ) : (
@@ -127,7 +127,7 @@ export function PostsGrid({
             onClick={loadMore}
             disabled={isPending}
             variant="outline"
-            className="w-full border-zinc-700 bg-zinc-900 py-6 text-zinc-200 hover:bg-zinc-800 hover:text-white"
+            className="w-full py-6 bg-card border-foreground hover:border-primary text-foreground hover:text-primary transition-colors"
           >
             {isPending ? "Memuat..." : "Tampilkan Berita Lainnya"}
           </Button>

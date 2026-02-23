@@ -5,7 +5,6 @@
 // TODO: refactor code for uniformity and readability
 // TODO: shadcn sonner for alert and notification
 // TODO: dashboard with simple stats
-// TODO: google login
 // TODO: multiple category for posts
 "use client";
 
@@ -107,7 +106,7 @@ export default function BerandaPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen text-foreground">
       <Navbar variant="public" />
       <div className="h-16" />
 
@@ -120,16 +119,13 @@ export default function BerandaPage() {
               {isLoading ? (
                 <div className="flex flex-col gap-5">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="flex gap-4 rounded-xl bg-zinc-900 p-4"
-                    >
-                      <Skeleton className="h-28 w-40 shrink-0 rounded-lg bg-zinc-800" />
+                    <div key={i} className="flex gap-4 rounded-xl bg-card p-4">
+                      <Skeleton className="h-28 w-40 shrink-0 rounded-lg bg-foreground/50" />
                       <div className="flex flex-1 flex-col gap-3 py-1">
-                        <Skeleton className="h-3 w-20 rounded bg-zinc-800" />
-                        <Skeleton className="h-4 w-full rounded bg-zinc-800" />
-                        <Skeleton className="h-4 w-3/4 rounded bg-zinc-800" />
-                        <Skeleton className="mt-auto h-3 w-24 rounded bg-zinc-800" />
+                        <Skeleton className="h-3 w-20 rounded bg-foreground/50" />
+                        <Skeleton className="h-4 w-full rounded bg-foreground/50" />
+                        <Skeleton className="h-4 w-3/4 rounded bg-foreground/50" />
+                        <Skeleton className="mt-auto h-3 w-24 rounded bg-foreground/50" />
                       </div>
                     </div>
                   ))}
@@ -148,21 +144,21 @@ export default function BerandaPage() {
           {/* Right Sidebar */}
           <aside className="hidden w-72 shrink-0 flex-col gap-6 xl:flex">
             {/* Highlight */}
-            <Card className="border-zinc-800 bg-zinc-900 py-4">
+            <Card className="border-foreground/10 bg-card py-4">
               <CardContent className="px-4">
-                <h3 className="mb-4 flex items-center gap-2 text-base font-bold text-white">
+                <h3 className="mb-4 flex items-center gap-2 text-base font-bold text-foreground">
                   Highlight
                 </h3>
-                <Separator className="mb-4 bg-zinc-800" />
+                <Separator className="mb-4 border-foreground/10" />
                 <div className="flex flex-col gap-3">
                   {isLoading
                     ? Array.from({ length: 4 }).map((_, i) => (
                         <div key={i} className="flex gap-3">
-                          <Skeleton className="h-14 w-20 shrink-0 rounded-lg bg-zinc-800" />
+                          <Skeleton className="h-14 w-20 shrink-0 rounded-lg bg-foreground/50" />
                           <div className="flex flex-1 flex-col justify-center gap-2">
-                            <Skeleton className="h-2.5 w-16 rounded bg-zinc-800" />
-                            <Skeleton className="h-3 w-full rounded bg-zinc-800" />
-                            <Skeleton className="h-3 w-2/3 rounded bg-zinc-800" />
+                            <Skeleton className="h-2.5 w-16 rounded bg-foreground/50" />
+                            <Skeleton className="h-3 w-full rounded bg-foreground/50" />
+                            <Skeleton className="h-3 w-2/3 rounded bg-foreground/50" />
                           </div>
                         </div>
                       ))
@@ -185,7 +181,7 @@ export default function BerandaPage() {
                               name={post.category.name}
                               color={post.category.color}
                             />
-                            <p className="line-clamp-2 text-xs font-semibold leading-snug text-zinc-200 transition-colors group-hover:text-sky-400">
+                            <p className="line-clamp-2 text-xs font-semibold leading-snug text-foreground/80 transition-colors group-hover:text-primary">
                               {post.title}
                             </p>
                           </div>
@@ -196,17 +192,17 @@ export default function BerandaPage() {
             </Card>
 
             {isLoading ? (
-              <Card className="border-zinc-800 bg-zinc-900 py-4">
+              <Card className="border-foreground/10 bg-card py-4">
                 <CardContent className="px-4">
-                  <h3 className="mb-4 text-base font-bold text-white">
+                  <h3 className="mb-4 text-base font-bold text-foreground">
                     Kategori
                   </h3>
-                  <Separator className="mb-4 bg-zinc-800" />
+                  <Separator className="mb-4 border-foreground/10" />
                   <div className="grid grid-cols-2 gap-2">
                     {Array.from({ length: 6 }).map((_, i) => (
                       <Skeleton
                         key={i}
-                        className="h-9 rounded-lg bg-zinc-800"
+                        className="h-9 rounded-lg bg-foreground/50"
                       />
                     ))}
                   </div>
@@ -214,17 +210,17 @@ export default function BerandaPage() {
               </Card>
             ) : (
               categories.length > 0 && (
-                <Card className="border-zinc-800 bg-zinc-900 py-4">
+                <Card className="border-foreground/10 bg-card py-4">
                   <CardContent className="px-4">
-                    <h3 className="mb-4 text-base font-bold text-white">
+                    <h3 className="mb-4 text-base font-bold text-foreground">
                       Kategori
                     </h3>
-                    <Separator className="mb-4 bg-zinc-800" />
+                    <Separator className="mb-4 border-foreground/10" />
                     <div className="grid grid-cols-2 gap-2">
                       <Toggle
                         pressed={selectedCategoryId === null}
                         onPressedChange={() => setSelectedCategoryId(null)}
-                        className="w-full justify-start rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-300 data-[state=on]:border-sky-500 data-[state=on]:bg-sky-500/10 data-[state=on]:text-sky-400"
+                        className="w-full justify-start rounded-lg border border-foreground/20 hover:bg-primary/10 hover:border-primary px-3 py-2 text-xs font-semibold text-foreground/60 data-[state=on]:border-primary data-[state=on]:bg-primary/10 data-[state=on]:text-primary"
                       >
                         Semua
                       </Toggle>
@@ -233,7 +229,7 @@ export default function BerandaPage() {
                           key={cat.id}
                           pressed={selectedCategoryId === cat.id}
                           onPressedChange={() => handleCategoryToggle(cat.id)}
-                          className="w-full justify-start rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-300 data-[state=on]:border-sky-500 data-[state=on]:bg-sky-500/10 data-[state=on]:text-sky-400"
+                          className="w-full justify-start rounded-lg border border-foreground/20 hover:bg-primary/10 hover:border-primary px-3 py-2 text-xs font-semibold text-foreground/60 data-[state=on]:border-primary data-[state=on]:bg-primary/10 data-[state=on]:text-primary"
                         >
                           <span
                             className="mr-1.5 inline-block h-2 w-2 shrink-0 rounded-full"

@@ -37,7 +37,7 @@ const programs = [
 
 export default function ProgramPembinaanPage() {
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar variant="public" />
 
       <main className="pt-20 pb-16">
@@ -55,12 +55,12 @@ export default function ProgramPembinaanPage() {
           </div>
 
           {/* Article */}
-          <article className="rounded-2xl bg-white dark:bg-zinc-800 p-8 shadow-xl md:p-12">
+          <article className="rounded-2xl bg-card p-8 shadow-xl md:p-12">
             <h1 className="mb-6 text-4xl font-black leading-tight tracking-tight md:text-5xl">
               Program Pembinaan Kodim 1408 Makassar
             </h1>
 
-            <div className="mb-8 space-y-6 text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
+            <div className="mb-8 space-y-6 text-lg leading-relaxed text-foreground/70">
               <p>
                 Kodim 1408 Makassar merupakan bagian dari jajaran Korem
                 141/Toddopuli di bawah Kodam XIV/Hasanuddin yang berperan
@@ -82,14 +82,11 @@ export default function ProgramPembinaanPage() {
             {/* Program Items */}
             <div className="space-y-8">
               {programs.map((p) => (
-                <div
-                  key={p.no}
-                  className="border-l-4 border-emerald-700 dark:border-emerald-400 py-2 pl-6"
-                >
+                <div key={p.no} className="border-l-4 border-primary py-2 pl-6">
                   <h2 className="mb-3 text-2xl font-bold">
                     {p.no}. {p.judul}
                   </h2>
-                  <p className="leading-relaxed text-zinc-700 dark:text-zinc-300">
+                  <p className="leading-relaxed text-foreground/70">
                     {p.deskripsi}
                   </p>
                 </div>
@@ -97,16 +94,16 @@ export default function ProgramPembinaanPage() {
             </div>
 
             {/* Closing */}
-            <div className="mt-10 border-t border-zinc-200 pt-8 dark:border-zinc-700">
-              <p className="mb-6 leading-relaxed text-zinc-700 dark:text-zinc-300">
+            <div className="mt-10 border-t border-foreground/10 pt-8">
+              <p className="mb-6 leading-relaxed text-foreground/70">
                 Setiap program pembinaan dilaksanakan dengan prinsip
                 partisipatif — melibatkan masyarakat sebagai mitra sejajar.
                 Dengan demikian, kehadiran Kodim 1408 Makassar bukan hanya
                 sebagai kekuatan militer, tetapi juga sebagai penggerak
                 pembangunan sosial yang berkelanjutan.
               </p>
-              <blockquote className="rounded-r-lg border-l-4 border-emerald-700 bg-emerald-700/5 py-2 pl-6 dark:border-emerald-400 dark:bg-emerald-400/10">
-                <p className="text-lg font-semibold italic text-emerald-700 dark:text-emerald-400">
+              <blockquote className="rounded-r-lg border-l-4 border-primary bg-primary/5 py-2 pl-6">
+                <p className="text-lg font-semibold italic text-primary">
                   &ldquo;TNI AD Profesional di Kota Metropolitan Timur —
                   Mengabdi dengan Hati, Bersama Membangun Negeri.&rdquo;
                 </p>

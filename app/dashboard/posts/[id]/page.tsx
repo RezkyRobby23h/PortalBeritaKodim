@@ -201,12 +201,10 @@ export default function EditPostPage() {
   // ── Not found ─────────────────────────────────────────────────────────────
   if (notFound) {
     return (
-      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+      <div className="min-h-screen bg-background">
         <Navbar variant="dashboard" />
         <main className="mx-auto flex max-w-3xl flex-col items-center gap-4 px-4 pt-40 text-center">
-          <p className="text-4xl font-bold text-zinc-300 dark:text-zinc-700">
-            404
-          </p>
+          <p className="text-4xl font-bold text-foreground/20">404</p>
           <p className="text-sm text-muted-foreground">
             Postingan tidak ditemukan.
           </p>
@@ -223,11 +221,11 @@ export default function EditPostPage() {
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+    <div className="min-h-screen bg-background">
       <Navbar variant="dashboard" />
 
       {/* Sticky top bar */}
-      <div className="fixed left-0 right-0 top-16 z-40 border-b border-zinc-200 bg-white/80 px-4 py-3 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/80">
+      <div className="fixed left-0 right-0 top-16 z-40 border-b border-foreground/10 bg-card/80 px-4 py-3 backdrop-blur-md">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Button asChild variant="ghost" size="icon" className="shrink-0">
@@ -236,7 +234,7 @@ export default function EditPostPage() {
               </Link>
             </Button>
             <div>
-              <h1 className="text-sm font-bold text-zinc-900 dark:text-white">
+              <h1 className="text-sm font-bold text-foreground">
                 Edit Postingan
               </h1>
               <p className="text-xs text-muted-foreground">

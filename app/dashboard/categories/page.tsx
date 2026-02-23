@@ -122,7 +122,7 @@ export default function CategoriesPage() {
   const totalPages = data?.totalPages ?? 1;
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+    <div className="min-h-screen bg-background">
       {/* ── Delete confirmation dialog ── */}
       <Dialog
         open={confirmId !== null}
@@ -166,10 +166,10 @@ export default function CategoriesPage() {
       <Navbar variant="dashboard" />
 
       {/* Sticky top bar */}
-      <div className="fixed left-0 right-0 top-16 z-40 border-b border-zinc-200 bg-white/80 px-4 py-3 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/80">
+      <div className="fixed left-0 right-0 top-16 z-40 border-b border-foreground/10 bg-card/80 px-4 py-3 backdrop-blur-md">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-4">
           <div>
-            <h1 className="text-sm font-bold text-zinc-900 dark:text-white">
+            <h1 className="text-sm font-bold text-foreground">
               Manajemen Kategori
             </h1>
           </div>
@@ -199,7 +199,7 @@ export default function CategoriesPage() {
         {/* Table card */}
         <Card className="overflow-hidden py-0 gap-0">
           {/* Header row */}
-          <div className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-4 bg-zinc-100 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground dark:bg-zinc-800/60">
+          <div className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-4 bg-foreground/5 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             <span>Nama</span>
             <span className="text-right w-16">Postingan</span>
             <span className="w-4" />

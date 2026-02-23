@@ -28,7 +28,13 @@ export function ThemeToggle() {
   const Icon = theme === "light" ? Sun : theme === "dark" ? Moon : Monitor;
 
   return (
-    <Button variant="ghost" size="icon" onClick={cycle} title="Ganti tema">
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={cycle}
+      title="Ganti tema"
+      className="text-foreground"
+    >
       <Icon className="size-4.5" />
     </Button>
   );

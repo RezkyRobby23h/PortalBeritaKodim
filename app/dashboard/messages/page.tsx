@@ -85,8 +85,8 @@ function ReadBadge({ isRead }: { isRead: boolean }) {
       className={cn(
         "inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold",
         isRead
-          ? "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
-          : "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+          ? "bg-foreground/10 text-foreground/50"
+          : "bg-primary/10 text-primary",
       )}
     >
       {isRead ? (
@@ -257,7 +257,7 @@ export default function MessagesPage() {
   const totalPages = data?.totalPages ?? 1;
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+    <div className="min-h-screen bg-background">
       {/* ── View message dialog ── */}
       <Dialog
         open={viewMessage !== null}
@@ -286,7 +286,7 @@ export default function MessagesPage() {
             )}
           </DialogHeader>
           {viewMessage && (
-            <div className="rounded-lg bg-zinc-50 p-4 text-sm leading-relaxed text-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-200">
+            <div className="rounded-lg bg-foreground/5 p-4 text-sm leading-relaxed text-foreground/80">
               {viewMessage.content}
             </div>
           )}
@@ -341,10 +341,10 @@ export default function MessagesPage() {
       <Navbar variant="dashboard" />
 
       {/* Sticky top bar */}
-      <div className="fixed left-0 right-0 top-16 z-40 border-b border-zinc-200 bg-white/80 px-4 py-3 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/80">
+      <div className="fixed left-0 right-0 top-16 z-40 border-b border-foreground/10 bg-card/80 px-4 py-3 backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
           <div>
-            <h1 className="text-sm font-bold text-zinc-900 dark:text-white">
+            <h1 className="text-sm font-bold text-foreground">
               Manajemen Pesan
             </h1>
           </div>
@@ -382,7 +382,7 @@ export default function MessagesPage() {
         {/* Table card */}
         <Card className="overflow-hidden gap-0 py-0">
           {/* Header */}
-          <div className="grid grid-cols-[1fr_auto_auto_auto_auto] items-center gap-3 bg-zinc-100 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground dark:bg-zinc-800/60">
+          <div className="grid grid-cols-[1fr_auto_auto_auto_auto] items-center gap-3 bg-foreground/5 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             <span>Pengirim</span>
             <span className="w-20 text-center">Status</span>
             <span className="w-28">Tanggal</span>
@@ -418,8 +418,8 @@ export default function MessagesPage() {
                       className={cn(
                         "truncate text-sm",
                         msg.isRead
-                          ? "font-medium text-zinc-700 dark:text-zinc-300"
-                          : "font-bold text-zinc-900 dark:text-zinc-100",
+                          ? "font-medium text-foreground/70"
+                          : "font-bold text-foreground",
                       )}
                     >
                       {msg.fullName}

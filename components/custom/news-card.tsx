@@ -26,21 +26,21 @@ interface NewsCardProps {
 export function NewsCard({ post, priority = false }: NewsCardProps) {
   return (
     <Link href={`/news/${post.slug}`} className="group block">
-      <Card className="overflow-hidden border-zinc-800 bg-zinc-900 py-0 transition hover:border-zinc-600">
+      <Card className="overflow-hidden border-foreground/10 bg-card py-0 transition hover:border-primary">
         {/* Top bar: author + category */}
         <div className="flex items-center justify-between gap-2 px-4 py-3">
           <div className="flex items-center gap-2 overflow-hidden">
             <Avatar className="size-8 shrink-0">
               <AvatarImage src={post.authorAvatar} alt={post.author} />
-              <AvatarFallback className="bg-zinc-700 text-xs text-white">
+              <AvatarFallback className="bg-foreground/10 text-xs text-foreground">
                 {post.author[0]}
               </AvatarFallback>
             </Avatar>
             <div className="flex min-w-0 flex-col">
-              <span className="truncate text-sm font-semibold text-white">
+              <span className="truncate text-sm font-semibold text-foreground">
                 {post.author}
               </span>
-              <span className="truncate text-[10px] text-zinc-400">
+              <span className="truncate text-[10px] text-foreground/70">
                 ⏱ {post.date}
                 {post.time ? ` pukul ${post.time}` : ""}
               </span>
@@ -67,18 +67,15 @@ export function NewsCard({ post, priority = false }: NewsCardProps) {
 
         {/* Bottom content */}
         <CardContent className="px-4 py-3">
-          <h2 className="line-clamp-2 text-sm font-bold leading-snug text-white transition-colors group-hover:text-sky-400 sm:text-base">
+          <h2 className="line-clamp-2 text-sm font-bold leading-snug text-foreground transition-colors group-hover:text-primary sm:text-base">
             {post.title}
           </h2>
 
           {post.excerpt && (
-            <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-zinc-400 sm:text-sm">
+            <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-foreground/60 sm:text-sm">
               {post.excerpt}
             </p>
           )}
-          <span className="mt-2 block text-xs font-semibold text-emerald-400 transition-colors group-hover:text-emerald-300">
-            Baca selengkapnya...
-          </span>
         </CardContent>
       </Card>
     </Link>

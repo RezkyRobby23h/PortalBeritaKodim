@@ -60,7 +60,7 @@ const ROLE_LABELS: Record<string, string> = {
 const ROLE_STYLES: Record<string, string> = {
   ADMIN: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
   EDITOR: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-  USER: "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400",
+  USER: "bg-foreground/10 text-foreground/60",
 };
 
 const PROVIDER_LABELS: Record<string, string> = {
@@ -248,12 +248,12 @@ export default function ProfilPage() {
 
   if (loading || sessionLoading) {
     return (
-      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+      <div className="min-h-screen bg-background">
         <Navbar />
         <div className="flex min-h-[80vh] items-center justify-center">
           <div className="flex flex-col items-center gap-3">
-            <div className="size-10 animate-spin rounded-full border-4 border-zinc-300 border-t-zinc-700 dark:border-zinc-700 dark:border-t-zinc-300" />
-            <p className="text-sm text-zinc-500">Memuat profil…</p>
+            <div className="size-10 animate-spin rounded-full border-4 border-foreground/20 border-t-foreground" />
+            <p className="text-sm text-foreground/50">Memuat profil…</p>
           </div>
         </div>
       </div>
@@ -262,14 +262,14 @@ export default function ProfilPage() {
 
   if (notFound || !profile) {
     return (
-      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+      <div className="min-h-screen bg-background">
         <Navbar />
         <div className="flex min-h-[80vh] flex-col items-center justify-center gap-4 text-center">
-          <AlertCircle className="size-12 text-zinc-400" />
-          <h2 className="text-2xl font-bold text-zinc-700 dark:text-zinc-200">
+          <AlertCircle className="size-12 text-foreground/40" />
+          <h2 className="text-2xl font-bold text-foreground/70">
             Pengguna tidak ditemukan
           </h2>
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-foreground/50">
             Profil yang kamu cari tidak ada atau sudah dihapus.
           </p>
         </div>
@@ -278,7 +278,7 @@ export default function ProfilPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+    <div className="min-h-screen bg-background">
       <Navbar />
 
       <main className="mx-auto max-w-3xl px-4 py-24 md:px-8">
@@ -286,12 +286,12 @@ export default function ProfilPage() {
         <div className="mb-8 flex flex-col items-center gap-4 text-center">
           {/* Avatar with coming-soon overlay for owners */}
           <div className="group relative">
-            <Avatar className="size-28 ring-4 ring-white shadow-lg dark:ring-zinc-800">
+            <Avatar className="size-28 ring-4 ring-background shadow-lg">
               <AvatarImage
                 src={profile.image ?? undefined}
                 alt={profile.name}
               />
-              <AvatarFallback className="bg-zinc-200 text-2xl font-bold text-zinc-600 dark:bg-zinc-700 dark:text-zinc-200">
+              <AvatarFallback className="bg-foreground/20 text-2xl font-bold text-foreground">
                 {getInitials(profile.name)}
               </AvatarFallback>
             </Avatar>
@@ -302,14 +302,14 @@ export default function ProfilPage() {
                 title="Ganti foto profil"
                 onClick={() => avatarInputRef.current?.click()}
                 disabled={avatarUploading}
-                className="absolute inset-0 flex flex-col items-center justify-center rounded-full bg-black/50 opacity-0 transition-opacity group-hover:opacity-100 disabled:cursor-not-allowed"
+                className="absolute inset-0 flex flex-col items-center justify-center rounded-full bg-foreground/50 opacity-0 transition-opacity group-hover:opacity-100 disabled:cursor-not-allowed"
               >
                 {avatarUploading ? (
-                  <Loader2 className="size-5 animate-spin text-white" />
+                  <Loader2 className="size-5 animate-spin text-background" />
                 ) : (
-                  <Camera className="size-5 text-white" />
+                  <Camera className="size-5 text-background" />
                 )}
-                <span className="mt-1 text-[10px] font-semibold text-white/90">
+                <span className="mt-1 text-[10px] font-semibold text-background/90">
                   {avatarUploading ? "Mengunggah…" : "Ubah Foto"}
                 </span>
               </button>
@@ -318,7 +318,7 @@ export default function ProfilPage() {
 
           {/* Name */}
           <div className="flex flex-col items-center gap-1">
-            <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
+            <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
               {profile.name}
             </h1>
 
@@ -335,7 +335,7 @@ export default function ProfilPage() {
           </div>
 
           {/* Stats row */}
-          <div className="mt-2 flex items-center gap-6 text-sm text-zinc-500 dark:text-zinc-400">
+          <div className="mt-2 flex items-center gap-6 text-sm text-foreground/50">
             <span className="flex items-center gap-1.5">
               <FileText className="size-4" />
               {profile.postCount} postingan
@@ -348,7 +348,7 @@ export default function ProfilPage() {
 
           {/* Success banner */}
           {saveSuccess && (
-            <div className="flex items-center gap-2 rounded-lg bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+            <div className="flex items-center gap-2 rounded-lg bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
               <CheckCircle2 className="size-4 shrink-0" />
               Profil berhasil diperbarui.
             </div>
@@ -408,7 +408,7 @@ export default function ProfilPage() {
                       className="gap-1.5"
                     >
                       {saving ? (
-                        <span className="size-3.5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                        <span className="size-3.5 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
                       ) : (
                         <Save className="size-3.5" />
                       )}
@@ -424,7 +424,7 @@ export default function ProfilPage() {
                     </Button>
                   </div>
                 ) : (
-                  <p className="text-sm font-medium text-zinc-800 dark:text-zinc-100">
+                  <p className="text-sm font-medium text-foreground">
                     {profile.name}
                   </p>
                 )}
@@ -439,15 +439,15 @@ export default function ProfilPage() {
                   <Separator />
                   <div className="grid gap-1.5">
                     <Label className="flex items-center gap-1.5">
-                      <Mail className="size-3.5 text-zinc-400" />
+                      <Mail className="size-3.5 text-foreground/40" />
                       Email
                     </Label>
                     <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-zinc-800 dark:text-zinc-100">
+                      <p className="text-sm font-medium text-foreground">
                         {profile.email}
                       </p>
                       {profile.emailVerified ? (
-                        <span className="flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
+                        <span className="flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
                           <CheckCircle2 className="size-3" />
                           Terverifikasi
                         </span>
@@ -484,21 +484,21 @@ export default function ProfilPage() {
                   disabled={avatarUploading}
                 />
 
-                <Avatar className="size-16 ring-2 ring-zinc-200 dark:ring-zinc-700">
+                <Avatar className="size-16 ring-2 ring-foreground/20">
                   <AvatarImage
                     src={profile.image ?? undefined}
                     alt={profile.name}
                   />
-                  <AvatarFallback className="bg-zinc-200 text-lg font-bold text-zinc-600 dark:bg-zinc-700 dark:text-zinc-200">
+                  <AvatarFallback className="bg-foreground/20 text-lg font-bold text-foreground">
                     {getInitials(profile.name)}
                   </AvatarFallback>
                 </Avatar>
 
                 <div className="flex-1">
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  <p className="text-sm text-foreground/60">
                     Format yang didukung: JPG, PNG, GIF, WebP (maks 2 MB).
                   </p>
-                  <p className="mt-1 text-xs text-zinc-400">
+                  <p className="mt-1 text-xs text-foreground/40">
                     Foto akan disimpan ke Cloudinary dan langsung diperbarui di
                     semua halaman.
                   </p>
@@ -539,7 +539,7 @@ export default function ProfilPage() {
                 {profile.providers.map((provider) => (
                   <div
                     key={provider}
-                    className="flex items-center gap-3 rounded-lg border bg-zinc-50 px-4 py-3 dark:border-zinc-700 dark:bg-zinc-800/50"
+                    className="flex items-center gap-3 rounded-lg border bg-foreground/5 px-4 py-3"
                   >
                     {PROVIDER_ICONS[provider] ? (
                       <Image
@@ -554,12 +554,12 @@ export default function ProfilPage() {
                         }}
                       />
                     ) : (
-                      <div className="size-5 rounded-full bg-zinc-300 dark:bg-zinc-600" />
+                      <div className="size-5 rounded-full bg-foreground/20" />
                     )}
-                    <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">
+                    <span className="text-sm font-medium text-foreground">
                       {PROVIDER_LABELS[provider] ?? provider}
                     </span>
-                    <span className="ml-auto flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400">
+                    <span className="ml-auto flex items-center gap-1 text-xs text-primary">
                       <CheckCircle2 className="size-3.5" />
                       Terhubung
                     </span>
@@ -610,12 +610,10 @@ function StatBox({
   icon: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-2 rounded-xl border bg-white p-4 shadow-xs dark:border-zinc-700 dark:bg-zinc-800/60">
+    <div className="flex flex-col gap-2 rounded-xl border bg-card p-4 shadow-xs">
       {icon}
-      <p className="text-lg font-bold text-zinc-800 dark:text-zinc-100">
-        {value}
-      </p>
-      <p className="text-xs text-zinc-500">{label}</p>
+      <p className="text-lg font-bold text-foreground">{value}</p>
+      <p className="text-xs text-foreground/50">{label}</p>
     </div>
   );
 }
