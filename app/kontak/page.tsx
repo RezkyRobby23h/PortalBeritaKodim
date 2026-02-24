@@ -126,10 +126,10 @@ export default function KontakPage() {
                   <div>
                     <h3 className="mb-1 font-bold">Email Resmi</h3>
                     <a
-                      href="mailto:humas@kodim1408mks.mil.id"
+                      href="mailto:info@kodim1408mks.mil.id"
                       className="text-foreground/60 transition-colors hover:text-primary"
                     >
-                      humas@kodim1408mks.mil.id
+                      info@kodim1408mks.mil.id
                     </a>
                   </div>
                 </div>

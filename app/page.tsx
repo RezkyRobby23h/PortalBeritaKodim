@@ -1,9 +1,16 @@
+// TODO: tampilkan berita lainnya tidak akan kembali ke atas
+// TODO: search bar on landing page
+// TODO: scroll to top FOAB for landing page and news page
+// TODO: viewer increment on news detail page
 // TODO: api security
 // TODO: fe security
 // TODO: refactor code for uniformity and readability
 // TODO: shadcn sonner for alert and notification
 // TODO: scrollable table when content overflow
 // TODO: dashboard with simple stats
+// TODO: peta lokasi
+// TODO: filter by date range
+// TODO: profile edit
 // TODO: multiple category for posts
 "use client";
 

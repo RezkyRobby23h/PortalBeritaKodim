@@ -92,10 +92,10 @@ export default function Footer() {
               <p className="flex items-center gap-2">
                 <Mail size={16} className="text-primary shrink-0" />
                 <a
-                  href="mailto:humas@kodim1408mks.mil.id"
+                  href="mailto:info@kodim1408mks.mil.id"
                   className="text-foreground/60 hover:text-primary transition-colors"
                 >
-                  humas@kodim1408mks.mil.id
+                  info@kodim1408mks.mil.id
                 </a>
               </p>
               <p className="flex items-center gap-2">
