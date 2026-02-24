@@ -22,7 +22,6 @@ import { Toggle } from "@/components/ui/toggle";
 import { CategoryBadge } from "@/components/custom/category-badge";
 import { BreakingNews } from "@/components/custom/breaking-news";
 import { PostsGrid, PostsSkeleton } from "@/components/custom/posts-grid";
-import { PostsGrid } from "@/components/custom/posts-grid";
 import { ScrollToTopButton } from "@/components/custom/scroll-to-top";
 import { Skeleton } from "@/components/ui/skeleton";
 import { type NewsCardPost } from "@/components/custom/news-card";

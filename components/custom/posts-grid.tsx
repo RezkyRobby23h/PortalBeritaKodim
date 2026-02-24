@@ -74,7 +74,6 @@ export function PostsGrid({
   initialPage,
   totalPages,
   categoryId = null,
-  searchQuery = "",
 }: PostsGridProps) {
   const [posts, setPosts] = useState<NewsCardPost[]>(initialPosts);
   const [page, setPage] = useState(initialPage);
