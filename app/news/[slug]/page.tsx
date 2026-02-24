@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { after } from "next/server";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -124,10 +125,12 @@ export default async function NewsDetailPage({ params }: PageProps) {
 
   const post: PostDetail = rawPost;
 
-  // Increment view count (fire-and-forget, no await to keep page fast)
-  void prisma.post.update({
-    where: { id: post.id },
-    data: { views: { increment: 1 } },
+  // Increment view count after response is sent (server-side, non-blocking)
+  after(async () => {
+    await prisma.post.update({
+      where: { id: post.id },
+      data: { views: { increment: 1 } },
+    });
   });
 
   // Fetch related posts from the same category
