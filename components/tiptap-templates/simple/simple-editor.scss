@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+
+/* Use DM Sans for the editor content */
+.tiptap.ProseMirror {
+  font-family: "DM Sans", sans-serif;
+}
+
+/* ── Wrapper: contain to parent, not full viewport ─────────────────────────── */
+.simple-editor-wrapper {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+
+  /* Map TipTap color tokens → app shadcn CSS variables so light/dark
+     mode theme switching works automatically without separate overrides. */
+  --tt-toolbar-bg-color: var(--card);
+  --tt-toolbar-border-color: var(--border);
+  --tt-bg-color: var(--background);
+  --tt-border-color: var(--border);
+  --tt-border-color-tint: var(--border);
+  --tt-scrollbar-color: var(--border);
+  --tt-card-bg-color: var(--card);
+  --tt-card-border-color: var(--border);
+  --tt-theme-text: var(--foreground);
+
+  /* Replace purple brand color ramp with project's primary green scale.
+     Hue ~153° matches oklch(0.713 0.194 153.15) used as --primary. */
+  --tt-brand-color-50:  oklch(0.97 0.030 153);
+  --tt-brand-color-100: oklch(0.93 0.060 153);
+  --tt-brand-color-200: oklch(0.87 0.100 153);
+  --tt-brand-color-300: oklch(0.80 0.140 153);
+  --tt-brand-color-400: oklch(0.74 0.170 153);
+  --tt-brand-color-500: var(--primary); /* = --primary */
+  --tt-brand-color-600: oklch(0.62 0.195 153);
+  --tt-brand-color-700: oklch(0.51 0.175 153);
+  --tt-brand-color-800: oklch(0.38 0.130 153);
+  --tt-brand-color-900: oklch(0.27 0.090 153);
+  --tt-brand-color-950: oklch(0.18 0.055 153);
+
+  /* Cursor and text-selection highlight */
+  --tt-cursor-color: var(--primary);
+  --tt-selection-color: color-mix(in oklch, var(--primary) 20%, transparent);
+
+  /* Image upload node — force green (primary) theme */
+  --tiptap-image-upload-active: var(--primary);
+  --tiptap-image-upload-icon-bg: var(--primary);
+  --tiptap-image-upload-border-active: var(--primary);
+  --tiptap-image-upload-progress-bg: color-mix(in oklch, var(--primary) 8%, transparent);
+}
+
+/* ── Editor content area ────────────────────────────────────────────────────── */
+.simple-editor-content {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.simple-editor-content .tiptap.ProseMirror.simple-editor {
+  flex: 1;
+  min-height: 24rem;
+  padding: 1.25rem 1.5rem;
+}
+
+@media screen and (max-width: 480px) {
+  .simple-editor-content .tiptap.ProseMirror.simple-editor {
+    padding: 1rem;
+  }
+}

@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
 interface Category {
   id: string;
@@ -313,27 +314,15 @@ export default function CreatePostPage() {
           </FormSection>
 
           {/* ── Full Content ── */}
-          <FormSection
-            label="Isi Konten"
-            htmlFor="fullContent"
-            error={errors.fullContent}
-          >
-            <textarea
-              id="fullContent"
-              value={fullContent}
-              onChange={(e) => setFullContent(e.target.value)}
-              placeholder="Tulis konten berita di sini..."
-              rows={18}
+          <FormSection label="Isi Konten" error={errors.fullContent}>
+            <div
               className={cn(
-                "border-input bg-background w-full rounded-md border px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow]",
-                "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-                "resize-y placeholder:text-muted-foreground",
-                errors.fullContent && "border-destructive",
+                "rounded-md border",
+                errors.fullContent ? "border-destructive" : "border-input",
               )}
-            />
-            <p className="text-right text-xs text-muted-foreground">
-              {fullContent.length} karakter
-            </p>
+            >
+              <SimpleEditor value={fullContent} onChange={setFullContent} />
+            </div>
           </FormSection>
 
           {/* ── Summary ── */}

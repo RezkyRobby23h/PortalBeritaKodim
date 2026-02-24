@@ -1,9 +1,8 @@
-// TODO: change theme color
-// TODO: tiptap editor for news content
 // TODO: api security
 // TODO: fe security
 // TODO: refactor code for uniformity and readability
 // TODO: shadcn sonner for alert and notification
+// TODO: scrollable table when content overflow
 // TODO: dashboard with simple stats
 // TODO: multiple category for posts
 "use client";
