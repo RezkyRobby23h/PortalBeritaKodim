@@ -17,7 +17,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "@/components/ui/separator";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Dialog,
   DialogContent,
@@ -109,16 +116,26 @@ function RoleBadge({ role }: { role: Role }) {
 // ── Row skeleton ──────────────────────────────────────────────────────────────
 function RowSkeleton() {
   return (
-    <div className="flex items-center gap-4 px-4 py-3">
-      <div className="flex flex-1 flex-col gap-1.5">
-        <Skeleton className="h-4 w-40" />
-        <Skeleton className="h-3 w-56" />
-      </div>
-      <Skeleton className="h-5 w-16 rounded-full" />
-      <Skeleton className="h-8 w-28 rounded-md" />
-      <Skeleton className="h-3 w-20" />
-      <Skeleton className="h-8 w-8 rounded-md" />
-    </div>
+    <TableRow>
+      <TableCell>
+        <div className="flex flex-col gap-1.5">
+          <Skeleton className="h-4 w-40" />
+          <Skeleton className="h-3 w-56" />
+        </div>
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-5 w-16 rounded-full" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-8 w-28 rounded-md" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-3 w-20" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-8 w-8 rounded-md" />
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -299,98 +316,100 @@ export default function UsersPage() {
         </div>
 
         {/* Table card */}
-        <Card className="overflow-hidden gap-0 py-0">
-          {/* Header */}
-          <div className="grid grid-cols-[1fr_auto_auto_auto_auto] items-center gap-4 bg-foreground/5 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            <span>Pengguna</span>
-            <span className="w-16">Role</span>
-            <span className="w-28 text-center">Ubah Role</span>
-            <span className="w-24">Bergabung</span>
-            <span className="w-8" />
-          </div>
-
-          <Separator />
-
-          {/* Rows */}
-          {loading ? (
-            Array.from({ length: 5 }).map((_, i) => (
-              <div key={i}>
-                <RowSkeleton />
-                {i < 4 && <Separator />}
-              </div>
-            ))
-          ) : users.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-16 text-muted-foreground">
-              <Users className="size-10 opacity-30" />
-              <p className="text-sm font-medium">
-                {debouncedSearch
-                  ? `Tidak ada pengguna yang cocok dengan "${debouncedSearch}"`
-                  : roleFilter
-                    ? `Tidak ada pengguna dengan role tersebut`
-                    : "Belum ada pengguna."}
-              </p>
-            </div>
-          ) : (
-            users.map((user, i) => (
-              <div key={user.id}>
-                <div className="grid grid-cols-[1fr_auto_auto_auto_auto] items-center gap-4 px-4 py-3">
-                  {/* Name + email */}
-                  <div className="flex min-w-0 flex-col gap-0.5">
-                    <span className="truncate text-sm font-medium text-foreground">
-                      {user.name}
-                    </span>
-                    <span className="truncate text-xs text-muted-foreground">
-                      {user.email}
-                    </span>
-                  </div>
-
-                  {/* Current role badge */}
-                  <div className="w-16">
-                    <RoleBadge role={user.role} />
-                  </div>
-
-                  {/* Role change select */}
-                  <div className="w-28 flex items-center gap-1.5">
-                    <Select
-                      value={user.role}
-                      disabled={updatingId === user.id}
-                      onValueChange={(val) =>
-                        handleRoleChange(user, val as Role)
-                      }
-                    >
-                      <SelectTrigger className="h-8 text-xs">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="USER">User</SelectItem>
-                        <SelectItem value="EDITOR">Editor</SelectItem>
-                        <SelectItem value="ADMIN">Admin</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {updatingId === user.id && (
-                      <Loader2 className="size-3.5 shrink-0 animate-spin text-muted-foreground" />
-                    )}
-                  </div>
-
-                  {/* Join date */}
-                  <span className="w-24 text-xs text-muted-foreground">
-                    {formatDate(user.createdAt)}
-                  </span>
-
-                  {/* Delete */}
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    className="size-8 text-muted-foreground hover:text-destructive"
-                    onClick={() => setConfirmUser(user)}
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
-                {i < users.length - 1 && <Separator />}
-              </div>
-            ))
-          )}
+        <Card className="gap-0 py-0">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-foreground/5 hover:bg-foreground/5">
+                <TableHead className="text-xs font-semibold uppercase tracking-wide">
+                  Pengguna
+                </TableHead>
+                <TableHead className="text-xs font-semibold uppercase tracking-wide w-20">
+                  Role
+                </TableHead>
+                <TableHead className="text-xs font-semibold uppercase tracking-wide w-32 text-center">
+                  Ubah Role
+                </TableHead>
+                <TableHead className="text-xs font-semibold uppercase tracking-wide w-28">
+                  Bergabung
+                </TableHead>
+                <TableHead className="w-10" />
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {loading ? (
+                Array.from({ length: 5 }).map((_, i) => <RowSkeleton key={i} />)
+              ) : users.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5}>
+                    <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
+                      <Users className="size-10 opacity-30" />
+                      <p className="text-sm font-medium">
+                        {debouncedSearch
+                          ? `Tidak ada pengguna yang cocok dengan "${debouncedSearch}"`
+                          : roleFilter
+                            ? `Tidak ada pengguna dengan role tersebut`
+                            : "Belum ada pengguna."}
+                      </p>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                users.map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell>
+                      <div className="flex min-w-0 flex-col gap-0.5">
+                        <span className="truncate text-sm font-medium text-foreground">
+                          {user.name}
+                        </span>
+                        <span className="truncate text-xs text-muted-foreground">
+                          {user.email}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <RoleBadge role={user.role} />
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1.5">
+                        <Select
+                          value={user.role}
+                          disabled={updatingId === user.id}
+                          onValueChange={(val) =>
+                            handleRoleChange(user, val as Role)
+                          }
+                        >
+                          <SelectTrigger className="h-8 text-xs w-28">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="USER">User</SelectItem>
+                            <SelectItem value="EDITOR">Editor</SelectItem>
+                            <SelectItem value="ADMIN">Admin</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        {updatingId === user.id && (
+                          <Loader2 className="size-3.5 shrink-0 animate-spin text-muted-foreground" />
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-xs text-muted-foreground">
+                      {formatDate(user.createdAt)}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="size-8 text-muted-foreground hover:text-destructive"
+                        onClick={() => setConfirmUser(user)}
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
         </Card>
 
         {/* Pagination */}

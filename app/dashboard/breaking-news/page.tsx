@@ -25,6 +25,14 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -88,13 +96,23 @@ const EMPTY_FORM: FormState = {
 // ── Row skeleton ──────────────────────────────────────────────────────────────
 function RowSkeleton() {
   return (
-    <div className="flex items-center gap-4 px-4 py-3">
-      <Skeleton className="h-5 w-16 rounded-full" />
-      <Skeleton className="h-4 flex-1 max-w-xs" />
-      <Skeleton className="h-4 w-24" />
-      <Skeleton className="h-8 w-8 rounded-md" />
-      <Skeleton className="h-8 w-8 rounded-md" />
-    </div>
+    <TableRow>
+      <TableCell>
+        <Skeleton className="h-5 w-16 rounded-full" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-4 w-full max-w-xs" />
+      </TableCell>
+      <TableCell className="hidden sm:table-cell">
+        <Skeleton className="h-4 w-24 ml-auto" />
+      </TableCell>
+      <TableCell>
+        <div className="flex justify-end gap-1">
+          <Skeleton className="h-8 w-8 rounded-md" />
+          <Skeleton className="h-8 w-8 rounded-md" />
+        </div>
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -649,110 +667,116 @@ export default function BreakingNewsPage() {
         </div>
 
         {/* List card */}
-        <Card className="overflow-hidden py-0 gap-0">
-          {/* Header */}
-          <div className="flex items-center gap-4 bg-foreground/5 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            <span className="w-16 shrink-0">Status</span>
-            <span className="flex-1">Teks Ticker</span>
-            <span className="hidden w-32 text-right sm:block">Sumber</span>
-            <span className="w-20 text-right">Aksi</span>
-          </div>
-          <Separator />
-
-          {loading ? (
-            Array.from({ length: 5 }).map((_, i) => (
-              <div key={i}>
-                <RowSkeleton />
-                {i < 4 && <Separator />}
-              </div>
-            ))
-          ) : items.length === 0 ? (
-            <div className="flex flex-col items-center gap-2 py-16 text-muted-foreground">
-              <Newspaper className="size-8 opacity-30" />
-              <p className="text-sm">
-                {debouncedSearch
-                  ? "Tidak ada item yang cocok dengan pencarian"
-                  : "Belum ada breaking news"}
-              </p>
-              {!debouncedSearch && (
-                <Button asChild size="sm" variant="outline">
-                  <Link href="/dashboard/breaking-news/create">
-                    <Plus className="size-3.5" />
-                    Tambah Item
-                  </Link>
-                </Button>
+        <Card className="py-0 gap-0">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-foreground/5 hover:bg-foreground/5">
+                <TableHead className="text-xs font-semibold uppercase tracking-wide w-20">
+                  Status
+                </TableHead>
+                <TableHead className="text-xs font-semibold uppercase tracking-wide">
+                  Teks Ticker
+                </TableHead>
+                <TableHead className="hidden text-xs font-semibold uppercase tracking-wide w-36 text-right sm:table-cell">
+                  Sumber
+                </TableHead>
+                <TableHead className="text-xs font-semibold uppercase tracking-wide w-24 text-right">
+                  Aksi
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {loading ? (
+                Array.from({ length: 5 }).map((_, i) => <RowSkeleton key={i} />)
+              ) : items.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={4}>
+                    <div className="flex flex-col items-center gap-2 py-12 text-muted-foreground">
+                      <Newspaper className="size-8 opacity-30" />
+                      <p className="text-sm">
+                        {debouncedSearch
+                          ? "Tidak ada item yang cocok dengan pencarian"
+                          : "Belum ada breaking news"}
+                      </p>
+                      {!debouncedSearch && (
+                        <Button asChild size="sm" variant="outline">
+                          <Link href="/dashboard/breaking-news/create">
+                            <Plus className="size-3.5" />
+                            Tambah Item
+                          </Link>
+                        </Button>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                items.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>
+                      <button
+                        type="button"
+                        title={
+                          item.isActive
+                            ? "Klik untuk nonaktifkan"
+                            : "Klik untuk aktifkan"
+                        }
+                        onClick={() => toggleActive(item)}
+                        className="cursor-pointer"
+                      >
+                        <Badge
+                          variant={item.isActive ? "default" : "secondary"}
+                        >
+                          {item.isActive ? "Aktif" : "Nonaktif"}
+                        </Badge>
+                      </button>
+                    </TableCell>
+                    <TableCell className="max-w-0">
+                      <p className="truncate text-sm font-medium">
+                        {item.text}
+                      </p>
+                    </TableCell>
+                    <TableCell className="hidden text-right sm:table-cell">
+                      {item.post ? (
+                        <Badge variant="outline" className="text-xs">
+                          <Newspaper className="mr-1 size-3" />
+                          Post
+                        </Badge>
+                      ) : item.labelLink ? (
+                        <Badge variant="outline" className="text-xs">
+                          <Link2 className="mr-1 size-3" />
+                          Manual
+                        </Badge>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">—</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center justify-end gap-1">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="size-8 text-muted-foreground hover:text-foreground"
+                          onClick={() => openEdit(item)}
+                          title="Edit"
+                        >
+                          <Pencil className="size-3.5" />
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="size-8 text-muted-foreground hover:text-destructive"
+                          onClick={() => setConfirmDeleteId(item.id)}
+                          title="Hapus"
+                        >
+                          <Trash2 className="size-3.5" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
               )}
-            </div>
-          ) : (
-            items.map((item, idx) => (
-              <div key={item.id}>
-                <div className="flex items-center gap-4 px-4 py-3">
-                  {/* Status badge */}
-                  <div className="w-16 shrink-0">
-                    <button
-                      type="button"
-                      title={
-                        item.isActive
-                          ? "Klik untuk nonaktifkan"
-                          : "Klik untuk aktifkan"
-                      }
-                      onClick={() => toggleActive(item)}
-                      className="cursor-pointer"
-                    >
-                      <Badge variant={item.isActive ? "default" : "secondary"}>
-                        {item.isActive ? "Aktif" : "Nonaktif"}
-                      </Badge>
-                    </button>
-                  </div>
-
-                  {/* Text */}
-                  <p className="flex-1 truncate text-sm font-medium">
-                    {item.text}
-                  </p>
-
-                  {/* Source label */}
-                  <div className="hidden w-32 shrink-0 text-right sm:block">
-                    {item.post ? (
-                      <Badge variant="outline" className="text-xs">
-                        <Newspaper className="mr-1 size-3" />
-                        Post
-                      </Badge>
-                    ) : item.labelLink ? (
-                      <Badge variant="outline" className="text-xs">
-                        <Link2 className="mr-1 size-3" />
-                        Manual
-                      </Badge>
-                    ) : (
-                      <span className="text-xs text-muted-foreground">—</span>
-                    )}
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex w-20 shrink-0 items-center justify-end gap-1">
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="size-8 text-muted-foreground hover:text-foreground"
-                      onClick={() => openEdit(item)}
-                      title="Edit"
-                    >
-                      <Pencil className="size-3.5" />
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="size-8 text-muted-foreground hover:text-destructive"
-                      onClick={() => setConfirmDeleteId(item.id)}
-                      title="Hapus"
-                    >
-                      <Trash2 className="size-3.5" />
-                    </Button>
-                  </div>
-                </div>
-                {idx < items.length - 1 && <Separator />}
-              </div>
-            ))
-          )}
+            </TableBody>
+          </Table>
         </Card>
 
         {/* Pagination */}

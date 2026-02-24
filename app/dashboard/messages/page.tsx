@@ -17,7 +17,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "@/components/ui/separator";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Dialog,
   DialogContent,
@@ -108,17 +115,27 @@ function ReadBadge({ isRead }: { isRead: boolean }) {
 
 function RowSkeleton() {
   return (
-    <div className="flex items-center gap-3 px-4 py-3">
-      <div className="flex flex-1 flex-col gap-1.5">
-        <Skeleton className="h-4 w-2/5" />
-        <Skeleton className="h-3 w-1/3" />
-      </div>
-      <Skeleton className="h-5 w-16 rounded-full" />
-      <Skeleton className="h-3 w-24" />
-      <Skeleton className="h-8 w-8 rounded-md" />
-      <Skeleton className="h-8 w-8 rounded-md" />
-      <Skeleton className="h-8 w-8 rounded-md" />
-    </div>
+    <TableRow>
+      <TableCell>
+        <div className="flex flex-col gap-1.5">
+          <Skeleton className="h-4 w-2/5" />
+          <Skeleton className="h-3 w-1/3" />
+        </div>
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-5 w-16 rounded-full mx-auto" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-3 w-24" />
+      </TableCell>
+      <TableCell>
+        <div className="flex justify-end gap-1">
+          <Skeleton className="h-8 w-8 rounded-md" />
+          <Skeleton className="h-8 w-8 rounded-md" />
+          <Skeleton className="h-8 w-8 rounded-md" />
+        </div>
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -380,117 +397,112 @@ export default function MessagesPage() {
         </div>
 
         {/* Table card */}
-        <Card className="overflow-hidden gap-0 py-0">
-          {/* Header */}
-          <div className="grid grid-cols-[1fr_auto_auto_auto_auto] items-center gap-3 bg-foreground/5 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            <span>Pengirim</span>
-            <span className="w-20 text-center">Status</span>
-            <span className="w-28">Tanggal</span>
-            <span className="w-20" />
-          </div>
-
-          <Separator />
-
-          {/* Rows */}
-          {loading ? (
-            Array.from({ length: 5 }).map((_, i) => (
-              <div key={i}>
-                <RowSkeleton />
-                {i < 4 && <Separator />}
-              </div>
-            ))
-          ) : messages.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-16 text-muted-foreground">
-              <MessageSquare className="size-10 opacity-30" />
-              <p className="text-sm font-medium">
-                {debouncedSearch || statusFilter !== "all"
-                  ? "Tidak ada pesan yang cocok dengan filter."
-                  : "Belum ada pesan masuk."}
-              </p>
-            </div>
-          ) : (
-            messages.map((msg, i) => (
-              <div key={msg.id}>
-                <div className="grid grid-cols-[1fr_auto_auto_auto_auto] items-center gap-3 px-4 py-3">
-                  {/* Sender info */}
-                  <div className="flex min-w-0 flex-col gap-0.5">
-                    <span
-                      className={cn(
-                        "truncate text-sm",
-                        msg.isRead
-                          ? "font-medium text-foreground/70"
-                          : "font-bold text-foreground",
-                      )}
-                    >
-                      {msg.fullName}
-                    </span>
-                    <span className="truncate text-xs text-muted-foreground">
-                      {msg.email}
-                    </span>
-                  </div>
-
-                  {/* Status */}
-                  <div className="w-20 flex justify-center">
-                    <ReadBadge isRead={msg.isRead} />
-                  </div>
-
-                  {/* Date */}
-                  <span className="w-28 text-xs text-muted-foreground">
-                    {formatDate(msg.createdAt)}
-                  </span>
-
-                  {/* Actions */}
-                  <div className="flex w-20 items-center justify-end gap-1">
-                    {/* View */}
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="size-8 text-muted-foreground hover:text-foreground"
-                      disabled={viewLoading}
-                      onClick={() => handleView(msg.id)}
-                      title="Lihat pesan"
-                    >
-                      <Eye className="size-4" />
-                    </Button>
-
-                    {/* Toggle read */}
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="size-8 text-muted-foreground hover:text-foreground"
-                      disabled={togglingId === msg.id}
-                      onClick={() => handleToggleRead(msg)}
-                      title={
-                        msg.isRead
-                          ? "Tandai belum dibaca"
-                          : "Tandai sudah dibaca"
-                      }
-                    >
-                      {togglingId === msg.id ? (
-                        <Loader2 className="size-4 animate-spin" />
-                      ) : msg.isRead ? (
-                        <Mail className="size-4" />
-                      ) : (
-                        <MailOpen className="size-4" />
-                      )}
-                    </Button>
-
-                    {/* Delete */}
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="size-8 text-muted-foreground hover:text-destructive"
-                      onClick={() => setConfirmMessage(msg)}
-                      title="Hapus pesan"
-                    >
-                      <Trash2 className="size-4" />
-                    </Button>
-                  </div>
-                </div>
-                {i < messages.length - 1 && <Separator />}
-              </div>
-            ))
-          )}
+        <Card className="gap-0 py-0">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-foreground/5 hover:bg-foreground/5">
+                <TableHead className="text-xs font-semibold uppercase tracking-wide">
+                  Pengirim
+                </TableHead>
+                <TableHead className="text-xs font-semibold uppercase tracking-wide w-24 text-center">
+                  Status
+                </TableHead>
+                <TableHead className="text-xs font-semibold uppercase tracking-wide w-32">
+                  Tanggal
+                </TableHead>
+                <TableHead className="w-24" />
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {loading ? (
+                Array.from({ length: 5 }).map((_, i) => <RowSkeleton key={i} />)
+              ) : messages.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={4}>
+                    <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
+                      <MessageSquare className="size-10 opacity-30" />
+                      <p className="text-sm font-medium">
+                        {debouncedSearch || statusFilter !== "all"
+                          ? "Tidak ada pesan yang cocok dengan filter."
+                          : "Belum ada pesan masuk."}
+                      </p>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                messages.map((msg) => (
+                  <TableRow key={msg.id}>
+                    <TableCell>
+                      <div className="flex min-w-0 flex-col gap-0.5">
+                        <span
+                          className={cn(
+                            "truncate text-sm",
+                            msg.isRead
+                              ? "font-medium text-foreground/70"
+                              : "font-bold text-foreground",
+                          )}
+                        >
+                          {msg.fullName}
+                        </span>
+                        <span className="truncate text-xs text-muted-foreground">
+                          {msg.email}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <ReadBadge isRead={msg.isRead} />
+                    </TableCell>
+                    <TableCell className="text-xs text-muted-foreground">
+                      {formatDate(msg.createdAt)}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center justify-end gap-1">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="size-8 text-muted-foreground hover:text-foreground"
+                          disabled={viewLoading}
+                          onClick={() => handleView(msg.id)}
+                          title="Lihat pesan"
+                        >
+                          <Eye className="size-4" />
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="size-8 text-muted-foreground hover:text-foreground"
+                          disabled={togglingId === msg.id}
+                          onClick={() => handleToggleRead(msg)}
+                          title={
+                            msg.isRead
+                              ? "Tandai belum dibaca"
+                              : "Tandai sudah dibaca"
+                          }
+                        >
+                          {togglingId === msg.id ? (
+                            <Loader2 className="size-4 animate-spin" />
+                          ) : msg.isRead ? (
+                            <Mail className="size-4" />
+                          ) : (
+                            <MailOpen className="size-4" />
+                          )}
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="size-8 text-muted-foreground hover:text-destructive"
+                          onClick={() => setConfirmMessage(msg)}
+                          title="Hapus pesan"
+                        >
+                          <Trash2 className="size-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
         </Card>
 
         {/* Pagination */}

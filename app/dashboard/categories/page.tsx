@@ -16,7 +16,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "@/components/ui/separator";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Dialog,
   DialogContent,
@@ -52,12 +59,17 @@ const LIMIT = 10;
 // ── Row skeleton ──────────────────────────────────────────────────────────────
 function RowSkeleton() {
   return (
-    <div className="flex items-center gap-4 px-4 py-3">
-      <Skeleton className="h-5 w-24 rounded-full" />
-      <Skeleton className="h-4 flex-1 max-w-50" />
-      <Skeleton className="h-4 w-12 ml-auto" />
-      <Skeleton className="h-8 w-8 rounded-md" />
-    </div>
+    <TableRow>
+      <TableCell>
+        <Skeleton className="h-5 w-28 rounded-full" />
+      </TableCell>
+      <TableCell className="text-right">
+        <Skeleton className="h-4 w-12 ml-auto" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-8 w-8 rounded-md" />
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -197,69 +209,67 @@ export default function CategoriesPage() {
         </div>
 
         {/* Table card */}
-        <Card className="overflow-hidden py-0 gap-0">
-          {/* Header row */}
-          <div className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-4 bg-foreground/5 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            <span>Nama</span>
-            <span className="text-right w-16">Postingan</span>
-            <span className="w-4" />
-          </div>
-
-          <Separator />
-
-          {/* Rows */}
-          {loading ? (
-            Array.from({ length: 5 }).map((_, i) => (
-              <div key={i}>
-                <RowSkeleton />
-                {i < 4 && <Separator />}
-              </div>
-            ))
-          ) : categories.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-16 text-muted-foreground">
-              <Tag className="size-10 opacity-30" />
-              <p className="text-sm font-medium">
-                {debouncedSearch
-                  ? `Tidak ada kategori yang cocok dengan "${debouncedSearch}"`
-                  : "Belum ada kategori. Buat yang pertama!"}
-              </p>
-              {!debouncedSearch && (
-                <Button asChild size="sm" variant="outline">
-                  <Link href="/dashboard/categories/create">
-                    <Plus className="mr-1.5 size-3.5" />
-                    Buat Kategori
-                  </Link>
-                </Button>
+        <Card className="py-0 gap-0">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-foreground/5 hover:bg-foreground/5">
+                <TableHead className="text-xs font-semibold uppercase tracking-wide">
+                  Nama
+                </TableHead>
+                <TableHead className="text-right text-xs font-semibold uppercase tracking-wide w-24">
+                  Postingan
+                </TableHead>
+                <TableHead className="w-10" />
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {loading ? (
+                Array.from({ length: 5 }).map((_, i) => <RowSkeleton key={i} />)
+              ) : categories.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={3}>
+                    <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
+                      <Tag className="size-10 opacity-30" />
+                      <p className="text-sm font-medium">
+                        {debouncedSearch
+                          ? `Tidak ada kategori yang cocok dengan "${debouncedSearch}"`
+                          : "Belum ada kategori. Buat yang pertama!"}
+                      </p>
+                      {!debouncedSearch && (
+                        <Button asChild size="sm" variant="outline">
+                          <Link href="/dashboard/categories/create">
+                            <Plus className="mr-1.5 size-3.5" />
+                            Buat Kategori
+                          </Link>
+                        </Button>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                categories.map((cat) => (
+                  <TableRow key={cat.id}>
+                    <TableCell>
+                      <CategoryBadge name={cat.name} color={cat.color} />
+                    </TableCell>
+                    <TableCell className="text-right text-sm text-muted-foreground">
+                      {cat._count.posts} <span className="text-xs">post</span>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="size-8 text-muted-foreground hover:text-destructive"
+                        onClick={() => setConfirmId(cat.id)}
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
               )}
-            </div>
-          ) : (
-            categories.map((cat, i) => (
-              <div key={cat.id}>
-                <div className="grid grid-cols-[1fr_auto_auto] items-center gap-4 px-4 py-3">
-                  {/* Name + slug */}
-                  <div className="flex min-w-0 flex-col gap-1">
-                    <CategoryBadge name={cat.name} color={cat.color} />
-                  </div>
-
-                  {/* Post count */}
-                  <span className="w-16 text-right text-sm text-muted-foreground">
-                    {cat._count.posts} <span className="text-xs">post</span>
-                  </span>
-
-                  {/* Delete button */}
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    className="size-8 text-muted-foreground hover:text-destructive"
-                    onClick={() => setConfirmId(cat.id)}
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
-                {i < categories.length - 1 && <Separator />}
-              </div>
-            ))
-          )}
+            </TableBody>
+          </Table>
         </Card>
 
         {/* Pagination */}

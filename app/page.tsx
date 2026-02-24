@@ -1,12 +1,11 @@
-// TODO: api security
-// TODO: fe security
-// TODO: refactor code for uniformity and readability
 // TODO: shadcn sonner for alert and notification
-// TODO: scrollable table when content overflow
 // TODO: dashboard with simple stats
 // TODO: peta lokasi
 // TODO: filter by date range
 // TODO: profile edit
+// TODO: api security
+// TODO: fe security
+// TODO: refactor code for uniformity and readability
 // TODO: multiple category for posts
 "use client";
 

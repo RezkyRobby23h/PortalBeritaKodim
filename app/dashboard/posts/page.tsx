@@ -19,7 +19,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "@/components/ui/separator";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Dialog,
   DialogContent,
@@ -102,18 +109,32 @@ function StatusBadge({ published }: { published: boolean }) {
 // ── Row skeleton ──────────────────────────────────────────────────────────────
 function RowSkeleton() {
   return (
-    <div className="flex items-center gap-3 px-4 py-3">
-      <div className="flex flex-1 flex-col gap-1.5">
-        <Skeleton className="h-4 w-2/3" />
-        <Skeleton className="h-3 w-1/3" />
-      </div>
-      <Skeleton className="h-5 w-16 rounded-full" />
-      <Skeleton className="h-5 w-12 rounded-full" />
-      <Skeleton className="h-5 w-8 rounded-full" />
-      <Skeleton className="h-3 w-8" />
-      <Skeleton className="h-3 w-20" />
-      <Skeleton className="h-8 w-16 rounded-md" />
-    </div>
+    <TableRow>
+      <TableCell>
+        <div className="flex flex-col gap-1.5">
+          <Skeleton className="h-4 w-2/3" />
+          <Skeleton className="h-3 w-1/3" />
+        </div>
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-5 w-20 rounded-full" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-5 w-14 rounded-full" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-6 w-6 rounded" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-3 w-6" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-3 w-20" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-8 w-16 rounded-md" />
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -341,144 +362,142 @@ export default function PostsPage() {
         </div>
 
         {/* Table card */}
-        <Card className="overflow-hidden gap-0 py-0">
-          {/* Header */}
-          <div className="grid grid-cols-[1fr_auto_auto_auto_auto_auto_auto] items-center gap-3 bg-foreground/5 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            <span>Judul</span>
-            <span className="w-24">Kategori</span>
-            <span className="w-16 text-center">Status</span>
-            <span className="w-8 text-center">
-              <Sparkles className="size-3.5 mx-auto" />
-            </span>
-            <span className="w-8 text-center">
-              <Eye className="size-3.5 mx-auto" />
-            </span>
-            <span className="w-24">Tanggal</span>
-            <span className="w-16" />
-          </div>
-
-          <Separator />
-
-          {/* Rows */}
-          {loading ? (
-            Array.from({ length: 5 }).map((_, i) => (
-              <div key={i}>
-                <RowSkeleton />
-                {i < 4 && <Separator />}
-              </div>
-            ))
-          ) : posts.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-16 text-muted-foreground">
-              <FileText className="size-10 opacity-30" />
-              <p className="text-sm font-medium">
-                {debouncedSearch || categoryFilter || statusFilter !== "all"
-                  ? "Tidak ada postingan yang cocok dengan filter."
-                  : "Belum ada postingan. Buat yang pertama!"}
-              </p>
-              {!debouncedSearch &&
-                !categoryFilter &&
-                statusFilter === "all" && (
-                  <Button asChild size="sm" variant="outline">
-                    <Link href="/dashboard/posts/create">
-                      <Plus className="mr-1.5 size-3.5" />
-                      Buat Postingan
-                    </Link>
-                  </Button>
-                )}
-            </div>
-          ) : (
-            posts.map((post, i) => (
-              <div key={post.id}>
-                <div className="grid grid-cols-[1fr_auto_auto_auto_auto_auto_auto] items-center gap-3 px-4 py-3">
-                  {/* Title + authors */}
-                  <div className="flex min-w-0 flex-col gap-0.5">
-                    <span className="truncate text-sm font-medium text-foreground">
-                      {post.title}
-                    </span>
-                    <span className="truncate text-xs text-muted-foreground">
-                      {post.authors.map((a) => a.name).join(", ")}
-                    </span>
-                  </div>
-
-                  {/* Category */}
-                  <div className="w-24 flex justify-start">
-                    <CategoryBadge
-                      name={post.category.name}
-                      color={post.category.color}
-                    />
-                  </div>
-
-                  {/* Status */}
-                  <div className="w-16 flex justify-center">
-                    <StatusBadge published={post.published} />
-                  </div>
-
-                  {/* Highlight */}
-                  <div className="w-8 flex justify-center">
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className={cn(
-                        "size-7",
-                        post.isHighlight
-                          ? "text-amber-400 hover:text-amber-500"
-                          : "text-muted-foreground hover:text-amber-400",
-                      )}
-                      disabled={togglingHighlightId === post.id}
-                      onClick={() => handleToggleHighlight(post)}
-                      aria-label={
-                        post.isHighlight
-                          ? "Hapus highlight"
-                          : "Jadikan highlight"
-                      }
-                    >
-                      {togglingHighlightId === post.id ? (
-                        <Loader2 className="size-3.5 animate-spin" />
-                      ) : (
-                        <Sparkles
-                          className="size-3.5"
-                          fill={post.isHighlight ? "currentColor" : "none"}
-                        />
-                      )}
-                    </Button>
-                  </div>
-
-                  {/* Views */}
-                  <span className="w-8 text-center text-xs text-muted-foreground">
-                    {post.views}
-                  </span>
-
-                  {/* Date */}
-                  <span className="w-24 text-xs text-muted-foreground">
-                    {formatDate(post.createdAt)}
-                  </span>
-
-                  {/* Actions */}
-                  <div className="flex w-16 items-center justify-end gap-1">
-                    <Button
-                      asChild
-                      size="icon"
-                      variant="ghost"
-                      className="size-8 text-muted-foreground hover:text-foreground"
-                    >
-                      <Link href={`/dashboard/posts/${post.id}`}>
-                        <Pencil className="size-4" />
-                      </Link>
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="size-8 text-muted-foreground hover:text-destructive"
-                      onClick={() => setConfirmPost(post)}
-                    >
-                      <Trash2 className="size-4" />
-                    </Button>
-                  </div>
-                </div>
-                {i < posts.length - 1 && <Separator />}
-              </div>
-            ))
-          )}
+        <Card className="gap-0 py-0">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-foreground/5 hover:bg-foreground/5">
+                <TableHead className="text-xs font-semibold uppercase tracking-wide">
+                  Judul
+                </TableHead>
+                <TableHead className="text-xs font-semibold uppercase tracking-wide w-28">
+                  Kategori
+                </TableHead>
+                <TableHead className="text-xs font-semibold uppercase tracking-wide w-20 text-center">
+                  Status
+                </TableHead>
+                <TableHead className="text-xs font-semibold uppercase tracking-wide w-10 text-center">
+                  <Sparkles className="size-3.5 mx-auto" />
+                </TableHead>
+                <TableHead className="text-xs font-semibold uppercase tracking-wide w-10 text-center">
+                  <Eye className="size-3.5 mx-auto" />
+                </TableHead>
+                <TableHead className="text-xs font-semibold uppercase tracking-wide w-28">
+                  Tanggal
+                </TableHead>
+                <TableHead className="w-20" />
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {loading ? (
+                Array.from({ length: 5 }).map((_, i) => <RowSkeleton key={i} />)
+              ) : posts.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={7}>
+                    <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
+                      <FileText className="size-10 opacity-30" />
+                      <p className="text-sm font-medium">
+                        {debouncedSearch ||
+                        categoryFilter ||
+                        statusFilter !== "all"
+                          ? "Tidak ada postingan yang cocok dengan filter."
+                          : "Belum ada postingan. Buat yang pertama!"}
+                      </p>
+                      {!debouncedSearch &&
+                        !categoryFilter &&
+                        statusFilter === "all" && (
+                          <Button asChild size="sm" variant="outline">
+                            <Link href="/dashboard/posts/create">
+                              <Plus className="mr-1.5 size-3.5" />
+                              Buat Postingan
+                            </Link>
+                          </Button>
+                        )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                posts.map((post) => (
+                  <TableRow key={post.id}>
+                    <TableCell>
+                      <div className="flex min-w-0 flex-col gap-0.5">
+                        <span className="truncate text-sm font-medium text-foreground">
+                          {post.title}
+                        </span>
+                        <span className="truncate text-xs text-muted-foreground">
+                          {post.authors.map((a) => a.name).join(", ")}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <CategoryBadge
+                        name={post.category.name}
+                        color={post.category.color}
+                      />
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <StatusBadge published={post.published} />
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className={cn(
+                          "size-7",
+                          post.isHighlight
+                            ? "text-amber-400 hover:text-amber-500"
+                            : "text-muted-foreground hover:text-amber-400",
+                        )}
+                        disabled={togglingHighlightId === post.id}
+                        onClick={() => handleToggleHighlight(post)}
+                        aria-label={
+                          post.isHighlight
+                            ? "Hapus highlight"
+                            : "Jadikan highlight"
+                        }
+                      >
+                        {togglingHighlightId === post.id ? (
+                          <Loader2 className="size-3.5 animate-spin" />
+                        ) : (
+                          <Sparkles
+                            className="size-3.5"
+                            fill={post.isHighlight ? "currentColor" : "none"}
+                          />
+                        )}
+                      </Button>
+                    </TableCell>
+                    <TableCell className="text-center text-xs text-muted-foreground">
+                      {post.views}
+                    </TableCell>
+                    <TableCell className="text-xs text-muted-foreground">
+                      {formatDate(post.createdAt)}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center justify-end gap-1">
+                        <Button
+                          asChild
+                          size="icon"
+                          variant="ghost"
+                          className="size-8 text-muted-foreground hover:text-foreground"
+                        >
+                          <Link href={`/dashboard/posts/${post.id}`}>
+                            <Pencil className="size-4" />
+                          </Link>
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="size-8 text-muted-foreground hover:text-destructive"
+                          onClick={() => setConfirmPost(post)}
+                        >
+                          <Trash2 className="size-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
         </Card>
 
         {/* Pagination */}
