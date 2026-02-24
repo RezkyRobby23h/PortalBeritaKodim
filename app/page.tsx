@@ -1,4 +1,3 @@
-// TODO: peta lokasi
 // TODO: filter by date range
 // TODO: profile edit
 // TODO: api security

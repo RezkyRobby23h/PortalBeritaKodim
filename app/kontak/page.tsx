@@ -244,6 +244,19 @@ export default function KontakPage() {
               </form>
             </div>
           </div>
+
+          {/* Map */}
+          <div className="mt-8 overflow-hidden rounded-2xl shadow-2xl">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d169.56693414864728!2d119.42058545394917!3d-5.151376479626394!2m3!1f227.33551088724099!2f45!3f0!3m2!1i1024!2i768!4f35!3m3!1m2!1s0x2dbf1d6149a5fee7%3A0x847d676acdebad1e!2sKodim%201408%2FBS!5e1!3m2!1sen!2sid!4v1771939180685!5m2!1sen!2sid"
+              className="w-full"
+              style={{ height: "clamp(300px, 41.67vw, 500px)", border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Lokasi Kodim 1408 Makassar"
+            />
+          </div>
         </div>
       </main>
 
