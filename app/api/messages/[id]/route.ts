@@ -13,24 +13,20 @@ async function requireAdminOrEditor() {
   return session;
 }
 
-// GET /api/message?id=... — get single message and mark as read
-export async function GET(req: NextRequest) {
+// GET /api/messages/[id]
+// Retrieves a single message by id. Requires ADMIN or EDITOR role.
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
+
     const session = await requireAdminOrEditor();
     if (!session) {
       return NextResponse.json(
         { error: "Tidak terautentikasi atau tidak diizinkan" },
         { status: 401 },
-      );
-    }
-
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
-
-    if (!id) {
-      return NextResponse.json(
-        { error: "Parameter id diperlukan" },
-        { status: 400 },
       );
     }
 
@@ -63,24 +59,21 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// PATCH /api/message?id=... — toggle isRead
-export async function PATCH(req: NextRequest) {
+// PATCH /api/messages/[id]
+// Toggles isRead status of a message. Requires ADMIN or EDITOR role.
+// Body: { isRead: boolean }
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
+
     const session = await requireAdminOrEditor();
     if (!session) {
       return NextResponse.json(
         { error: "Tidak terautentikasi atau tidak diizinkan" },
         { status: 401 },
-      );
-    }
-
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
-
-    if (!id) {
-      return NextResponse.json(
-        { error: "Parameter id diperlukan" },
-        { status: 400 },
       );
     }
 
@@ -128,24 +121,20 @@ export async function PATCH(req: NextRequest) {
   }
 }
 
-// DELETE /api/message?id=... — delete message
-export async function DELETE(req: NextRequest) {
+// DELETE /api/messages/[id]
+// Deletes a message by id. Requires ADMIN or EDITOR role.
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
+
     const session = await requireAdminOrEditor();
     if (!session) {
       return NextResponse.json(
         { error: "Tidak terautentikasi atau tidak diizinkan" },
         { status: 401 },
-      );
-    }
-
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
-
-    if (!id) {
-      return NextResponse.json(
-        { error: "Parameter id diperlukan" },
-        { status: 400 },
       );
     }
 

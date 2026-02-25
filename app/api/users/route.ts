@@ -7,6 +7,10 @@ import type { Role } from "@/lib/schemas/role";
 
 type SessionUser = typeof auth.$Infer.Session.user;
 
+// GET /api/users
+// Retrieves a paginated list of users. Requires ADMIN or EDITOR role.
+// Query params: page, limit, q (search by name or email), role
+// ADMIN: can filter by any role. EDITOR: restricted to ADMIN and EDITOR roles only.
 export async function GET(req: NextRequest) {
   try {
     const session = await auth.api.getSession({ headers: await headers() });

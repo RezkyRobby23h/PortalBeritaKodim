@@ -1,15 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import slugify from "slugify";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
-import { createCategorySchema } from "@/lib/schemas/category";
+import { updateUserRoleSchema } from "@/lib/schemas/role";
+import type { Role } from "@/lib/schemas/role";
 
 type SessionUser = typeof auth.$Infer.Session.user;
 
-export async function POST(req: NextRequest) {
+// PATCH /api/users/[id]
+// Updates a user's role. Requires ADMIN role.
+// Body: { role: Role }
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
+
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session) {
       return NextResponse.json(
@@ -17,13 +25,13 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     }
-    const userRole = (session.user as SessionUser).role ?? "";
-    if (!["ADMIN", "EDITOR"].includes(userRole)) {
+    const userRole = (session.user as SessionUser).role;
+    if (userRole !== "ADMIN") {
       return NextResponse.json({ error: "Tidak diizinkan" }, { status: 403 });
     }
 
     const body = await req.json();
-    const parsed = createCategorySchema.safeParse(body);
+    const parsed = updateUserRoleSchema.safeParse({ id, ...body });
 
     if (!parsed.success) {
       return NextResponse.json(
@@ -31,40 +39,36 @@ export async function POST(req: NextRequest) {
           error: "Validasi gagal",
           details: z.flattenError(parsed.error).fieldErrors,
         },
-        { status: 422 },
+        { status: 400 },
       );
     }
 
-    const { color } = parsed.data;
-    const name = parsed.data.name.toLowerCase();
-    const slug = slugify(name, { lower: true, strict: true });
+    const { role } = parsed.data;
 
-    const existing = await prisma.category.findFirst({ where: { slug } });
-    if (existing) {
-      return NextResponse.json(
-        {
-          error: "Validasi gagal",
-          details: { name: ["Kategori dengan nama ini sudah ada"] },
-        },
-        { status: 422 },
-      );
-    }
-
-    const category = await prisma.category.create({
-      data: { name, slug, color },
+    const user = await prisma.user.update({
+      where: { id },
+      data: { role: role as Role },
+      select: { id: true, name: true, email: true, role: true },
     });
 
-    return NextResponse.json(category, { status: 201 });
+    return NextResponse.json(user);
   } catch {
     return NextResponse.json(
-      { error: "Gagal membuat kategori" },
+      { error: "Gagal memperbarui pengguna" },
       { status: 500 },
     );
   }
 }
 
-export async function DELETE(req: NextRequest) {
+// DELETE /api/users/[id]
+// Deletes a user by id. Requires ADMIN role. Cannot delete own account.
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
+
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session) {
       return NextResponse.json(
@@ -72,27 +76,25 @@ export async function DELETE(req: NextRequest) {
         { status: 401 },
       );
     }
-    const userRole = (session.user as SessionUser).role ?? "";
-    if (!["ADMIN", "EDITOR"].includes(userRole)) {
+    const userRole = (session.user as SessionUser).role;
+    if (userRole !== "ADMIN") {
       return NextResponse.json({ error: "Tidak diizinkan" }, { status: 403 });
     }
 
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
-
-    if (!id) {
+    // Prevent self-deletion
+    if (id === session.user.id) {
       return NextResponse.json(
-        { error: "Parameter id diperlukan" },
+        { error: "Tidak dapat menghapus akun sendiri" },
         { status: 400 },
       );
     }
 
-    await prisma.category.delete({ where: { id } });
+    await prisma.user.delete({ where: { id } });
 
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json(
-      { error: "Gagal menghapus kategori" },
+      { error: "Gagal menghapus pengguna" },
       { status: 500 },
     );
   }
