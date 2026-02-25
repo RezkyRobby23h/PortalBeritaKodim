@@ -1,5 +1,3 @@
-// TODO: api security
-// TODO: fe security
 // TODO: refactor code for uniformity and readability
 // TODO: multiple category for posts
 "use client";
