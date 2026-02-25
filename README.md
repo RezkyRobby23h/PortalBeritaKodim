@@ -183,17 +183,19 @@ PortalBeritaKodim/
 │   ├── globals.css                    # Global styles
 │   ├── 📂 api/                        # API Route Handlers
 │   │   ├── auth/                      # Better Auth endpoints
-│   │   ├── posts/                     # GET semua post
-│   │   ├── post/                      # CRUD single post
-│   │   ├── categories/                # GET semua kategori
-│   │   ├── category/                  # CRUD single kategori
+│   │   ├── posts/                     # GET semua post & POST buat post baru
+│   │   │   └── [id]/                  # GET, PUT, PATCH, DELETE single post
+│   │   ├── categories/                # GET semua kategori & POST buat kategori
+│   │   │   └── [id]/                  # DELETE single kategori
 │   │   ├── users/                     # GET semua user
-│   │   ├── user/                      # CRUD single user
-│   │   ├── breaking-news/             # GET/POST breaking news
-│   │   ├── messages/                  # GET semua pesan
-│   │   ├── message/                   # CRUD single pesan
-│   │   ├── upload/                    # Upload gambar ke Cloudinary
-│   │   └── profile/                   # GET/UPDATE profil
+│   │   │   └── [id]/                  # PATCH, DELETE single user
+│   │   ├── breaking-news/             # GET, POST, PATCH, DELETE breaking news
+│   │   │   └── [id]/                  # PATCH, DELETE single breaking news
+│   │   ├── messages/                  # GET semua pesan & POST pesan baru
+│   │   │   └── [id]/                  # GET, PATCH, DELETE single pesan
+│   │   ├── upload/                    # POST upload gambar ke Cloudinary
+│   │   └── profile/
+│   │       └── [id]/                  # GET & PATCH profil pengguna
 │   ├── 📂 auth/                       # Halaman autentikasi
 │   │   ├── signin/                    # Halaman login
 │   │   └── signup/                    # Halaman registrasi
@@ -221,12 +223,20 @@ PortalBeritaKodim/
 │   │   └── image-upload.tsx           # Komponen upload gambar
 │   ├── 📂 tiptap-ui/                  # Komponen UI Tiptap editor
 │   ├── 📂 tiptap-extension/           # Ekstensi kustom Tiptap
+│   ├── 📂 tiptap-icons/               # Icon kustom untuk Tiptap
+│   ├── 📂 tiptap-node/                # Node kustom Tiptap
+│   ├── 📂 tiptap-templates/           # Template editor Tiptap
+│   ├── 📂 tiptap-ui-primitive/        # Komponen primitif Tiptap UI
 │   └── 📂 ui/                         # Komponen Shadcn UI
 │
 ├── 📂 lib/                             # Library & utilitas server
 │   ├── auth.ts                        # Konfigurasi Better Auth
 │   ├── auth-client.ts                 # Better Auth client
+│   ├── dal.ts                         # Data Access Layer
+│   ├── permissions.ts                 # Konfigurasi izin akses
 │   ├── prisma.ts                      # Prisma client instance
+│   ├── tiptap-utils.ts                # Utilitas Tiptap
+│   ├── utils.ts                       # Fungsi utilitas umum
 │   └── schemas/                       # Zod validation schemas
 │
 ├── 📂 prisma/                          # Prisma ORM
@@ -237,10 +247,11 @@ PortalBeritaKodim/
 ├── 📂 utils/                           # Fungsi utilitas
 ├── 📂 styles/                          # SCSS styles tambahan
 ├── 📂 public/                          # Static assets
+├── 📂 scripts/                         # Script utilitas
 ├── 📄 docker-compose.yml              # Konfigurasi Docker (PostgreSQL)
 ├── 📄 next.config.ts                  # Konfigurasi Next.js
 ├── 📄 prisma.config.ts                # Konfigurasi Prisma
-├── 📄 tailwind.config.ts              # Konfigurasi Tailwind CSS
+├── 📄 proxy.ts                        # Konfigurasi proxy
 ├── 📄 tsconfig.json                   # Konfigurasi TypeScript
 └── 📄 package.json                    # Dependencies & scripts
 ```
@@ -272,16 +283,30 @@ http://localhost:3000/api
 |--------|----------|-----------|
 | `GET` | `/api/posts` | Ambil semua post berita |
 | `POST` | `/api/posts` | Buat post baru |
-| `GET` | `/api/post/[id]` | Ambil detail post |
-| `PUT` | `/api/post/[id]` | Update post |
-| `DELETE` | `/api/post/[id]` | Hapus post |
+| `GET` | `/api/posts/[id]` | Ambil detail post |
+| `PUT` | `/api/posts/[id]` | Update post (full) |
+| `PATCH` | `/api/posts/[id]` | Update post sebagian (misal status publish) |
+| `DELETE` | `/api/posts/[id]` | Hapus post |
 | `GET` | `/api/categories` | Ambil semua kategori |
 | `POST` | `/api/categories` | Buat kategori baru |
-| `GET` | `/api/breaking-news` | Ambil breaking news |
-| `POST` | `/api/breaking-news` | Update breaking news |
-| `POST` | `/api/upload` | Upload gambar ke Cloudinary |
+| `DELETE` | `/api/categories/[id]` | Hapus kategori |
+| `GET` | `/api/breaking-news` | Ambil semua breaking news |
+| `POST` | `/api/breaking-news` | Buat breaking news baru |
+| `PATCH` | `/api/breaking-news` | Update breaking news |
+| `DELETE` | `/api/breaking-news` | Hapus breaking news |
+| `PATCH` | `/api/breaking-news/[id]` | Update single breaking news |
+| `DELETE` | `/api/breaking-news/[id]` | Hapus single breaking news |
 | `GET` | `/api/users` | Ambil semua pengguna |
+| `PATCH` | `/api/users/[id]` | Update pengguna |
+| `DELETE` | `/api/users/[id]` | Hapus pengguna |
 | `GET` | `/api/messages` | Ambil semua pesan |
+| `POST` | `/api/messages` | Kirim pesan baru |
+| `GET` | `/api/messages/[id]` | Ambil detail pesan |
+| `PATCH` | `/api/messages/[id]` | Update pesan (misal tandai sudah dibaca) |
+| `DELETE` | `/api/messages/[id]` | Hapus pesan |
+| `GET` | `/api/profile/[id]` | Ambil profil pengguna |
+| `PATCH` | `/api/profile/[id]` | Update profil pengguna |
+| `POST` | `/api/upload` | Upload gambar ke Cloudinary |
 | `ALL` | `/api/auth/*` | Endpoint autentikasi Better Auth |
 
 ---
