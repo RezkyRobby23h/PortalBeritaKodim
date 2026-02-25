@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import { requireAuth } from "@/lib/dal";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -12,16 +11,14 @@ cloudinary.config({
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 const MAX_SIZE_BYTES = 2 * 1024 * 1024; // 2 MB
 
+// POST /api/upload
+// Uploads an image file to Cloudinary. Requires authentication.
+// Body: multipart/form-data — fields: file (image), folder (optional, default: "portal-berita")
+// Allowed types: JPG, PNG, GIF, WebP. Max size: 2 MB.
 export async function POST(req: NextRequest) {
   try {
-    const session = await auth.api.getSession({ headers: await headers() });
-
-    if (!session) {
-      return NextResponse.json(
-        { error: "Tidak terautentikasi" },
-        { status: 401 },
-      );
-    }
+    const authResult = await requireAuth();
+    if (!authResult.ok) return authResult.response;
 
     const formData = await req.formData();
     const file = formData.get("file");

@@ -1,18 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { headers } from "next/headers";
 import { z } from "zod";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { requireAnyRole, STAFF_ROLES } from "@/lib/dal";
 import {
   breakingNewsSchema,
   updateBreakingNewsSchema,
 } from "@/lib/schemas/breaking-news";
-
-type SessionUser = typeof auth.$Infer.Session.user;
-
-function isAuthorized(role: string): boolean {
-  return ["ADMIN", "EDITOR"].includes(role);
-}
 
 // ── GET  /api/breaking-news ──────────────────────────────────────────────────
 export async function GET(req: NextRequest) {
@@ -82,17 +75,8 @@ export async function GET(req: NextRequest) {
 // ── POST  /api/breaking-news ─────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   try {
-    const session = await auth.api.getSession({ headers: await headers() });
-    if (!session) {
-      return NextResponse.json(
-        { error: "Tidak terautentikasi" },
-        { status: 401 },
-      );
-    }
-    const userRole = (session.user as SessionUser).role ?? "";
-    if (!isAuthorized(userRole)) {
-      return NextResponse.json({ error: "Tidak diizinkan" }, { status: 403 });
-    }
+    const authResult = await requireAnyRole(STAFF_ROLES);
+    if (!authResult.ok) return authResult.response;
 
     const body = await req.json();
     const parsed = breakingNewsSchema.safeParse(body);
@@ -157,17 +141,8 @@ export async function POST(req: NextRequest) {
 // ── PATCH  /api/breaking-news?id={id} ───────────────────────────────────────
 export async function PATCH(req: NextRequest) {
   try {
-    const session = await auth.api.getSession({ headers: await headers() });
-    if (!session) {
-      return NextResponse.json(
-        { error: "Tidak terautentikasi" },
-        { status: 401 },
-      );
-    }
-    const userRole = (session.user as SessionUser).role ?? "";
-    if (!isAuthorized(userRole)) {
-      return NextResponse.json({ error: "Tidak diizinkan" }, { status: 403 });
-    }
+    const authResult = await requireAnyRole(STAFF_ROLES);
+    if (!authResult.ok) return authResult.response;
 
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
@@ -259,17 +234,8 @@ export async function PATCH(req: NextRequest) {
 // ── DELETE  /api/breaking-news?id={id} ──────────────────────────────────────
 export async function DELETE(req: NextRequest) {
   try {
-    const session = await auth.api.getSession({ headers: await headers() });
-    if (!session) {
-      return NextResponse.json(
-        { error: "Tidak terautentikasi" },
-        { status: 401 },
-      );
-    }
-    const userRole = (session.user as SessionUser).role ?? "";
-    if (!isAuthorized(userRole)) {
-      return NextResponse.json({ error: "Tidak diizinkan" }, { status: 403 });
-    }
+    const authResult = await requireAnyRole(STAFF_ROLES);
+    if (!authResult.ok) return authResult.response;
 
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
@@ -278,6 +244,17 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json(
         { error: "Parameter id diperlukan" },
         { status: 400 },
+      );
+    }
+
+    const existing = await prisma.breakingNews.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+    if (!existing) {
+      return NextResponse.json(
+        { error: "Breaking news tidak ditemukan" },
+        { status: 404 },
       );
     }
 

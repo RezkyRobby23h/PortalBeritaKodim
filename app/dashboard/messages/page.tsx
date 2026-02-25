@@ -40,6 +40,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -201,13 +202,13 @@ export default function MessagesPage() {
   async function handleView(id: string) {
     setViewLoading(true);
     try {
-      const res = await fetch(`/api/message?id=${id}`);
+      const res = await fetch(`/api/messages/${id}`);
       if (res.ok) {
         const msg: Message = await res.json();
         setViewMessage(msg);
         // If unread → mark as read
         if (!msg.isRead) {
-          await fetch(`/api/message?id=${id}`, {
+          await fetch(`/api/messages/${id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ isRead: true }),
@@ -234,7 +235,7 @@ export default function MessagesPage() {
   async function handleToggleRead(msg: Message) {
     setTogglingId(msg.id);
     try {
-      const res = await fetch(`/api/message?id=${msg.id}`, {
+      const res = await fetch(`/api/messages/${msg.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isRead: !msg.isRead }),
@@ -248,7 +249,12 @@ export default function MessagesPage() {
             data: prev.data.map((m) => (m.id === updated.id ? updated : m)),
           };
         });
+      } else {
+        const body = await res.json().catch(() => ({}));
+        toast.error(body?.error ?? "Gagal memperbarui status pesan");
       }
+    } catch {
+      toast.error("Gagal memperbarui status pesan");
     } finally {
       setTogglingId(null);
     }
@@ -258,13 +264,21 @@ export default function MessagesPage() {
   async function handleDelete(id: string) {
     setDeletingId(id);
     try {
-      const res = await fetch(`/api/message?id=${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/messages/${id}`, { method: "DELETE" });
       if (res.ok) {
         setConfirmMessage(null);
+        toast.success("Pesan berhasil dihapus");
         const isLastOnPage = data?.data.length === 1 && page > 1;
         if (isLastOnPage) setPage((p) => p - 1);
         else await fetchMessages();
+      } else {
+        const body = await res.json().catch(() => ({}));
+        toast.error(body?.error ?? "Gagal menghapus pesan");
+        setConfirmMessage(null);
       }
+    } catch {
+      toast.error("Gagal menghapus pesan");
+      setConfirmMessage(null);
     } finally {
       setDeletingId(null);
     }

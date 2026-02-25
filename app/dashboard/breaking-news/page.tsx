@@ -394,6 +394,7 @@ export default function BreakingNewsPage() {
         return;
       }
 
+      toast.success("Breaking news berhasil diperbarui");
       setDialogOpen(false);
       await fetchItems();
     } catch {
@@ -412,10 +413,18 @@ export default function BreakingNewsPage() {
       });
       if (res.ok) {
         setConfirmDeleteId(null);
+        toast.success("Breaking news berhasil dihapus");
         const isLastOnPage = data?.data.length === 1 && page > 1;
         if (isLastOnPage) setPage((p) => p - 1);
         else await fetchItems();
+      } else {
+        const body = await res.json().catch(() => ({}));
+        toast.error(body?.error ?? "Gagal menghapus breaking news");
+        setConfirmDeleteId(null);
       }
+    } catch {
+      toast.error("Gagal menghapus breaking news");
+      setConfirmDeleteId(null);
     } finally {
       setDeletingId(null);
     }
@@ -424,14 +433,24 @@ export default function BreakingNewsPage() {
   // ── Quick toggle isActive ───────────────────────────────────────────────────
   async function toggleActive(item: BreakingNewsItem) {
     try {
-      await fetch(`/api/breaking-news?id=${item.id}`, {
+      const res = await fetch(`/api/breaking-news?id=${item.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isActive: !item.isActive }),
       });
-      await fetchItems();
+      if (res.ok) {
+        await fetchItems();
+        toast.success(
+          item.isActive
+            ? "Breaking news dinonaktifkan"
+            : "Breaking news diaktifkan",
+        );
+      } else {
+        const body = await res.json().catch(() => ({}));
+        toast.error(body?.error ?? "Gagal mengubah status breaking news");
+      }
     } catch {
-      /* silent */
+      toast.error("Gagal mengubah status breaking news");
     }
   }
 

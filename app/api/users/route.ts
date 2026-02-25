@@ -1,27 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { headers } from "next/headers";
+import { requireAnyRole, STAFF_ROLES, SessionUser } from "@/lib/dal";
 import { ROLES } from "@/lib/schemas/role";
 import type { Role } from "@/lib/schemas/role";
 
-type SessionUser = typeof auth.$Infer.Session.user;
-
+// GET /api/users
+// Retrieves a paginated list of users. Requires ADMIN or EDITOR role.
+// Query params: page, limit, q (search by name or email), role
+// ADMIN: can filter by any role. EDITOR: restricted to ADMIN and EDITOR roles only.
 export async function GET(req: NextRequest) {
   try {
-    const session = await auth.api.getSession({ headers: await headers() });
-    if (!session) {
-      return NextResponse.json(
-        { error: "Tidak terautentikasi" },
-        { status: 401 },
-      );
-    }
-    const userRole = (session.user as SessionUser).role ?? "";
-    if (!["ADMIN", "EDITOR"].includes(userRole)) {
-      return NextResponse.json({ error: "Tidak diizinkan" }, { status: 403 });
-    }
+    const authResult = await requireAnyRole(STAFF_ROLES);
+    if (!authResult.ok) return authResult.response;
+    const { session } = authResult;
 
-    const isAdmin = userRole === "ADMIN";
+    const isAdmin = (session.user as SessionUser).role === "ADMIN";
 
     const { searchParams } = new URL(req.url);
     const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10));

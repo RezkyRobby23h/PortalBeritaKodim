@@ -33,6 +33,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import {
   Select,
@@ -191,10 +192,10 @@ export default function UsersPage() {
     if (user.role === newRole) return;
     setUpdatingId(user.id);
     try {
-      const res = await fetch("/api/user", {
+      const res = await fetch(`/api/users/${user.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: user.id, role: newRole }),
+        body: JSON.stringify({ role: newRole }),
       });
       if (res.ok) {
         setData((prev) => {
@@ -206,7 +207,13 @@ export default function UsersPage() {
             ),
           };
         });
+        toast.success(`Role ${user.name} diubah menjadi ${newRole}`);
+      } else {
+        const body = await res.json().catch(() => ({}));
+        toast.error(body?.error ?? "Gagal mengubah role pengguna");
       }
+    } catch {
+      toast.error("Gagal mengubah role pengguna");
     } finally {
       setUpdatingId(null);
     }
@@ -215,13 +222,21 @@ export default function UsersPage() {
   async function handleDelete(id: string) {
     setDeletingId(id);
     try {
-      const res = await fetch(`/api/user?id=${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/users/${id}`, { method: "DELETE" });
       if (res.ok) {
         setConfirmUser(null);
+        toast.success("Pengguna berhasil dihapus");
         const isLastOnPage = data?.data.length === 1 && page > 1;
         if (isLastOnPage) setPage((p) => p - 1);
         else await fetchUsers();
+      } else {
+        const body = await res.json().catch(() => ({}));
+        toast.error(body?.error ?? "Gagal menghapus pengguna");
+        setConfirmUser(null);
       }
+    } catch {
+      toast.error("Gagal menghapus pengguna");
+      setConfirmUser(null);
     } finally {
       setDeletingId(null);
     }

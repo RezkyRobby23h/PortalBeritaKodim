@@ -35,6 +35,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
 import { toPascalCase } from "@/utils/string";
 import { CategoryBadge } from "@/components/custom/category-badge";
 import {
@@ -206,13 +207,21 @@ export default function PostsPage() {
   async function handleDelete(id: string) {
     setDeletingId(id);
     try {
-      const res = await fetch(`/api/post?id=${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/posts/${id}`, { method: "DELETE" });
       if (res.ok) {
         setConfirmPost(null);
+        toast.success("Postingan berhasil dihapus");
         const isLastOnPage = data?.data.length === 1 && page > 1;
         if (isLastOnPage) setPage((p) => p - 1);
         else await fetchPosts();
+      } else {
+        const body = await res.json().catch(() => ({}));
+        toast.error(body?.error ?? "Gagal menghapus postingan");
+        setConfirmPost(null);
       }
+    } catch {
+      toast.error("Gagal menghapus postingan");
+      setConfirmPost(null);
     } finally {
       setDeletingId(null);
     }
@@ -221,7 +230,7 @@ export default function PostsPage() {
   async function handleToggleHighlight(post: Post) {
     setTogglingHighlightId(post.id);
     try {
-      const res = await fetch(`/api/post?id=${post.id}`, {
+      const res = await fetch(`/api/posts/${post.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isHighlight: !post.isHighlight }),
@@ -239,7 +248,17 @@ export default function PostsPage() {
               }
             : prev,
         );
+        toast.success(
+          post.isHighlight
+            ? "Postingan dihapus dari sorotan"
+            : "Postingan ditandai sebagai sorotan",
+        );
+      } else {
+        const body = await res.json().catch(() => ({}));
+        toast.error(body?.error ?? "Gagal memperbarui sorotan");
       }
+    } catch {
+      toast.error("Gagal memperbarui sorotan");
     } finally {
       setTogglingHighlightId(null);
     }

@@ -32,6 +32,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
 import { toPascalCase } from "@/utils/string";
 import { CategoryBadge } from "@/components/custom/category-badge";
 
@@ -117,14 +118,22 @@ export default function CategoriesPage() {
   async function handleDelete(id: string) {
     setDeletingId(id);
     try {
-      const res = await fetch(`/api/category?id=${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/categories/${id}`, { method: "DELETE" });
       if (res.ok) {
         setConfirmId(null);
+        toast.success("Kategori berhasil dihapus");
         // Refetch; if last item on page > 1, go back
         const isLastOnPage = data?.data.length === 1 && page > 1;
         if (isLastOnPage) setPage((p) => p - 1);
         else await fetchCategories();
+      } else {
+        const body = await res.json().catch(() => ({}));
+        toast.error(body?.error ?? "Gagal menghapus kategori");
+        setConfirmId(null);
       }
+    } catch {
+      toast.error("Gagal menghapus kategori");
+      setConfirmId(null);
     } finally {
       setDeletingId(null);
     }

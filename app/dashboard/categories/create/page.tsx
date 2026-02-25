@@ -76,7 +76,7 @@ export default function CreateCategoryPage() {
     submitRef.current = true;
     setSubmitting(true);
     try {
-      const res = await fetch("/api/category", {
+      const res = await fetch("/api/categories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsed.data),

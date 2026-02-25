@@ -1,8 +1,9 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-// If your Prisma file is located elsewhere, you can change the path
+import { admin } from "better-auth/plugins";
 import { PrismaClient } from "@/lib/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { ac, adminRole, editorRole, userRole } from "@/lib/permissions";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
@@ -26,14 +27,21 @@ export const auth = betterAuth({
           },
         }
       : {},
-  user: {
-    additionalFields: {
-      role: {
-        type: "string",
-        required: false,
-        defaultValue: "USER",
-        input: false, // not settable by the user directly
+  plugins: [
+    admin({
+      /**
+       * Map to the uppercase role values used in the existing database enum
+       * (USER | ADMIN | EDITOR).
+       */
+      defaultRole: "USER",
+      adminRoles: ["ADMIN"],
+      /** Custom access-control that adds the EDITOR role + content resources */
+      ac,
+      roles: {
+        USER: userRole,
+        EDITOR: editorRole,
+        ADMIN: adminRole,
       },
-    },
-  },
+    }),
+  ],
 });

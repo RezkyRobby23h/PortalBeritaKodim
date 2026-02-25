@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { headers } from "next/headers";
+import { getSession, requireAuth } from "@/lib/dal";
 
 // GET /api/profile/[id]
 // Returns public profile data. If the requester is the same user, also returns email.
@@ -12,7 +11,7 @@ export async function GET(
   try {
     const { id } = await params;
 
-    const session = await auth.api.getSession({ headers: await headers() });
+    const session = await getSession();
 
     const user = await prisma.user.findUnique({
       where: { id },
@@ -71,14 +70,10 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params;
-    const session = await auth.api.getSession({ headers: await headers() });
 
-    if (!session) {
-      return NextResponse.json(
-        { error: "Tidak terautentikasi" },
-        { status: 401 },
-      );
-    }
+    const authResult = await requireAuth();
+    if (!authResult.ok) return authResult.response;
+    const { session } = authResult;
 
     if (session.user.id !== id) {
       return NextResponse.json(

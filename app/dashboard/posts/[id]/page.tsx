@@ -108,7 +108,7 @@ export default function EditPostPage() {
     async function load() {
       try {
         const [postRes, catRes, userRes] = await Promise.all([
-          fetch(`/api/post?id=${id}`),
+          fetch(`/api/posts/${id}`),
           fetch("/api/categories?limit=100"),
           fetch("/api/users"),
         ]);
@@ -178,7 +178,7 @@ export default function EditPostPage() {
 
     setSubmitting(true);
     try {
-      const res = await fetch(`/api/post?id=${id}`, {
+      const res = await fetch(`/api/posts/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsed.data),

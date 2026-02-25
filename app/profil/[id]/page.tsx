@@ -102,7 +102,6 @@ export default function ProfilPage() {
   const [nameInput, setNameInput] = useState("");
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
-  const [saveSuccess, setSaveSuccess] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
@@ -185,8 +184,7 @@ export default function ProfilPage() {
       await authClient.updateUser({ image: newImageUrl });
 
       setProfile((prev) => (prev ? { ...prev, image: newImageUrl } : prev));
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 4000);
+      toast.success("Foto profil berhasil diperbarui.");
     } catch {
       toast.error("Tidak dapat menghubungi server.");
     } finally {
@@ -199,7 +197,6 @@ export default function ProfilPage() {
     setEditing(false);
     setNameInput(profile?.name ?? "");
     setSaveError(null);
-    setSaveSuccess(false);
   }
 
   async function handleSave() {
@@ -211,7 +208,6 @@ export default function ProfilPage() {
     }
     setSaving(true);
     setSaveError(null);
-    setSaveSuccess(false);
 
     // Use better-auth's built-in updateUser to keep session in sync
     const result = await authClient.updateUser({ name: trimmed });
@@ -239,9 +235,8 @@ export default function ProfilPage() {
     const updated: Pick<ProfileData, "name"> = await res.json();
     setProfile((prev) => (prev ? { ...prev, name: updated.name } : prev));
     setEditing(false);
-    setSaveSuccess(true);
+    toast.success("Profil berhasil diperbarui.");
     setSaving(false);
-    setTimeout(() => setSaveSuccess(false), 4000);
   }
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -357,14 +352,6 @@ export default function ProfilPage() {
               Bergabung {formatDate(profile.createdAt)}
             </span>
           </div>
-
-          {/* Success banner */}
-          {saveSuccess && (
-            <div className="flex items-center gap-2 rounded-lg bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-              <CheckCircle2 className="size-4 shrink-0" />
-              Profil berhasil diperbarui.
-            </div>
-          )}
         </div>
 
         <div className="grid gap-6">

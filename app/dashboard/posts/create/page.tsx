@@ -147,7 +147,7 @@ export default function CreatePostPage() {
 
     setSubmitting(true);
     try {
-      const res = await fetch("/api/post", {
+      const res = await fetch("/api/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsed.data),
