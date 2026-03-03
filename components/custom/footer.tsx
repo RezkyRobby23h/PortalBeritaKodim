@@ -167,7 +167,7 @@ export default function Footer() {
               Aduan
             </Link>
             <Link
-              href="/program-pembinaan"
+              href="/program-satuan"
               className="hover:text-primary transition-colors"
             >
               Program
