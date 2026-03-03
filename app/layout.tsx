@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Portal Berita Kodim 1408 Makassar",
+  title: "Website Kodim 1408 Makassar",
   description:
-    "Portal berita resmi Kodim 1408 Makassar untuk informasi terkini, artikel mendalam, dan liputan eksklusif seputar kegiatan militer, pertahanan, dan keamanan di wilayah Sulawesi Selatan.",
+    "Website resmi Kodim 1408/Mks. Menyajikan informasi terkini seputar kegiatan yang dilakukan oleh Kodim 1408/Mks di wilayah Kota Makassar dan sekitarnya.",
   icons: {
     icon: "/favicon-16x16.png",
     shortcut: "/favicon-32x32.png",
