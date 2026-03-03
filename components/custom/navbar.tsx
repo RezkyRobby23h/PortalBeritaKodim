@@ -45,8 +45,7 @@ interface NavLink {
 const publicLinks: NavLink[] = [
   { label: "Beranda", href: "/" },
   { label: "Program Pembinaan", href: "/program-pembinaan" },
-  { label: "Bhakti TNI", href: "/bhakti-tni" },
-  { label: "Kontak", href: "/kontak" },
+  { label: "Aduan", href: "/kontak" },
 ];
 
 const dashboardLinks: NavLink[] = [

@@ -95,8 +95,7 @@ export default function KontakPage() {
                   <div>
                     <h3 className="mb-1 font-bold">Alamat Markas</h3>
                     <p className="leading-relaxed text-foreground/60">
-                      Jl. Perintis Kemerdekaan No.45, Kota Makassar, Sulawesi
-                      Selatan, Indonesia
+                      Jl. Lanto Dg. Pasewang, Maricaya Sel, Kec. Mamajang, Kota Makassar, Sulsel 90142
                     </p>
                   </div>
                 </div>
@@ -112,7 +111,7 @@ export default function KontakPage() {
                       href="tel:+62411123456"
                       className="text-foreground/60 transition-colors hover:text-primary"
                     >
-                      (0411) 123-4567
+                      -
                     </a>
                   </div>
                 </div>
@@ -128,7 +127,7 @@ export default function KontakPage() {
                       href="mailto:info@kodim1408mks.mil.id"
                       className="text-foreground/60 transition-colors hover:text-primary"
                     >
-                      info@kodim1408mks.mil.id
+                      kodim1408bsmakassar@gmail.com
                     </a>
                   </div>
                 </div>
@@ -141,9 +140,7 @@ export default function KontakPage() {
                   <div>
                     <h3 className="mb-1 font-bold">Jam Operasional</h3>
                     <p className="leading-relaxed text-foreground/60">
-                      Senin – Jumat: 08.00 – 16.00 WITA
-                      <br />
-                      Sabtu: 08.00 – 12.00 WITA
+                      Senin – Jumat: 07.00 – 17.00 WITA
                     </p>
                   </div>
                 </div>
@@ -152,7 +149,7 @@ export default function KontakPage() {
 
             {/* Contact Form */}
             <div className="rounded-2xl bg-card p-8 shadow-xl">
-              <h2 className="mb-6 text-2xl font-bold">Formulir Pesan</h2>
+              <h2 className="mb-6 text-2xl font-bold">Formulir Aduan</h2>
               <form className="space-y-5" onSubmit={handleSubmit}>
                 <div>
                   <label
@@ -218,13 +215,13 @@ export default function KontakPage() {
                     htmlFor="message"
                     className="mb-2 block text-sm font-semibold text-foreground/70"
                   >
-                    Pesan Anda
+                    Aduan Anda
                   </label>
                   <textarea
                     id="message"
                     name="message"
                     rows={5}
-                    placeholder="Tulis pesan Anda di sini..."
+                    placeholder="Tulis aduan Anda di sini..."
                     required
                     value={form.content}
                     onChange={(e) =>

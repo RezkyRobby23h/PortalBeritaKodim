@@ -7,7 +7,6 @@ import { Separator } from "@/components/ui/separator";
 const navLinks = [
   { label: "Beranda", href: "/" },
   { label: "Program Pembinaan", href: "/program-pembinaan" },
-  { label: "Bhakti TNI", href: "/bhakti-tni" },
   { label: "Kontak", href: "/kontak" },
 ];
 
@@ -170,12 +169,7 @@ export default function Footer() {
             >
               Program
             </Link>
-            <Link
-              href="/bhakti-tni"
-              className="hover:text-primary transition-colors"
-            >
-              Bhakti TNI
-            </Link>
+
           </div>
         </div>
       </div>
