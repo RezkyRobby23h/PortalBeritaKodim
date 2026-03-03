@@ -74,7 +74,7 @@ export default function AduanPage() {
           {/* Header */}
           <div className="mb-12 text-center">
             <h1 className="mb-3 text-4xl font-black leading-tight md:text-5xl">
-              Kontak Kodim 1408 Makassar
+              Aduan Kodim 1408 Makassar
             </h1>
             <p className="text-xl font-semibold text-primary">
               TNI AD Profesional di Kota Metropolitan Timur

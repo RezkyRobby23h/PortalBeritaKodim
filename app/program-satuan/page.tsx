@@ -83,7 +83,7 @@ export default function ProgramPembinaanPage() {
             {/* Article */}
             <article className="rounded-2xl bg-card p-8 shadow-xl md:p-12">
               <h1 className="mb-2 text-4xl font-black leading-tight tracking-tight md:text-5xl">
-                Program Pembinaan
+                Program Satuan
               </h1>
               <p className="mb-8 text-base font-semibold uppercase tracking-widest text-primary">
                 Kodim 1408 Makassar

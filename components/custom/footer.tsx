@@ -40,7 +40,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-sm leading-relaxed text-foreground/60">
-              Website resmi portal berita dan informasi Kodim 1408 Makassar.
+              Website resmi Kodim 1408 Makassar.
               Menyajikan berita terkini seputar kegiatan, program pembinaan
               teritorial, serta Bhakti TNI di wilayah Kota Makassar dan
               sekitarnya.
@@ -156,7 +156,7 @@ export default function Footer() {
 
         <div className="pt-6 flex flex-col items-center gap-3 text-sm text-foreground/60 sm:flex-row sm:justify-between">
           <p>
-            &copy; {new Date().getFullYear()} Portal Berita — Kodim 1408
+            &copy; {new Date().getFullYear()} Website Kodim 1408
             Makassar. Hak cipta dilindungi.
           </p>
           <div className="flex gap-4">
