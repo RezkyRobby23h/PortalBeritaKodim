@@ -1,24 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-
-type SessionUser = typeof auth.$Infer.Session.user;
+import { requireAnyRole, STAFF_ROLES } from "@/lib/dal";
 
 // GET /api/messages — paginated list (admin/editor only)
 export async function GET(req: NextRequest) {
   try {
-    const session = await auth.api.getSession({ headers: await headers() });
-    if (!session) {
-      return NextResponse.json(
-        { error: "Tidak terautentikasi" },
-        { status: 401 },
-      );
-    }
-    const userRole = (session.user as SessionUser).role ?? "";
-    if (!["ADMIN", "EDITOR"].includes(userRole)) {
-      return NextResponse.json({ error: "Tidak diizinkan" }, { status: 403 });
-    }
+    const authResult = await requireAnyRole(STAFF_ROLES);
+    if (!authResult.ok) return authResult.response;
 
     const { searchParams } = new URL(req.url);
 

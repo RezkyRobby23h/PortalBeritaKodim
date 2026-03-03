@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import Navbar from "@/components/custom/navbar";
 import Footer from "@/components/custom/footer";
 import Image from "next/image";
@@ -21,14 +22,10 @@ export default function KontakPage() {
     content: "",
   });
   const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSubmitting(true);
-    setError(null);
-    setSuccess(false);
     try {
       const res = await fetch("/api/messages", {
         method: "POST",
@@ -41,14 +38,16 @@ export default function KontakPage() {
         }),
       });
       if (res.ok) {
-        setSuccess(true);
+        toast.success(
+          "Pesan berhasil dikirim! Kami akan segera menghubungi Anda.",
+        );
         setForm({ fullName: "", email: "", phoneNumber: "", content: "" });
       } else {
         const json = await res.json();
-        setError((json.error as string) ?? "Gagal mengirim pesan.");
+        toast.error((json.error as string) ?? "Gagal mengirim pesan.");
       }
     } catch {
-      setError("Terjadi kesalahan. Silakan coba lagi.");
+      toast.error("Terjadi kesalahan. Silakan coba lagi.");
     } finally {
       setSubmitting(false);
     }
@@ -96,8 +95,7 @@ export default function KontakPage() {
                   <div>
                     <h3 className="mb-1 font-bold">Alamat Markas</h3>
                     <p className="leading-relaxed text-foreground/60">
-                      Jl. Perintis Kemerdekaan No.45, Kota Makassar, Sulawesi
-                      Selatan, Indonesia
+                      Jl. Lanto Dg. Pasewang, Maricaya Sel, Kec. Mamajang, Kota Makassar, Sulsel 90142
                     </p>
                   </div>
                 </div>
@@ -113,7 +111,7 @@ export default function KontakPage() {
                       href="tel:+62411123456"
                       className="text-foreground/60 transition-colors hover:text-primary"
                     >
-                      (0411) 123-4567
+                      -
                     </a>
                   </div>
                 </div>
@@ -129,7 +127,7 @@ export default function KontakPage() {
                       href="mailto:info@kodim1408mks.mil.id"
                       className="text-foreground/60 transition-colors hover:text-primary"
                     >
-                      info@kodim1408mks.mil.id
+                      kodim1408bsmakassar@gmail.com
                     </a>
                   </div>
                 </div>
@@ -142,9 +140,7 @@ export default function KontakPage() {
                   <div>
                     <h3 className="mb-1 font-bold">Jam Operasional</h3>
                     <p className="leading-relaxed text-foreground/60">
-                      Senin – Jumat: 08.00 – 16.00 WITA
-                      <br />
-                      Sabtu: 08.00 – 12.00 WITA
+                      Senin – Jumat: 07.00 – 17.00 WITA
                     </p>
                   </div>
                 </div>
@@ -153,7 +149,7 @@ export default function KontakPage() {
 
             {/* Contact Form */}
             <div className="rounded-2xl bg-card p-8 shadow-xl">
-              <h2 className="mb-6 text-2xl font-bold">Formulir Pesan</h2>
+              <h2 className="mb-6 text-2xl font-bold">Formulir Aduan</h2>
               <form className="space-y-5" onSubmit={handleSubmit}>
                 <div>
                   <label
@@ -219,13 +215,13 @@ export default function KontakPage() {
                     htmlFor="message"
                     className="mb-2 block text-sm font-semibold text-foreground/70"
                   >
-                    Pesan Anda
+                    Aduan Anda
                   </label>
                   <textarea
                     id="message"
                     name="message"
                     rows={5}
-                    placeholder="Tulis pesan Anda di sini..."
+                    placeholder="Tulis aduan Anda di sini..."
                     required
                     value={form.content}
                     onChange={(e) =>
@@ -234,16 +230,6 @@ export default function KontakPage() {
                     className="w-full resize-none rounded-lg border border-foreground/20 bg-background px-4 py-3 text-foreground outline-none transition-all placeholder:text-foreground/40 focus:border-transparent focus:ring-2 focus:ring-primary"
                   />
                 </div>
-                {error && (
-                  <p className="rounded-lg bg-red-50 px-4 py-3 text-sm font-medium text-red-700 dark:bg-red-900/20 dark:text-red-400">
-                    {error}
-                  </p>
-                )}
-                {success && (
-                  <p className="rounded-lg bg-primary/10 px-4 py-3 text-sm font-medium text-primary">
-                    Pesan berhasil dikirim! Kami akan segera menghubungi Anda.
-                  </p>
-                )}
                 <button
                   type="submit"
                   disabled={submitting}
@@ -254,6 +240,19 @@ export default function KontakPage() {
                 </button>
               </form>
             </div>
+          </div>
+
+          {/* Map */}
+          <div className="mt-8 overflow-hidden rounded-2xl shadow-2xl">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d169.56693414864728!2d119.42058545394917!3d-5.151376479626394!2m3!1f227.33551088724099!2f45!3f0!3m2!1i1024!2i768!4f35!3m3!1m2!1s0x2dbf1d6149a5fee7%3A0x847d676acdebad1e!2sKodim%201408%2FBS!5e1!3m2!1sen!2sid!4v1771939180685!5m2!1sen!2sid"
+              className="w-full"
+              style={{ height: "clamp(300px, 41.67vw, 500px)", border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Lokasi Kodim 1408 Makassar"
+            />
           </div>
         </div>
       </main>

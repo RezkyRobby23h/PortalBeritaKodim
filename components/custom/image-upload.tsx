@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { ImageUp, Loader2, X } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +30,6 @@ export function ImageUpload({
 }: ImageUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   function openPicker() {
     if (!disabled && !uploading) inputRef.current?.click();
@@ -39,7 +39,6 @@ export function ImageUpload({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setError(null);
     setUploading(true);
 
     try {
@@ -51,12 +50,12 @@ export function ImageUpload({
       const json = (await res.json()) as { url?: string; error?: string };
 
       if (!res.ok) {
-        setError(json.error ?? "Gagal mengunggah gambar.");
+        toast.error(json.error ?? "Gagal mengunggah gambar.");
         return;
       }
       if (json.url) onChange(json.url);
     } catch {
-      setError("Tidak dapat menghubungi server.");
+      toast.error("Tidak dapat menghubungi server.");
     } finally {
       setUploading(false);
       // reset so the same file can be re-selected
@@ -153,9 +152,6 @@ export function ImageUpload({
           )}
         </button>
       )}
-
-      {/* Error message */}
-      {error && <p className="text-xs text-destructive">{error}</p>}
     </div>
   );
 }

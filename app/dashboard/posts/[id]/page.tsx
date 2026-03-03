@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { z } from "zod";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 import Navbar from "@/components/custom/navbar";
 import { ImageUpload } from "@/components/custom/image-upload";
 import {
@@ -100,7 +101,6 @@ export default function EditPostPage() {
 
   const [errors, setErrors] = useState<UpdatePostFormErrors>({});
   const [submitting, setSubmitting] = useState(false);
-  const [serverError, setServerError] = useState("");
   const publishIntent = useRef(false);
 
   // Fetch post + categories + users on mount
@@ -108,7 +108,7 @@ export default function EditPostPage() {
     async function load() {
       try {
         const [postRes, catRes, userRes] = await Promise.all([
-          fetch(`/api/post?id=${id}`),
+          fetch(`/api/posts/${id}`),
           fetch("/api/categories?limit=100"),
           fetch("/api/users"),
         ]);
@@ -156,7 +156,6 @@ export default function EditPostPage() {
   // ── Submit ────────────────────────────────────────────────────────────────
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setServerError("");
 
     const parsed = updatePostSchema.safeParse({
       title,
@@ -179,7 +178,7 @@ export default function EditPostPage() {
 
     setSubmitting(true);
     try {
-      const res = await fetch(`/api/post?id=${id}`, {
+      const res = await fetch(`/api/posts/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsed.data),
@@ -187,13 +186,13 @@ export default function EditPostPage() {
 
       if (!res.ok) {
         const json = await res.json();
-        setServerError(json.error ?? "Terjadi kesalahan, coba lagi.");
+        toast.error(json.error ?? "Terjadi kesalahan, coba lagi.");
         return;
       }
 
       router.push("/dashboard/posts");
     } catch {
-      setServerError("Tidak dapat menghubungi server.");
+      toast.error("Tidak dapat menghubungi server.");
     } finally {
       setSubmitting(false);
     }
@@ -285,13 +284,6 @@ export default function EditPostPage() {
           onSubmit={handleSubmit}
           className="mx-auto flex max-w-3xl flex-col gap-8 px-4"
         >
-          {/* Server error */}
-          {serverError && (
-            <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-              {serverError}
-            </div>
-          )}
-
           {loadingData ? (
             <>
               <FieldSkeleton />

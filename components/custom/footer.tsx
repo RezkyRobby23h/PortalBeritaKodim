@@ -1,13 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
-import { SiInstagram, SiYoutube } from "react-icons/si";
+import { SiInstagram, SiYoutube, SiFacebook, SiX } from "react-icons/si";
 import { Separator } from "@/components/ui/separator";
 
 const navLinks = [
   { label: "Beranda", href: "/" },
   { label: "Program Pembinaan", href: "/program-pembinaan" },
-  { label: "Bhakti TNI", href: "/bhakti-tni" },
   { label: "Kontak", href: "/kontak" },
 ];
 
@@ -72,14 +71,7 @@ export default function Footer() {
                 <Clock size={16} className="text-primary mt-0.5 shrink-0" />
                 <div>
                   <p className="text-foreground/80">Senin - Jumat</p>
-                  <p className="text-foreground/60">08.00 - 16.00 WITA</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-2">
-                <Clock size={16} className="text-primary mt-0.5 shrink-0" />
-                <div>
-                  <p className="text-foreground/80">Sabtu</p>
-                  <p className="text-foreground/60">08.00 - 12.00 WITA</p>
+                  <p className="text-foreground/60">07.00 - 17.00 WITA</p>
                 </div>
               </div>
             </div>
@@ -92,47 +84,65 @@ export default function Footer() {
               <p className="flex items-center gap-2">
                 <Mail size={16} className="text-primary shrink-0" />
                 <a
-                  href="mailto:info@kodim1408mks.mil.id"
+                  href="mailto:kodim1408bsmakassar@gmail.com"
                   className="text-foreground/60 hover:text-primary transition-colors"
                 >
-                  info@kodim1408mks.mil.id
+                  kodim1408bsmakassar@gmail.com
                 </a>
               </p>
               <p className="flex items-center gap-2">
                 <Phone size={16} className="text-primary shrink-0" />
-                <a
-                  href="tel:+624111234567"
-                  className="text-foreground/60 hover:text-primary transition-colors"
-                >
-                  (0411) 123-4567
-                </a>
+                <span className="text-foreground/60">-</span>
               </p>
               <p className="flex items-center gap-2">
                 <SiInstagram size={16} className="text-primary shrink-0" />
                 <a
-                  href="#"
+                  href="https://instagram.com/kodim1408mks_"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-foreground/60 hover:text-primary transition-colors"
                 >
-                  @kodim1408mks
+                  @kodim1408mks_
+                </a>
+              </p>
+              <p className="flex items-center gap-2">
+                <SiFacebook size={16} className="text-primary shrink-0" />
+                <a
+                  href="https://www.facebook.com/profile.php?id=100069975648345"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground/60 hover:text-primary transition-colors"
+                >
+                  Kodim Makassar
+                </a>
+              </p>
+              <p className="flex items-center gap-2">
+                <SiX size={16} className="text-primary shrink-0" />
+                <a
+                  href="https://x.com/Kodim1408mks_"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground/60 hover:text-primary transition-colors"
+                >
+                  Kodim1408mks_
                 </a>
               </p>
               <p className="flex items-center gap-2">
                 <SiYoutube size={16} className="text-primary shrink-0" />
                 <a
-                  href="#"
+                  href="https://www.youtube.com/@Kodim_BS"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-foreground/60 hover:text-primary transition-colors"
                 >
-                  Kodim 1408 Makassar
+                  Kodim 1408/BS
                 </a>
               </p>
               <p className="flex items-start gap-2">
                 <MapPin size={16} className="text-primary mt-0.5 shrink-0" />
                 <span className="text-foreground/60">
-                  Jl. Tentara Pelajar No.1, Makassar, Sulawesi Selatan 90111
+                  Jl. Lanto Dg. Pasewang, Maricaya Sel, Kec. Mamajang, Kota
+                  Makassar, Sulsel 90142
                 </span>
               </p>
             </div>
@@ -159,12 +169,7 @@ export default function Footer() {
             >
               Program
             </Link>
-            <Link
-              href="/bhakti-tni"
-              className="hover:text-primary transition-colors"
-            >
-              Bhakti TNI
-            </Link>
+
           </div>
         </div>
       </div>

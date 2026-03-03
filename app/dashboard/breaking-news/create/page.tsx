@@ -13,6 +13,7 @@ import {
   X,
   ChevronsUpDown,
 } from "lucide-react";
+import { toast } from "sonner";
 import Navbar from "@/components/custom/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -226,7 +227,6 @@ export default function CreateBreakingNewsPage() {
   const [isActive, setIsActive] = useState(true);
 
   const [errors, setErrors] = useState<FormErrors>({});
-  const [serverError, setServerError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   function handlePostSelect(post: PostOption) {
@@ -244,7 +244,6 @@ export default function CreateBreakingNewsPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (submitRef.current) return;
-    setServerError("");
 
     const clientErrors: FormErrors = {};
     if (!text.trim()) clientErrors.text = ["Teks ticker diperlukan"];
@@ -281,14 +280,14 @@ export default function CreateBreakingNewsPage() {
         if (json.details) {
           setErrors(json.details);
         } else {
-          setServerError(json.error ?? "Terjadi kesalahan, coba lagi.");
+          toast.error(json.error ?? "Terjadi kesalahan, coba lagi.");
         }
         return;
       }
 
       router.push("/dashboard/breaking-news");
     } catch {
-      setServerError("Tidak dapat menghubungi server.");
+      toast.error("Tidak dapat menghubungi server.");
     } finally {
       submitRef.current = false;
       setSubmitting(false);
@@ -337,13 +336,6 @@ export default function CreateBreakingNewsPage() {
           onSubmit={handleSubmit}
           className="mx-auto flex max-w-xl flex-col gap-8 px-4"
         >
-          {/* Server error */}
-          {serverError && (
-            <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-              {serverError}
-            </div>
-          )}
-
           {/* ── Source mode ── */}
           <FormSection label="Sumber Konten">
             <div className="flex gap-2">

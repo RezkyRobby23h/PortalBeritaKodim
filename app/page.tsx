@@ -1,13 +1,4 @@
-// TODO: viewer increment on news detail page
-// TODO: api security
-// TODO: fe security
 // TODO: refactor code for uniformity and readability
-// TODO: shadcn sonner for alert and notification
-// TODO: scrollable table when content overflow
-// TODO: dashboard with simple stats
-// TODO: peta lokasi
-// TODO: filter by date range
-// TODO: profile edit
 // TODO: multiple category for posts
 "use client";
 
@@ -17,12 +8,15 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/custom/navbar";
 import Footer from "@/components/custom/footer";
+import type { DateRange } from "react-day-picker";
+import { format } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Toggle } from "@/components/ui/toggle";
 import { CategoryBadge } from "@/components/custom/category-badge";
 import { BreakingNews } from "@/components/custom/breaking-news";
-import { PostsGrid } from "@/components/custom/posts-grid";
+import { DateRangePicker } from "@/components/custom/date-range-picker";
+import { PostsGrid, PostsSkeleton } from "@/components/custom/posts-grid";
 import { ScrollToTopButton } from "@/components/custom/scroll-to-top";
 import { Skeleton } from "@/components/ui/skeleton";
 import { type NewsCardPost } from "@/components/custom/news-card";
@@ -81,11 +75,28 @@ function BerandaContent() {
     null,
   );
   const [isLoading, setIsLoading] = useState(true);
+  const [isCategoryLoading, setIsCategoryLoading] = useState(false);
+  const [categoryPosts, setCategoryPosts] = useState<NewsCardPost[]>([]);
+  const [categoryTotalPages, setCategoryTotalPages] = useState(1);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
+
+  const dateFrom = dateRange?.from ? format(dateRange.from, "yyyy-MM-dd") : "";
+  const dateTo = dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : "";
 
   useEffect(() => {
     async function load() {
+      setIsLoading(true);
+      setSelectedCategoryId(null);
+      const postsParams = new URLSearchParams({
+        status: "published",
+        limit: "20",
+      });
+      if (searchQuery) postsParams.set("q", searchQuery);
+      if (dateFrom) postsParams.set("dateFrom", dateFrom);
+      if (dateTo) postsParams.set("dateTo", dateTo);
+      const postsUrl = `/api/posts?${postsParams}`;
       const [postsRes, kategorisRes, highlightRes] = await Promise.all([
-        fetch("/api/posts?status=published&limit=20", { cache: "no-store" }),
+        fetch(postsUrl, { cache: "no-store" }),
         fetch("/api/categories?limit=100", { cache: "no-store" }),
         fetch("/api/posts?status=published&isHighlight=true&limit=5", {
           cache: "no-store",
@@ -107,10 +118,27 @@ function BerandaContent() {
       setIsLoading(false);
     }
     load();
-  }, []);
+  }, [searchQuery, dateRange, dateFrom, dateTo]);
 
-  function handleCategoryToggle(id: string) {
-    setSelectedCategoryId((prev) => (prev === id ? null : id));
+  async function handleCategoryToggle(id: string) {
+    const newId = selectedCategoryId === id ? null : id;
+    setSelectedCategoryId(newId);
+    if (!newId) return;
+    setIsCategoryLoading(true);
+    const catParams = new URLSearchParams({
+      status: "published",
+      limit: "5",
+      categoryId: newId,
+    });
+    if (dateFrom) catParams.set("dateFrom", dateFrom);
+    if (dateTo) catParams.set("dateTo", dateTo);
+    const res = await fetch(`/api/posts?${catParams}`, { cache: "no-store" });
+    if (res.ok) {
+      const j = await res.json();
+      setCategoryPosts((j.data as ApiPost[]).map(mapPost));
+      setCategoryTotalPages(j.totalPages ?? 1);
+    }
+    setIsCategoryLoading(false);
   }
 
   return (
@@ -125,27 +153,84 @@ function BerandaContent() {
             <div className="grid gap-5">
               <BreakingNews />
 
-              {isLoading ? (
-                <div className="flex flex-col gap-5">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <div key={i} className="flex gap-4 rounded-xl bg-card p-4">
-                      <Skeleton className="h-28 w-40 shrink-0 rounded-lg bg-foreground/50" />
-                      <div className="flex flex-1 flex-col gap-3 py-1">
-                        <Skeleton className="h-3 w-20 rounded bg-foreground/50" />
-                        <Skeleton className="h-4 w-full rounded bg-foreground/50" />
-                        <Skeleton className="h-4 w-3/4 rounded bg-foreground/50" />
-                        <Skeleton className="mt-auto h-3 w-24 rounded bg-foreground/50" />
+              {/* Mobile Highlight & Category — hidden on xl (shown in sidebar) */}
+              <div className="flex flex-col gap-4 overflow-hidden xl:hidden">
+                {/* Mobile Category */}
+                {isLoading ? (
+                  <div className="flex gap-2 overflow-x-auto pb-1">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Skeleton
+                        key={i}
+                        className="h-8 w-24 shrink-0 rounded-lg bg-foreground/50"
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  categories.length > 0 && (
+                    <div>
+                      <h3 className="mb-2 text-sm font-bold text-foreground">
+                        Kategori
+                      </h3>
+                      <div className="flex w-full gap-2 overflow-x-auto pb-1">
+                        <Toggle
+                          pressed={selectedCategoryId === null}
+                          onPressedChange={() => setSelectedCategoryId(null)}
+                          className="shrink-0 rounded-lg border border-foreground/20 px-3 py-1.5 text-xs font-semibold text-foreground/60 hover:border-primary hover:bg-primary/10 data-[state=on]:border-primary data-[state=on]:bg-primary/10 data-[state=on]:text-primary"
+                        >
+                          Semua
+                        </Toggle>
+                        {categories.map((cat) => (
+                          <Toggle
+                            key={cat.id}
+                            pressed={selectedCategoryId === cat.id}
+                            onPressedChange={() => handleCategoryToggle(cat.id)}
+                            className="shrink-0 rounded-lg border border-foreground/20 px-3 py-1.5 text-xs font-semibold text-foreground/60 hover:border-primary hover:bg-primary/10 data-[state=on]:border-primary data-[state=on]:bg-primary/10 data-[state=on]:text-primary"
+                          >
+                            <span
+                              className="mr-1.5 inline-block h-2 w-2 shrink-0 rounded-full"
+                              style={{
+                                backgroundColor: cat.color ?? "#6b7280",
+                              }}
+                            />
+                            {cat.name}
+                          </Toggle>
+                        ))}
                       </div>
                     </div>
-                  ))}
+                  )
+                )}
+
+                {/* Mobile Date Filter */}
+                <div>
+                  <h3 className="mb-2 text-sm font-bold text-foreground">
+                    Filter Tanggal
+                  </h3>
+                  <DateRangePicker value={dateRange} onChange={setDateRange} />
+                  {dateRange && (
+                    <button
+                      onClick={() => setDateRange(undefined)}
+                      className="mt-1.5 text-xs text-foreground/60 hover:text-primary"
+                    >
+                      Reset Filter
+                    </button>
+                  )}
                 </div>
+              </div>
+
+              {isLoading || isCategoryLoading ? (
+                <PostsSkeleton />
               ) : (
                 <PostsGrid
-                  initialPosts={allPosts}
+                  key={`${selectedCategoryId ?? "all"}-${searchQuery}`}
+                  initialPosts={selectedCategoryId ? categoryPosts : allPosts}
                   initialPage={1}
-                  totalPages={totalPages}
+                  totalPages={
+                    selectedCategoryId ? categoryTotalPages : totalPages
+                  }
                   categoryId={selectedCategoryId}
                   searchQuery={searchQuery}
+                  dateFrom={dateFrom}
+                  dateTo={dateTo}
                 />
               )}
             </div>
@@ -253,6 +338,27 @@ function BerandaContent() {
                 </Card>
               )
             )}
+
+            {/* Desktop Date Filter */}
+            <Card className="border-foreground/10 bg-card py-4">
+              <CardContent className="px-4">
+                <h3 className="mb-4 text-base font-bold text-foreground">
+                  Filter Tanggal
+                </h3>
+                <Separator className="mb-4 border-foreground/10" />
+                <div className="flex flex-col gap-3">
+                  <DateRangePicker value={dateRange} onChange={setDateRange} />
+                  {dateRange && (
+                    <button
+                      onClick={() => setDateRange(undefined)}
+                      className="text-xs text-foreground/60 hover:text-primary"
+                    >
+                      Reset Filter
+                    </button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           </aside>
         </div>
       </main>

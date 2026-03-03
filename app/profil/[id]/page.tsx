@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import Image from "next/image";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 import {
   CalendarDays,
   Camera,
@@ -18,6 +19,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -69,9 +71,9 @@ const PROVIDER_LABELS: Record<string, string> = {
   credential: "Email & Password",
 };
 
-const PROVIDER_ICONS: Record<string, string> = {
-  google: "/icons/google.svg",
-  github: "/icons/github.svg",
+const PROVIDER_ICONS: Record<string, React.ReactNode> = {
+  google: <FcGoogle className="size-5 shrink-0" />,
+  github: <FaGithub className="size-5 shrink-0" />,
 };
 
 function formatDate(iso: string) {
@@ -100,14 +102,12 @@ export default function ProfilPage() {
   const [nameInput, setNameInput] = useState("");
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
-  const [saveSuccess, setSaveSuccess] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
   // Avatar upload state
   const [avatarUploading, setAvatarUploading] = useState(false);
-  const [avatarError, setAvatarError] = useState<string | null>(null);
 
   const isOwner = !sessionLoading && session?.user?.id === id;
 
@@ -147,7 +147,6 @@ export default function ProfilPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setAvatarError(null);
     setAvatarUploading(true);
 
     try {
@@ -162,7 +161,7 @@ export default function ProfilPage() {
       };
 
       if (!uploadRes.ok) {
-        setAvatarError(uploadJson.error ?? "Gagal mengunggah gambar.");
+        toast.error(uploadJson.error ?? "Gagal mengunggah gambar.");
         return;
       }
 
@@ -177,7 +176,7 @@ export default function ProfilPage() {
 
       if (!patchRes.ok) {
         const err = (await patchRes.json()) as { error?: string };
-        setAvatarError(err.error ?? "Gagal menyimpan gambar.");
+        toast.error(err.error ?? "Gagal menyimpan gambar.");
         return;
       }
 
@@ -185,10 +184,9 @@ export default function ProfilPage() {
       await authClient.updateUser({ image: newImageUrl });
 
       setProfile((prev) => (prev ? { ...prev, image: newImageUrl } : prev));
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 4000);
+      toast.success("Foto profil berhasil diperbarui.");
     } catch {
-      setAvatarError("Tidak dapat menghubungi server.");
+      toast.error("Tidak dapat menghubungi server.");
     } finally {
       setAvatarUploading(false);
       if (avatarInputRef.current) avatarInputRef.current.value = "";
@@ -199,7 +197,6 @@ export default function ProfilPage() {
     setEditing(false);
     setNameInput(profile?.name ?? "");
     setSaveError(null);
-    setSaveSuccess(false);
   }
 
   async function handleSave() {
@@ -211,7 +208,6 @@ export default function ProfilPage() {
     }
     setSaving(true);
     setSaveError(null);
-    setSaveSuccess(false);
 
     // Use better-auth's built-in updateUser to keep session in sync
     const result = await authClient.updateUser({ name: trimmed });
@@ -239,9 +235,8 @@ export default function ProfilPage() {
     const updated: Pick<ProfileData, "name"> = await res.json();
     setProfile((prev) => (prev ? { ...prev, name: updated.name } : prev));
     setEditing(false);
-    setSaveSuccess(true);
+    toast.success("Profil berhasil diperbarui.");
     setSaving(false);
-    setTimeout(() => setSaveSuccess(false), 4000);
   }
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -282,6 +277,18 @@ export default function ProfilPage() {
       <Navbar />
 
       <main className="mx-auto max-w-3xl px-4 py-24 md:px-8">
+        {/* Hidden file input for avatar upload */}
+        {isOwner && (
+          <input
+            ref={avatarInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/gif,image/webp"
+            className="hidden"
+            onChange={handleAvatarFileChange}
+            disabled={avatarUploading}
+          />
+        )}
+
         {/* ── Hero / Avatar Section ───────────────────────────────────────── */}
         <div className="mb-8 flex flex-col items-center gap-4 text-center">
           {/* Avatar with coming-soon overlay for owners */}
@@ -345,14 +352,6 @@ export default function ProfilPage() {
               Bergabung {formatDate(profile.createdAt)}
             </span>
           </div>
-
-          {/* Success banner */}
-          {saveSuccess && (
-            <div className="flex items-center gap-2 rounded-lg bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-              <CheckCircle2 className="size-4 shrink-0" />
-              Profil berhasil diperbarui.
-            </div>
-          )}
         </div>
 
         <div className="grid gap-6">
@@ -464,68 +463,6 @@ export default function ProfilPage() {
             </CardContent>
           </Card>
 
-          {/* ── Profile Picture Card (coming soon – owner only) ─────────── */}
-          {isOwner && (
-            <Card>
-              <CardHeader className="border-b pb-4">
-                <CardTitle>Foto Profil</CardTitle>
-                <CardDescription>
-                  Ganti foto profil Anda untuk personalisasi akun.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col items-start gap-4 pt-4 sm:flex-row sm:items-center">
-                {/* Hidden file input shared across triggers */}
-                <input
-                  ref={avatarInputRef}
-                  type="file"
-                  accept="image/jpeg,image/png,image/gif,image/webp"
-                  className="hidden"
-                  onChange={handleAvatarFileChange}
-                  disabled={avatarUploading}
-                />
-
-                <Avatar className="size-16 ring-2 ring-foreground/20">
-                  <AvatarImage
-                    src={profile.image ?? undefined}
-                    alt={profile.name}
-                  />
-                  <AvatarFallback className="bg-foreground/20 text-lg font-bold text-foreground">
-                    {getInitials(profile.name)}
-                  </AvatarFallback>
-                </Avatar>
-
-                <div className="flex-1">
-                  <p className="text-sm text-foreground/60">
-                    Format yang didukung: JPG, PNG, GIF, WebP (maks 2 MB).
-                  </p>
-                  <p className="mt-1 text-xs text-foreground/40">
-                    Foto akan disimpan ke Cloudinary dan langsung diperbarui di
-                    semua halaman.
-                  </p>
-                  {avatarError && (
-                    <p className="mt-1 text-xs text-destructive">
-                      {avatarError}
-                    </p>
-                  )}
-                </div>
-
-                <Button
-                  type="button"
-                  onClick={() => avatarInputRef.current?.click()}
-                  disabled={avatarUploading}
-                  className="gap-1.5 shrink-0"
-                >
-                  {avatarUploading ? (
-                    <Loader2 className="size-3.5 animate-spin" />
-                  ) : (
-                    <Camera className="size-3.5" />
-                  )}
-                  {avatarUploading ? "Mengunggah…" : "Ganti Foto"}
-                </Button>
-              </CardContent>
-            </Card>
-          )}
-
           {/* ── Linked Accounts Card (owner only) ───────────────────────── */}
           {isOwner && profile.providers.length > 0 && (
             <Card>
@@ -541,19 +478,7 @@ export default function ProfilPage() {
                     key={provider}
                     className="flex items-center gap-3 rounded-lg border bg-foreground/5 px-4 py-3"
                   >
-                    {PROVIDER_ICONS[provider] ? (
-                      <Image
-                        src={PROVIDER_ICONS[provider]}
-                        alt={PROVIDER_LABELS[provider] ?? provider}
-                        width={20}
-                        height={20}
-                        className="shrink-0"
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).style.display =
-                            "none";
-                        }}
-                      />
-                    ) : (
+                    {PROVIDER_ICONS[provider] ?? (
                       <div className="size-5 rounded-full bg-foreground/20" />
                     )}
                     <span className="text-sm font-medium text-foreground">

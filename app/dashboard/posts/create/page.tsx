@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 import Navbar from "@/components/custom/navbar";
 import { ImageUpload } from "@/components/custom/image-upload";
 import {
@@ -82,7 +83,6 @@ export default function CreatePostPage() {
 
   const [errors, setErrors] = useState<CreatePostFormErrors>({});
   const [submitting, setSubmitting] = useState(false);
-  const [serverError, setServerError] = useState("");
   const publishIntent = useRef(false);
 
   // Seed current user into authorIds once session is available
@@ -125,7 +125,6 @@ export default function CreatePostPage() {
   // ── Submit ────────────────────────────────────────────────────────────────
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setServerError("");
 
     const parsed = createPostSchema.safeParse({
       title,
@@ -148,7 +147,7 @@ export default function CreatePostPage() {
 
     setSubmitting(true);
     try {
-      const res = await fetch("/api/post", {
+      const res = await fetch("/api/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsed.data),
@@ -156,13 +155,13 @@ export default function CreatePostPage() {
 
       if (!res.ok) {
         const json = await res.json();
-        setServerError(json.error ?? "Terjadi kesalahan, coba lagi.");
+        toast.error(json.error ?? "Terjadi kesalahan, coba lagi.");
         return;
       }
 
       router.push("/dashboard/posts");
     } catch {
-      setServerError("Tidak dapat menghubungi server.");
+      toast.error("Tidak dapat menghubungi server.");
     } finally {
       setSubmitting(false);
     }
@@ -233,13 +232,6 @@ export default function CreatePostPage() {
           onSubmit={handleSubmit}
           className="mx-auto flex max-w-3xl flex-col gap-8 px-4"
         >
-          {/* Server error */}
-          {serverError && (
-            <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-              {serverError}
-            </div>
-          )}
-
           {/* ── Title ── */}
           <FormSection label="Judul" htmlFor="title" error={errors.title}>
             <Input
