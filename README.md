@@ -207,9 +207,8 @@ PortalBeritaKodim/
 │   │   ├── breaking-news/             # Manajemen breaking news
 │   │   └── messages/                  # Manajemen pesan
 │   ├── 📂 news/[slug]/                # Halaman artikel berita
-│   ├── 📂 akun/[id]/                # Halaman profil pengguna
-│   ├── 📂 bhakti-tni/                 # Halaman Bhakti TNI
-│   ├── 📂 program-pembinaan/          # Halaman Program Pembinaan
+│   ├── 📂 akun/[id]/                  # Halaman profil pengguna
+│   ├── 📂 program-satuan/             # Halaman Program satuan
 │   └── 📂 kontak/                     # Halaman Kontak
 │
 ├── 📂 components/                      # React components
