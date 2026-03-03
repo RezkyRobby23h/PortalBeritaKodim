@@ -206,15 +206,15 @@ export default function SejarahSatuanPage() {
               </div>
 
               <div className="overflow-x-auto rounded-xl border border-foreground/10">
-                <table className="w-full text-left text-sm">
+                <table className="w-full min-w-[700px] text-left text-sm">
                   <thead>
                     <tr className="border-b border-foreground/10 bg-foreground/5">
                       <th className="px-4 py-3 font-semibold">No</th>
                       <th className="px-4 py-3 font-semibold">Koramil</th>
-                      <th className="px-4 py-3 font-semibold hidden md:table-cell">
+                      <th className="px-4 py-3 font-semibold">
                         Alamat
                       </th>
-                      <th className="px-4 py-3 font-semibold hidden sm:table-cell">
+                      <th className="px-4 py-3 font-semibold">
                         Wilayah
                       </th>
                       <th className="px-4 py-3 font-semibold text-right">
@@ -230,10 +230,10 @@ export default function SejarahSatuanPage() {
                       >
                         <td className="px-4 py-3 font-medium">{k.no}</td>
                         <td className="px-4 py-3 font-medium">{k.nama}</td>
-                        <td className="px-4 py-3 text-foreground/70 hidden md:table-cell">
+                        <td className="px-4 py-3 text-foreground/70">
                           {k.alamat}
                         </td>
-                        <td className="px-4 py-3 text-foreground/70 hidden sm:table-cell">
+                        <td className="px-4 py-3 text-foreground/70">
                           {k.wilayah}
                         </td>
                         <td className="px-4 py-3 text-right text-foreground/70">

@@ -59,7 +59,7 @@ function isDropdown(item: NavItem): item is NavDropdown {
 }
 
 const profilDropdown: NavDropdown = {
-  label: "Profil",
+  label: "Profil Satuan",
   href: "/profil",
   children: [
     { label: "Sejarah Satuan", href: "/profil/sejarah-satuan", icon: History },
