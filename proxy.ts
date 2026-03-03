@@ -29,6 +29,9 @@ export function proxy(request: NextRequest) {
   const hasSession = request.cookies.has(SESSION_COOKIE);
 
   // ── Protect /dashboard/* ──────────────────────────────────────────────────
+  // Only redirect when the session cookie is completely absent. The real
+  // cryptographic validation (and any role checks) happen in the server-side
+  // DashboardLayout via verifySession() from the DAL.
   if (pathname.startsWith("/dashboard")) {
     if (!hasSession) {
       const signIn = new URL("/auth/signin", request.url);
@@ -37,12 +40,13 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  // ── Prevent authenticated users from reaching /auth/* ─────────────────────
-  if (pathname.startsWith("/auth/")) {
-    if (hasSession) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
-    }
-  }
+  // NOTE: We intentionally do NOT redirect authenticated users away from
+  // /auth/* here. A cookie can be present but cryptographically stale/invalid,
+  // which would cause an infinite redirect loop:
+  //   proxy: /auth/signin → /dashboard (sees cookie)
+  //   server: /dashboard  → /auth/signin (session invalid)
+  // The app/auth/layout.tsx server component already handles this redirect
+  // correctly using real session validation via getSession() from the DAL.
 
   return NextResponse.next();
 }
@@ -50,10 +54,10 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match /dashboard and all sub-paths, and /auth and all sub-paths.
-     * Exclude Next.js internals and static files.
+     * Match only /dashboard and all sub-paths.
+     * /auth/* is intentionally excluded — redirect for authenticated users is
+     * handled server-side in app/auth/layout.tsx with proper session validation.
      */
     "/dashboard/:path*",
-    "/auth/:path*",
   ],
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
@@ -18,6 +18,8 @@ import {
 
 export default function SignInPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,7 +36,7 @@ export default function SignInPage() {
       if (error) {
         toast.error(error.message ?? "Email atau kata sandi salah.");
       } else {
-        router.push("/dashboard");
+        router.push(callbackUrl);
       }
     } catch {
       toast.error("Terjadi kesalahan. Silakan coba lagi.");
@@ -47,7 +49,7 @@ export default function SignInPage() {
     setGoogleLoading(true);
     await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/dashboard",
+      callbackURL: callbackUrl,
     });
     setGoogleLoading(false);
   }
