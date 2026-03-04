@@ -147,7 +147,7 @@ export function ImageUpload({
           </p>
           {!uploading && (
             <p className="text-xs opacity-70">
-              JPG, PNG, GIF, WebP · maks 2 MB
+              JPG, PNG, GIF, WebP · maks 5 MB
             </p>
           )}
         </button>
