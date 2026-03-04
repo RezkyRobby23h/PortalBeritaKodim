@@ -206,7 +206,7 @@ export default function SejarahSatuanPage() {
               </div>
 
               <div className="overflow-x-auto rounded-xl border border-foreground/10">
-                <table className="w-full min-w-[700px] text-left text-sm">
+                <table className="w-full min-w-175 text-left text-sm">
                   <thead>
                     <tr className="border-b border-foreground/10 bg-foreground/5">
                       <th className="px-4 py-3 font-semibold">No</th>

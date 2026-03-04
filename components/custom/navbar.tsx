@@ -63,7 +63,7 @@ const profilDropdown: NavDropdown = {
   href: "/profil",
   children: [
     { label: "Sejarah Satuan", href: "/profil/sejarah-satuan", icon: History },
-    { label: "Pejabat Kodim 1408", href: "/profil/pejabat-kodim", icon: UserCheck },
+    { label: "Pejabat Kodim 1408/MKS", href: "/profil/pejabat-kodim", icon: UserCheck },
     { label: "Struktur Organisasi", href: "/profil/struktur-organisasi", icon: Network },
   ],
 };
