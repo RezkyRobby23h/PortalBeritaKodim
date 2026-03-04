@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 const navLinks = [
   { label: "Beranda", href: "/" },
   { label: "Sejarah Satuan", href: "/profil/sejarah-satuan" },
-  { label: "Pejabat Kodim 1408", href: "/profil/pejabat-kodim" },
+  { label: "Pejabat Kodim 1408/MKS", href: "/profil/pejabat-kodim" },
   { label: "Struktur Organisasi", href: "/profil/struktur-organisasi" },
   { label: "Program Pembinaan", href: "/program-pembinaan" },
   { label: "Aduan", href: "/aduan" },
