@@ -9,12 +9,12 @@ cloudinary.config({
 });
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-const MAX_SIZE_BYTES = 2 * 1024 * 1024; // 2 MB
+const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
 
 // POST /api/upload
 // Uploads an image file to Cloudinary. Requires authentication.
 // Body: multipart/form-data — fields: file (image), folder (optional, default: "portal-berita")
-// Allowed types: JPG, PNG, GIF, WebP. Max size: 2 MB.
+// Allowed types: JPG, PNG, GIF, WebP. Max size: 5 MB.
 export async function POST(req: NextRequest) {
   try {
     const authResult = await requireAuth();
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
 
     if (file.size > MAX_SIZE_BYTES) {
       return NextResponse.json(
-        { error: "Ukuran file melebihi batas 2 MB." },
+        { error: "Ukuran file melebihi batas 5 MB." },
         { status: 400 },
       );
     }
